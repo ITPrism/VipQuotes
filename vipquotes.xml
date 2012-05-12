@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="component" version="2.5" method="upgrade">
+	<name>com_vipquotes</name>
+	<creationDate>August, 2010</creationDate>
+	<author>Todor Iliev</author>
+	<authorEmail>todor@itprism.com</authorEmail>
+	<authorUrl>http://itprism.com</authorUrl>
+	<copyright>Copyright (C) 2010 Todor Iliev ( ITPrism.com )</copyright>
+	<license>http://www.gnu.org/copyleft/gpl.html</license>
+	<version>2.0</version>
+	<description>COM_VIPQUOTES_DESCRIPTION</description>
+
+	<install>
+        <sql>
+            <file driver="mysql" charset="utf8">sql/install.sql</file>
+        </sql>
+    </install>
+
+    <uninstall>
+        <sql>
+            <file driver="mysql" charset="utf8">sql/uninstall.sql</file>
+        </sql>
+    </uninstall>
+	
+	<update> 
+		<schemas>
+				<schemapath type="mysql">sql/updates</schemapath>
+		</schemas>
+	</update>
+	
+    <scriptfile>install.php</scriptfile>
+		
+	<media destination="com_vipquotes" folder="media">
+		<filename>index.html</filename>
+		<folder>css</folder>	
+		<folder>images</folder>
+		<folder>js</folder>		
+	</media>
+	
+	<!-- Site Main File Copy Section -->
+	<files folder="site">
+		<filename>controller.php</filename>
+		<filename>index.html</filename>
+		<filename>router.php</filename>
+		<filename>vipquotes.php</filename>
+		<folder>controllers</folder>
+		<folder>models</folder>
+		<folder>views</folder>
+	</files>
+
+	<languages folder="site">
+		<language tag="en-GB">languages/en-GB/en-GB.com_vipquotes.ini</language>
+	</languages>
+	
+	
+	<administration>
+		<menu img="../media/com_vipquotes/images/menu_vipquotes.png" link="option=com_vipquotes">com_vipquotes</menu>
+		<submenu>
+			<menu img="../media/com_vipquotes/images/menu_icon_cpanel.png" link="option=com_vipquotes">COM_VIPQUOTES_CP</menu>
+			<menu img="../media/com_vipquotes/images/menu_icon_quotes_new.png" link="option=com_vipquotes&amp;view=quote&amp;layout=edit">COM_VIPQUOTES_NEW_QUOTE</menu>
+			<menu img="../media/com_vipquotes/images/menu_icon_quotes.png" link="option=com_vipquotes&amp;view=quotess">COM_VIPQUOTES_QUOTES_LIST</menu>
+			<menu img="../media/com_vipquotes/images/menu_icon_category_new.png" link="option=com_vipquotes&amp;view=category&amp;layout=edit">COM_VIPQUOTES_NEW_CATEGORY</menu>
+			<menu img="../media/com_vipquotes/images/menu_icon_category.png" link="option=com_vipquotes&amp;view=categories">COM_VIPQUOTES_CATEGORY_LIST</menu>
+		</submenu>
+	
+		<files folder="admin">		    		
+			<folder>controllers</folder>
+			<folder>helpers</folder>
+			<folder>libraries</folder>
+			<folder>models</folder>
+			<folder>tables</folder>
+			<folder>sql</folder>
+			<folder>views</folder>		
+			<filename>controller.php</filename>
+			<filename>index.html</filename>
+			<filename>config.xml</filename> 
+			<filename>vipquotes.php</filename>
+			<filename>README.md</filename>
+		</files>
+		
+		<languages folder="admin">
+			<language tag="en-GB">languages/en-GB/en-GB.com_vipquotes.ini</language>
+			<language tag="en-GB">languages/en-GB/en-GB.com_vipquotes.sys.ini</language>
+		</languages>
+			
+		</administration>
+</extension>
