@@ -58,9 +58,9 @@
 		<submenu>
 			<menu img="../media/com_vipquotes/images/menu_icon_cpanel.png" link="option=com_vipquotes">COM_VIPQUOTES_CP</menu>
 			<menu img="../media/com_vipquotes/images/menu_icon_quotes_new.png" link="option=com_vipquotes&amp;view=quote&amp;layout=edit">COM_VIPQUOTES_NEW_QUOTE</menu>
-			<menu img="../media/com_vipquotes/images/menu_icon_quotes.png" link="option=com_vipquotes&amp;view=quotess">COM_VIPQUOTES_QUOTES_LIST</menu>
-			<menu img="../media/com_vipquotes/images/menu_icon_category_new.png" link="option=com_vipquotes&amp;view=category&amp;layout=edit">COM_VIPQUOTES_NEW_CATEGORY</menu>
-			<menu img="../media/com_vipquotes/images/menu_icon_category.png" link="option=com_vipquotes&amp;view=categories">COM_VIPQUOTES_CATEGORY_LIST</menu>
+			<menu img="../media/com_vipquotes/images/menu_icon_quotes.png" link="option=com_vipquotes&amp;view=quotes">COM_VIPQUOTES_QUOTES_LIST</menu>
+			<menu img="../media/com_vipquotes/images/menu_icon_category_new.png" link="option=com_categories&amp;view=category&amp;layout=edit&amp;extension=com_vipquotes">COM_VIPQUOTES_NEW_CATEGORY</menu>
+			<menu img="../media/com_vipquotes/images/menu_icon_category.png" link="option=com_categories&amp;extension=com_vipquotes">COM_VIPQUOTES_CATEGORY_LIST</menu>
 		</submenu>
 	
 		<files folder="admin">		    		

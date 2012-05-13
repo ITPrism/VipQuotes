@@ -62,9 +62,11 @@ class VipQuotesViewForm extends JView {
 		    $this->form->setFieldAttribute('catid', 'default',  $this->item->catid);
 		}
 		
+		JHtml::_('behavior.keepalive');
+        JHtml::_('behavior.tooltip');
+        JHtml::_('behavior.formvalidation');
 		// Add Styles
 		$this->document->addStyleSheet(JURI::root() . 'media/'.$option.'/css/style.css');
-		
 		// Add scripts
 		$this->document->addScript(JURI::root() . 'components/'.$option.'/views/'.$this->getName().'/submitbutton.js');
 		

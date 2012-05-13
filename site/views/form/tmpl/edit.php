@@ -13,12 +13,7 @@
 
 // no direct access
 defined('_JEXEC') or die;?>
-
 <?php 
-JHtml::_('behavior.keepalive');
-JHtml::_('behavior.tooltip');
-JHtml::_('behavior.formvalidation');
-
 // Create shortcut to parameters.
 $params = $this->state->get('params');
 ?>
