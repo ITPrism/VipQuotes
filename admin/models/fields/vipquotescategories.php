@@ -24,14 +24,14 @@ JFormHelper::loadFieldClass('list');
  * @subpackage   Vip Quotes
  * @since       1.6
  */
-class JFormFieldVpCategories extends JFormFieldList {
+class JFormFieldVipQuotesCategories extends JFormFieldList {
     /**
      * The form field type.
      *
      * @var     string
      * @since   1.6
      */
-    protected $type = 'VpCategories';
+    protected $type = 'VipQuotesCategories';
     
     /**
      * Method to get the field options.
@@ -44,23 +44,19 @@ class JFormFieldVpCategories extends JFormFieldList {
         // Initialize variables.
         $options = array();
         
-        $db = JFactory::getDbo();
-        $query = $db->getQuery(true);
+        $db     = JFactory::getDbo();
+        $query  = $db->getQuery(true);
         
-        $query->select('a.id AS value, a.name AS text');
-        $query->from('#__vp_categories AS a');
+        $query->select('a.id AS value, a.title AS text')
+                ->from('#__categories AS a')
+                ->where('extension="com_vipquotes"');
         
         // Get the options.
         $db->setQuery($query);
         
         $options = $db->loadAssocList();
         
-        // Check for a database error.
-        if($db->getErrorNum()){
-            JError::raiseWarning(500, $db->getErrorMsg());
-        }
-        
-        array_unshift($options, JHTML::_('select.option', '0', '- '.JText::_('Select a category').' -', 'value', 'text'));
+        array_unshift($options, JHTML::_('select.option', '0', '- '.JText::_('COM_VIPQUOTES_SELECT_CATEGORY').' -', 'value', 'text'));
         
         // Merge any additional options in the XML definition.
         $options = array_merge(parent::getOptions(), $options);

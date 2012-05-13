@@ -71,47 +71,12 @@
   text-align: left;
 }
 
-#itp-formdata{
-     overflow: hidden;
-}
-
-#itp-prjform{
-	width: 550px;
+.q_category {
 	float: left;
-	margin-right: 10px;
+	margin: 10px;
+	width: 150px;
 }
 
-#itp-prjextra{
-	width: 450px;
-	float: left;
-/*	border: 1px dashed black;*/
-	margin-left: 10px;
-
-}
-
-#itp-extra-images{
-    width: 320px;
-    border: 1px solid black;
-    float:left;
-}
-
-
-#trash{
-  width: 64px;
-  height: 64px;
-  background: url(../images/icon_trash.png);
-  float: right;
-  margin: 10px;
-}
-
-.trashable {
-  margin:5px;
-  float: left;
-  position: relative;
-
-}
-
-.itp_note {
-  background: #FFFFCC;
-  border: thin solid #FF9900;
+.textarea_100 {
+	width: 100%;
 }

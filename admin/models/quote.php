@@ -12,9 +12,8 @@
  */
 
 // no direct access
-defined('_JEXEC') or die('Restricted access');
+defined('_JEXEC') or die;
 
-jimport('joomla.filesystem.file');
 jimport('joomla.application.component.modeladmin');
 
 /**
@@ -107,7 +106,7 @@ class VipQuotesModelQuote extends JModelAdmin {
         $quote     = JArrayHelper::getValue($data, "quote");
         $author    = JArrayHelper::getValue($data, "author");
         $catid     = JArrayHelper::getValue($data, "catid");
-        $published     = JArrayHelper::getValue($data, "published");
+        $published = JArrayHelper::getValue($data, "published");
         
         // Load a record from the database
         $row = $this->getTable();

@@ -1,38 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <config>
 	<fieldset name="global" label="COM_VIPQUOTES_GLOBAL_TITLE" description="COM_VIPQUOTES_GLOBAL_PARAMS">
-		<field name="sendMail" type="radio" default="0" label="Send mail to the administrator" description="Send mail to the administrator when a user add a new quote.">
-			<option value="0">No</option>
-			<option value="1">Yes</option>
-		</field>
-		<field name="orderBy" type="list" default="0" label="Order quotes by" description="ORDER QUOTES BY">
+		<field name="orderBy" type="list" default="0" label="COM_VIPQUOTES_ORDER_BY" description="COM_VIPQUOTES_ORDER_BY_DESC">
 			<option value="0">Date</option>
 			<option value="1">Date Reverse</option>
 			<option value="2">Author</option>
 		</field>
-		<field name="checkQuotes" type="radio" default="0" label="Check quotes" description="CHECK FOR EXISTING QUOTES ( USE SOUNDEX )">
+		<field name="checkQuotes" type="radio" default="0" label="COM_VIPQUOTES_VERIFY" description="COM_VIPQUOTES_VERIFY_FORM_DESC">
 			<option value="0">JNO</option>
             <option value="1">JYES</option>
 		</field>
-		<field name="searchForm" type="radio" default="0" label="Hide Search Form" description="HIDE SEARCH FORM">
+		<field name="searchForm" type="radio" default="0" label="COM_VIPQUOTES_SEARCH_FORM" description="COM_VIPQUOTES_SEARCH_FORM_DESC">
 			<option value="0">JNO</option>
             <option value="1">JYES</option>
 		</field>
-		<field name="displayViews" type="radio" default="1" label="Counter" description="Show or hide counter of the quotes for every one category.">
+		<field name="displayCounter" type="radio" default="1" label="COM_VIPQUOTES_COUNTER" description="COM_VIPQUOTES_COUNTER_DESC">
 			<option value="0">JNO</option>
             <option value="1">JYES</option>
 		</field>
-		<field name="catsColumns" type="text" default="3" label="Category columns" description="The number of the columns in category view." />
-		
-		<field name="editor" type="editors" default="" label="User Editor" description="WYSIWYG Editor for this User" />
-		<field name="voting" type="radio" default="1" label="Voting" description="Show or hide stars voting system.">
+		<field name="voting" type="radio" default="1" label="COM_VIPQUOTES_VOTING" description="COM_VIPQUOTES_VOTING_DESC">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
-		<field name="autoPublishing" type="radio" default="0" label="Auto Publishing" description="Quotations will be published without the approval of the administrator.">
-			<option value="0">JNO</option>
-			<option value="1">JYES</option>
-		</field>
+		<field name="catToBreadcrumb" type="radio" default="0" label="COM_VIPQUOTES_BREADCRUMB" description="COM_VIPQUOTES_BREADCRUMB_DESC">
+            <option value="0">JNO</option>
+            <option value="1">JYES</option>
+        </field>
+        <field name="quotesLimit" type="text" default="20" label="COM_VIPQUOTES_LIMIT" description="COM_VIPQUOTES_LIMIT_DESC" />
 	</fieldset>
 
+    <fieldset name="security" label="COM_VIPQUOTES_SECURITY" description="COM_VIPQUOTES_SECURITY_DESC">
+        <field name="autoPublishing" type="radio" default="0" label="COM_VIPQUOTES_AUTO_PUBLISH" description="COM_VIPQUOTES_AUTO_PUBLISH_DESC">
+            <option value="0">JNO</option>
+            <option value="1">JYES</option>
+        </field>
+        <field name="sendMail" type="radio" default="0" label="COM_VIPQUOTES_SEND_MAIL" description="COM_VIPQUOTES_SEND_MAIL_DESC">
+            <option value="0">No</option>
+            <option value="1">Yes</option>
+        </field>
+    </fieldset>
+    
 </config>

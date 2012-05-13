@@ -2,7 +2,7 @@
 defined('_JEXEC') or die;
 jimport('joomla.application.categories');
 
-class VipquotesCategories extends JCategories
+class VipQuotesCategories extends JCategories
 {
 	public function __construct($options = array())
 	{
@@ -28,4 +28,5 @@ class VipquotesCategories extends JCategories
 	    $db->setQuery($query);
 	    return $db->loadAssocList("id","title");
 	}
+	
 }
