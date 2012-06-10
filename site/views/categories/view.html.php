@@ -21,27 +21,19 @@ class VipQuotesViewCategories extends JView {
     protected $state = null;
     protected $items = null;
     protected $pagination = null;
+    protected $option = null;
     
     public function display($tpl = null) {
         
-        $option     = JRequest::getCmd("option", "com_vipquotes", "GET");
+        $this->option     = JRequest::getCmd("option", "com_vipquotes", "GET");
         
-        $app        = JFactory::getApplication();
         // Initialise variables
-        $items      = $this->get('Items');
-        $params     = $app->getParams();
-        
-        //Escape strings for HTML output
-        $this->assign("pageclass_sfx", htmlspecialchars($params->get('pageclass_sfx')) );
-        
-        $this->assignRef('params', $params);
-        $this->assignRef('items', $items);
+        $this->items  = $this->get('Items');
+        $this->state  = $this->get("State");
+        $this->params = $this->state->get("params");
         
         $this->assignRef( "version",    new VipQuotesVersion() );
         
-        // Add template style
-        $this->document->addStyleSheet( JURI::root() . 'media/'.$option.'/css/style.css');
-                
         $this->prepareDocument();
                 
         parent::display($tpl);
@@ -51,8 +43,12 @@ class VipQuotesViewCategories extends JView {
      * Prepares the document
      */
     protected function prepareDocument(){
+        
         $app = JFactory::getApplication();
         $menus = $app->getMenu();
+        
+        //Escape strings for HTML output
+        $this->pageclass_sfx = htmlspecialchars($this->params->get('pageclass_sfx'));
         
         // Because the application sets a default page title,
         // we need to get it from the menu item itself
@@ -63,24 +59,31 @@ class VipQuotesViewCategories extends JView {
             $this->params->def('page_heading', JText::_('COM_VIPQUOTES_CATEGORIES_DEFAULT_PAGE_TITLE'));
         }
         
-        /*** Set page title ***/
+        // Set page title
         $title = $this->params->get('page_title', '');
         if(empty($title)){
+            
             $title = $app->getCfg('sitename');
+            
         }elseif($app->getCfg('sitename_pagetitles', 0)){
+            
             $title = JText::sprintf('JPAGETITLE', $app->getCfg('sitename'), $title);
+            
         }
         $this->document->setTitle($title);
         
-        /*** Meta Description ***/
+        // Meta Description
         if($this->params->get('menu-meta_description')){
             $this->document->setDescription($this->params->get('menu-meta_description'));
         }
         
-        /*** Meta keywords ***/
+        // Meta keywords
         if($this->params->get('menu-meta_keywords')){
             $this->document->setMetadata('keywords', $this->params->get('menu-meta_keywords'));
         }
+        
+        // Head styles
+        $this->document->addStyleSheet( JURI::root() . 'media/'.$this->option.'/css/style.css');
         
     }
     

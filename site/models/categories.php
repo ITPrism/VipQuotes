@@ -36,6 +36,42 @@ class VipQuotesModelCategories extends JModelList {
         parent::__construct($config);
     }
     
+	/**
+     * Method to auto-populate the model state.
+     *
+     * Note. Calling getState in this method will result in recursion.
+     *
+     * @return  void
+     * @since   1.6
+     */
+    protected function populateState($ordering = 'ordering', $direction = 'ASC'){
+        
+        // Load the parameters.
+        $app               = JFactory::getApplication();
+        $params            = $app->getParams("com_vipquotes");
+        $this->setState('params', $params);
+        
+        // Set limit
+        $limit              = $app->getCfg('list_limit', 0);
+        $this->setState('list.limit', $limit);
+        
+        $value = JRequest::getInt('limitstart', 0);
+        $this->setState('list.start', $value);
+        
+        $orderCol = JRequest::getCmd('filter_order', 'a.title');
+        if(!in_array($orderCol, $this->filter_fields)){
+            $orderCol = 'a.title';
+        }
+        $this->setState('list.ordering', $orderCol);
+        
+        $listOrder = JRequest::getCmd('filter_order_dir', 'ASC');
+        if(!in_array(strtoupper($listOrder), array('ASC', 'DESC', ''))){
+            $listOrder = 'ASC';
+        }
+        $this->setState('list.direction', $listOrder);
+        
+    }
+    
     public function getItems( $recursive = false ){
         
         if (!count($this->items)) {
@@ -46,7 +82,7 @@ class VipQuotesModelCategories extends JModelList {
 
 			$options = array();
 
-			$categories = JCategories::getInstance('VipQuotes', $options);
+			$categories   = JCategories::getInstance('VipQuotes', $options);
 			$this->parent = $categories->get('root');
 
 			if (is_object($this->parent)) {

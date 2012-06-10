@@ -31,16 +31,14 @@ function VipQuotesBuildRoute(&$query){
     }else{
         $menuItem = $menu->getItem($query['Itemid']);
     }
-    $mView = (empty($menuItem->query['view'])) ? null : $menuItem->query['view'];
-    $mCatid = (empty($menuItem->query['catid'])) ? null : $menuItem->query['catid'];
-    //    $mProjectLayout    = (empty($menuItem->query['project_layout'])) ? null : $menuItem->query['project_layout'];
-
+    
     if(isset($query['view'])){
         $view = $query['view'];
-        if(empty($query['Itemid'])){
-            $segments[] = $query['view'];
-        }
         unset($query['view']);
+        
+        if(empty($query['Itemid'])){
+            $segments[] = $view;
+        }
     }
     
     if(isset($query['catid'])){
@@ -48,42 +46,21 @@ function VipQuotesBuildRoute(&$query){
         $categoryId = $query['catid'];
         unset($query['catid']);
         
-        static $categories = array();
+        static $categories = null;
         
-        if(!$categories){
-            $db = JFactory::getDbo();
-            $db->setQuery("
-              SELECT 
-                  `id`,
-                  `alias`
-              FROM
-                  `#__vp_categories`");
-            
-            $categories = $db->loadAssocList("id");
-        
+        if(is_null($categories)) {
+            $categories = VipQuotesHelper::getCategoriesAliases();
         }
         
         if(array_key_exists($categoryId, $categories)){
-            $segments[] = $categories[$categoryId]['alias'];
+            $segments[] = $categories[$categoryId];
         }
     
     }
     
     // Check for existing layout
     if(isset($query['layout'])){
-        
-        // Does the menu layout match with the query layout 
-        if(!empty($query['Itemid']) && isset($menuItem->query['layout'])){
-            if($query['layout'] == $menuItem->query['layout']){
-                unset($query['layout']);
-            }
-        }else{
-            // Check for menu item 'categories' and project_layout different from 'default'
-            if(isset($menuItem->query['project_layout']) AND ($menuItem->query['project_layout'] == 'default')){
-                unset($query['layout']);
-            }
-        }
-        
+        unset($query['layout']);
     }
     
     if(isset($query['format'])){
@@ -99,79 +76,69 @@ function VipQuotesBuildRoute(&$query){
  */
 function VipQuotesParseRoute($segments){
     
-    /*
-    jimport('joomla.log.loggers.formattedtext');
-    $loggerOptions = array();
-    $entry     = new JLogEntry(var_export($segments, 1));
-    $logger    = new JLoggerFormattedText($loggerOptions);
-    $logger->addEntry($entry, JLog::DEBUG);
-    */
-    
     $query = array();
     
     //Get the active menu item.
-    $app        = JFactory::getApplication();
-    $menu       = $app->getMenu();
-    $menuItem   = $menu->getActive();
+    $app            = JFactory::getApplication();
+    $menu           = $app->getMenu();
+    $menuItem       = $menu->getActive();
     
-    $count      = count($segments);
-    $categoryAlias = null;
+    $count          = count($segments);
+    $categoryIndex  = $count-1;
+    $categoryAlias  = null;
     
-    if(!isset($menuItem)) {
+    if(!$menuItem) {
         $query['view']   = $segments[0];
         return $query;
-    } else {
-        
-//        $query['view'] = "projects";
-        
-        // Get the category id from the menu item
-        if( isset($menuItem->query['catid'])) {
-            $query['catid']  = intval($menuItem->query['catid']);
-        }
-        
-        if(!isset($query['catid']) AND isset($segments[$count-1])) {
-            $categoryAlias = $segments[$count-1];
-        }
-        
     }
     
-    
-    /**** Categories ****/
-    if(!isset($query['catid']) AND !empty($categoryAlias) ){
+    if(isset($menuItem->query['view'])) {
+        $view = $menuItem->query['view'];
+    } else {
+        $view = "quotes";
+    }
         
-        static $categories = array();
+    // Get variables from the menu item
+    switch($view) {
         
-        if(!$categories){
+        case "categories":
             
-            $db = & JFactory::getDBO();
+            $query['view']   = "quotes";
             
-            $sqlQuery = "
-	              SELECT 
-	                  `id`,
-	                  `alias`
-	              FROM
-	                 `#__vp_categories`";
-            
-            $db->setQuery($sqlQuery);
-            $categories_ = $db->loadAssocList();
-            
-            foreach($categories_ as $category){
-                $categories[$category['id']] = $category['alias'];
+            // Get the category id from the menu item
+            if(isset($menuItem->query['catid'])) {
+                $query['catid']  = intval($menuItem->query['catid']);
+            } else if(isset($segments[$categoryIndex])) {
+                
+                // Get category id by alias
+                $categoryAlias = $segments[$categoryIndex];
+
+                static $categories = null;
+                if(is_null($categories)) {
+                    require_once JPATH_ADMINISTRATOR.DS."components".DS."com_vipquotes".DS."helpers".DS."helper.php";
+                    $categories = VipQuotesHelper::getCategoriesAliases();
+                }
+                
+                $categoryId = array_search($categoryAlias, $categories);
+                
+                if(!empty($categoryId)){
+                    $query['catid'] = intval($categoryId);
+                }
+                
             }
         
-        }
-        
-        $alias = array_pop($segments);
-        $alias = str_replace(":", "-", $alias);
-        
-        $categoryId = array_search($alias, $categories);
-        
-        if(false === $categoryId){
-            return $query;
-        }
-        
-        $query['catid'] = intval($categoryId);
-    
+            break;
+            
+        default: // quotes
+            
+            $query['view']   = "quotes";
+            
+            // Get the category id from the menu item
+            if(isset($menuItem->query['catid'])) {
+                $query['catid']  = intval($menuItem->query['catid']);
+            }
+            
+            break;
     }
     
     return $query;

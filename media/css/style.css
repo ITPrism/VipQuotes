@@ -80,3 +80,14 @@
 .textarea_100 {
 	width: 100%;
 }
+
+.itp-vq .row-fluid:nth-child(even) {background: #CCC}
+.itp-vq .row-fluid:nth-child(odd) {background: #FFF}
+
+.vp_header{
+	background-color: #534539 !important;
+   color: #FFFFFF;
+   text-align: center;
+   font-weight: bold;
+   padding: 10px 0 0 0;
+}

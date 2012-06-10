@@ -8,7 +8,12 @@
 	<copyright>Copyright (C) 2010 Todor Iliev ( ITPrism.com )</copyright>
 	<license>http://www.gnu.org/copyleft/gpl.html</license>
 	<version>2.0</version>
-	<description>COM_VIPQUOTES_DESCRIPTION</description>
+	<description><![CDATA[
+	<p><a href="http://itprism.com/free-joomla-extensions/others/quotes-collection-manager" target="_blank">Vip Quotes</a></p>
+	<p>Invest in the extension and help for its improvement. You can <a href="http://itprism.com/sponsorship" title="Sponsoring" target="_blank">sponsor the extension via SMS or PayPal</a>.</p>
+	<p><a href="http://itprism.com/" target="_blank">Subscribe for the newsletter</a> to receive information about updates and new ITPrism extensions.</p>
+	<p>Please, <a href="http://extensions.joomla.org/extensions/living/quotes/6877">vote for the extension</a> on Joomla! Extensions Directory</p>
+	]]></description>
 
 	<install>
         <sql>
@@ -75,7 +80,6 @@
 			<filename>index.html</filename>
 			<filename>config.xml</filename> 
 			<filename>vipquotes.php</filename>
-			<filename>README.md</filename>
 		</files>
 		
 		<languages folder="admin">

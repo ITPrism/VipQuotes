@@ -31,9 +31,9 @@ class VipQuotesViewQuotes extends JView {
     function display($tpl = null){
         
         // Check for valid category
-        $categoryId = JRequest::getInt("catid", 0, "GET");
-        $option     = JRequest::getCmd("option", "com_vipquotes", "GET");
-        $category   = null;
+        $categoryId     = JRequest::getInt("catid", 0, "GET");
+        $this->option   = JRequest::getCmd("option", "com_vipquotes", "GET");
+        $category       = null;
         
         // Checking for published category
         if(!empty($categoryId)){
@@ -48,22 +48,14 @@ class VipQuotesViewQuotes extends JView {
         }
        
         // Initialise variables
-        $state      = $this->get('State');
-        $items      = $this->get('Items');
-        $pagination = $this->get('Pagination');
+        $this->state      = $this->get('State');
+        $this->items      = $this->get('Items');
+        $this->pagination = $this->get('Pagination');
+        $this->params     = $this->state->get("params");
         
-        $params     = $state->get("params");
-        
-        //Escape strings for HTML output
-        $this->assign('pageclass_sfx', htmlspecialchars($params->get('pageclass_sfx')));
-        
-        $this->assignRef('params',       $params);
-        $this->assignRef('items',        $items);
-        $this->assignRef('pagination',   $pagination);
         $this->assignRef('category',     $category);
-        $this->assignRef( "version",     new VipQuotesVersion() );
+        $this->assignRef("version",     new VipQuotesVersion() );
 
-        $this->document->addStyleSheet(JURI::root() . 'media/'.$option.'/css/bootstrap.css');
         $this->prepareDocument();
         
         parent::display($tpl);
@@ -77,6 +69,9 @@ class VipQuotesViewQuotes extends JView {
         $app        = JFactory::getApplication();
         $title      = "";
         $category   = $this->get("category");
+        
+        //Escape strings for HTML output
+        $this->pageclass_sfx = htmlspecialchars($this->params->get('pageclass_sfx'));
         
         $menus      = $app->getMenu();
         // Because the application sets a default page title,
@@ -149,6 +144,10 @@ class VipQuotesViewQuotes extends JView {
                 $pathway->addItem($category->title);
             }
         }
+        
+        // Head styles
+        $this->document->addStyleSheet(JURI::root() . 'media/'.$this->option.'/css/bootstrap.css');
+        $this->document->addStyleSheet(JURI::root() . 'media/'.$this->option.'/css/style.css');
     }
 
 }

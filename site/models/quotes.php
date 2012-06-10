@@ -47,11 +47,13 @@ class VipQuotesModelQuotes extends JModelList {
      */
     protected function populateState($ordering = 'ordering', $direction = 'ASC'){
         
-        $app       = JFactory::getApplication();
+        // Load the parameters.
+        $app               = JFactory::getApplication();
+        $params            = $app->getParams("com_vipquotes");
+        $this->setState('params', $params);
         
         // Set limit
-        $componentParams    = JComponentHelper::getParams('com_vipquotes');
-        $limit              = $componentParams->get("quotesLimit", $app->getCfg('list_limit', 0));
+        $limit              = $params->get("quotesLimit", $app->getCfg('list_limit', 0));
         $this->setState('list.limit', $limit);
         
         $value = JRequest::getInt('limitstart', 0);
@@ -70,10 +72,6 @@ class VipQuotesModelQuotes extends JModelList {
         $this->setState('list.direction', $listOrder);
         
         $this->setState('filter.catid', JRequest::getInt('catid'));
-        
-        // Load the parameters.
-		$params	= $app->getParams();
-		$this->setState('params', $params);
         
     }
     
