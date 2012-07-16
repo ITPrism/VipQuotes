@@ -1,20 +1,14 @@
 <?php // no direct access
-defined('_JEXEC') or die('Restricted access'); ?>
+defined('_JEXEC') or die; ?>
 <?php 
     if (!empty($items)) {
-        $i = 0;
         foreach($items as $item) {
-            $item->quote = strip_tags($item->quote);
-            $i++;
-            if ($qMarks) {
-            	$item->quote = '"' . $item->quote . '"';
+            echo "<div>$item->quote</div><br/>"; 
+            if($params->get('display_author', 1)) {
+                echo "<div><strong>$item->author</strong></div>";
+                echo '<br />';
             }
             
-            echo "<p>$i. $item->quote</p>"; 
-            
-            if($showAuthor) {
-                echo "<p><strong>$item->author</strong></p>";
-            }
         }
     }
 ?>

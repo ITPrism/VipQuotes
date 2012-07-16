@@ -23,6 +23,19 @@ class VipQuotesViewQuotes extends JView {
     protected $items = null;
     protected $pagination = null;
     
+    protected $option= null;
+    
+    public function __construct($config){
+        
+        parent::__construct($config);
+        
+        $app = JFactory::getApplication();
+        /** @var $app JSite **/
+        
+        $this->option = $app->input->getCmd("option", "com_vipquotes", "GET");
+        
+    }
+    
     /**
      * Display the view
      *
@@ -30,9 +43,11 @@ class VipQuotesViewQuotes extends JView {
      */
     function display($tpl = null){
         
+        $app = JFactory::getApplication();
+        /** @var $app JSite **/
+        
         // Check for valid category
-        $categoryId     = JRequest::getInt("catid", 0, "GET");
-        $this->option   = JRequest::getCmd("option", "com_vipquotes", "GET");
+        $categoryId     = $app->input->getInt("catid", 0, "GET");
         $category       = null;
         
         // Checking for published category
@@ -41,20 +56,24 @@ class VipQuotesViewQuotes extends JView {
 			$options      = array("catid"=>$categoryId);
 			$categories   = JCategories::getInstance('VipQuotes');
 			$category     = $categories->get($categoryId);
-			 
-            if(empty($category->published)){
-                throw new Exception(JText::_("ITP_ERROR_CATEGORY_DOES_NOT_EXIST"), 404);
-            }
+            
+        }
+        
+        if(!$category OR empty($category->published)){
+            throw new Exception(JText::_("ITP_ERROR_CATEGORY_DOES_NOT_EXIST"), 404);
         }
        
+        // Get search phrase
+        $this->query      = JString::trim( $app->input->getVar("q", "", "GET") );
+        
         // Initialise variables
         $this->state      = $this->get('State');
         $this->items      = $this->get('Items');
         $this->pagination = $this->get('Pagination');
         $this->params     = $this->state->get("params");
         
-        $this->assignRef('category',     $category);
-        $this->assignRef("version",     new VipQuotesVersion() );
+        $this->category   = $category;
+        $this->version    = new VipQuotesVersion();
 
         $this->prepareDocument();
         
@@ -66,11 +85,13 @@ class VipQuotesViewQuotes extends JView {
      */
     protected function prepareDocument(){
 
-        $app        = JFactory::getApplication();
+        $app = JFactory::getApplication();
+        /** @var $app JSite **/
+        
         $title      = "";
         $category   = $this->get("category");
         
-        //Escape strings for HTML output
+        // Escape strings for HTML output
         $this->pageclass_sfx = htmlspecialchars($this->params->get('pageclass_sfx'));
         
         $menus      = $app->getMenu();
@@ -78,7 +99,7 @@ class VipQuotesViewQuotes extends JView {
         // we need to get it from the menu item itself
         $menu       = $menus->getActive();
         
-        /*** Set page heading ***/
+        // Preparet page heading
         if(!$this->params->get("page_heading")){
             if(!empty($category->title)) {
                 $this->params->def('page_heading', $category->title);
@@ -91,7 +112,7 @@ class VipQuotesViewQuotes extends JView {
             }
         }
 
-        /*** Set page title ***/
+        // Prepare page title
         if(!$category) { // Uncategorised
             // Get title from the page title option
             $title = $this->params->get("page_title");
@@ -122,7 +143,7 @@ class VipQuotesViewQuotes extends JView {
         
         $this->document->setTitle($title);
         
-        /*** Meta Description ***/
+        // Meta Description
         if(empty($category->metadesc)) { // Uncategorised
             $this->document->setDescription($this->params->get('menu-meta_description'));
         } else {
@@ -136,8 +157,8 @@ class VipQuotesViewQuotes extends JView {
             $this->document->setMetadata('keywords', $category->metakey);
         }
         
-        /*** Add the category name into breadcrumbs ***/
-        if($this->params->get('catToBreadcrumb')){
+        // Add category name into breadcrumbs 
+        if($this->params->get('breadcrumb')){
             
             if(!empty($category->id) AND !empty($category->title)){
                 $pathway    = $app->getPathway();
@@ -146,8 +167,8 @@ class VipQuotesViewQuotes extends JView {
         }
         
         // Head styles
-        $this->document->addStyleSheet(JURI::root() . 'media/'.$this->option.'/css/bootstrap.css');
-        $this->document->addStyleSheet(JURI::root() . 'media/'.$this->option.'/css/style.css');
+        $this->document->addStyleSheet('media/'.$this->option.'/css/bootstrap.css');
+        $this->document->addStyleSheet('media/'.$this->option.'/css/style.css');
     }
 
 }

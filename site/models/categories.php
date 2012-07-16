@@ -18,8 +18,9 @@ jimport('joomla.application.component.modellist');
 
 class VipQuotesModelCategories extends JModelList {
     
-    protected $items  = null;
-    protected $parent = null;
+    protected $items   = null;
+    protected $numbers = null;
+    protected $parent  = null;
     
     /**
      * Constructor.
@@ -95,5 +96,33 @@ class VipQuotesModelCategories extends JModelList {
 
 		return $this->items;
 		
+    }
+    
+    public function getNumbers() {
+        
+        if (!count($this->numbers)) {
+            $db = JFactory::getDbo();
+            $query = $db->getQuery(true);
+            
+            $query->select("
+            	catid, 
+            	COUNT(*) AS number"
+            )
+            ->from("#__vq_quotes")
+            ->where("published = 1")
+            ->group("catid");
+            
+            $db->setQuery($query);
+            $results = $db->loadAssocList("catid", "number");
+            
+            if(!$results) {
+                $results = null; 
+            }
+            
+            $this->numbers = $results;
+        }
+        
+        return $this->numbers;
+        
     }
 }

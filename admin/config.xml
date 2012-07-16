@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <config>
 	<fieldset name="global" label="COM_VIPQUOTES_GLOBAL_TITLE" description="COM_VIPQUOTES_GLOBAL_PARAMS">
-		<field name="orderBy" type="list" default="0" label="COM_VIPQUOTES_ORDER_BY" description="COM_VIPQUOTES_ORDER_BY_DESC">
-			<option value="0">Date</option>
-			<option value="1">Date Reverse</option>
-			<option value="2">Author</option>
+		<field name="orderBy" type="list" default="2" label="COM_VIPQUOTES_ORDER_BY" description="COM_VIPQUOTES_ORDER_BY_DESC">
+			<option value="0">Ordering</option>
+			<option value="1">Date</option>
+			<option value="2">Date Reverse</option>
+			<option value="3">Author</option>
 		</field>
 		<field name="checkQuotes" type="radio" default="0" label="COM_VIPQUOTES_VERIFY" description="COM_VIPQUOTES_VERIFY_FORM_DESC">
 			<option value="0">JNO</option>
@@ -14,30 +15,15 @@
 			<option value="0">JNO</option>
             <option value="1">JYES</option>
 		</field>
-		<field name="displayCounter" type="radio" default="1" label="COM_VIPQUOTES_COUNTER" description="COM_VIPQUOTES_COUNTER_DESC">
+		<field name="displayCounter" type="radio" default="0" label="COM_VIPQUOTES_COUNTER" description="COM_VIPQUOTES_COUNTER_DESC">
 			<option value="0">JNO</option>
             <option value="1">JYES</option>
 		</field>
-		<field name="voting" type="radio" default="1" label="COM_VIPQUOTES_VOTING" description="COM_VIPQUOTES_VOTING_DESC">
-			<option value="0">JNO</option>
-			<option value="1">JYES</option>
-		</field>
-		<field name="catToBreadcrumb" type="radio" default="0" label="COM_VIPQUOTES_BREADCRUMB" description="COM_VIPQUOTES_BREADCRUMB_DESC">
+		<field name="breadcrumb" type="radio" default="0" label="COM_VIPQUOTES_BREADCRUMB" description="COM_VIPQUOTES_BREADCRUMB_DESC">
             <option value="0">JNO</option>
             <option value="1">JYES</option>
         </field>
         <field name="quotesLimit" type="text" default="20" label="COM_VIPQUOTES_LIMIT" description="COM_VIPQUOTES_LIMIT_DESC" />
 	</fieldset>
-
-    <fieldset name="security" label="COM_VIPQUOTES_SECURITY" description="COM_VIPQUOTES_SECURITY_DESC">
-        <field name="autoPublishing" type="radio" default="0" label="COM_VIPQUOTES_AUTO_PUBLISH" description="COM_VIPQUOTES_AUTO_PUBLISH_DESC">
-            <option value="0">JNO</option>
-            <option value="1">JYES</option>
-        </field>
-        <field name="sendMail" type="radio" default="0" label="COM_VIPQUOTES_SEND_MAIL" description="COM_VIPQUOTES_SEND_MAIL_DESC">
-            <option value="0">No</option>
-            <option value="1">Yes</option>
-        </field>
-    </fieldset>
     
 </config>

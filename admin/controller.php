@@ -24,22 +24,14 @@ jimport( 'joomla.application.component.controller' );
   */
 class VipQuotesController extends JController {
     
-	public function __construct($config = array())	{
-		parent::__construct($config);
-		
-	}
-
 	public function display( ) {
 
-		$document =& JFactory::getDocument();
-		/* @var $document JDocumentHtml */
+		$app = JFactory::getApplication();
+        /** @var $app JAdministrator **/
 		
-		// Add component style
-        $document->addStyleSheet(JURI::root() . 'media/com_vipquotes/css/style.css', 'text/css');
-        
-        $viewName      = JRequest::getCmd('view', 'cpanel');
+        $viewName      = $app->input->getCmd('view', 'cpanel');
         JRequest::setVar("view", $viewName);
-
+        
         parent::display();
         return $this;
 	}

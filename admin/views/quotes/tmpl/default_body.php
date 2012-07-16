@@ -19,21 +19,18 @@ defined('_JEXEC') or die;
 	?>
 	<tr class="row<?php echo $i % 2; ?>">
         <td ><?php echo JHtml::_('grid.id', $i, $item->id); ?></td>
-		<td><a href="index.php?option=com_vipquotes&amp;view=quote&amp;layout=edit&amp;id=<?php echo $item->id;?>" ><?php echo $item->quote; ?></a></td>
+		<td><a href="<?php echo JRoute::_("index.php?option=com_vipquotes&amp;view=quote&amp;layout=edit&amp;id=".$item->id);?>" ><?php echo $item->quote; ?></a></td>
 		<td><?php echo $item->author; ?></td>
 		<td class="center">
-		   <?php $category = JArrayHelper::getValue($this->categories, $item->catid); 
+		   <?php 
+		   $category = JArrayHelper::getValue($this->categories, $item->catid); 
 		   if(!empty($category)) {
-		   ?>
-           <a href="index.php?option=com_vipquotes&amp;view=category&amp;layout=edit&amp;id=<?php echo $item->catid;?>" ><?php echo $category; ?></a>
-           <?php } else {
+              echo $category;
+           } else {
                echo JText::_("COM_VIPQUOTES_UNCATEGORISED");
 		   }?>
         </td>
 		<td class="center nowrap"><?php echo JHtml::_('date', $item->date, JText::_('DATE_FORMAT_LC4')); ?></td>
-		<td class="center"><?php echo $item->likes; ?></td>
-        <td class="center"><?php echo $item->votes; ?></td>
-        <td class="center"><?php echo $item->rating; ?></td>
         <td class="order">
         <?php
             $disabled = $this->saveOrder ?  '' : 'disabled="disabled"';

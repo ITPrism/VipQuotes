@@ -22,22 +22,13 @@ defined('_JEXEC') or die;
 	     <?php echo JHtml::_('grid.sort',  'COM_VIPQUOTES_QUOTE', 'a.quote', $this->listDirn, $this->listOrder); ?>
 	</th>
 	<th width="10%">
-		<?php echo JHtml::_('grid.sort',  'COM_VIPQUOTES_AUTHOR', 'a.author', $this->listDirn, $this->listOrder); ?>
+		<?php echo JText::_('COM_VIPQUOTES_AUTHOR'); ?>
 	</th>
 	<th width="10%">
-	     <?php echo JHtml::_('grid.sort',  'JCATEGORY', 'a.catid', $this->listDirn, $this->listOrder); ?>
+	     <?php echo JText::_('JCATEGORY'); ?>
     </th>
 	<th width="10%">
 		<?php echo JHtml::_('grid.sort',  'COM_VIPQUOTES_DATE', 'a.date', $this->listDirn, $this->listOrder); ?>
-	</th>
-	<th width="3%">
-		<?php echo JHtml::_('grid.sort',  'COM_VIPQUOTES_LIKES', 'a.likes', $this->listDirn, $this->listOrder); ?>
-	</th>
-	<th width="3%">
-		<?php echo JHtml::_('grid.sort',  'COM_VIPQUOTES_VOTES', 'a.votes', $this->listDirn, $this->listOrder); ?>
-	</th>
-	<th width="3%">
-		<?php echo JHtml::_('grid.sort',  'COM_VIPQUOTES_RATING', 'a.rating', $this->listDirn, $this->listOrder); ?>
 	</th>
 	<th width="10%">
         <?php echo JHtml::_('grid.sort',  'JGRID_HEADING_ORDERING', 'a.ordering', $this->listDirn, $this->listOrder); ?>
@@ -45,7 +36,7 @@ defined('_JEXEC') or die;
         <?php echo JHtml::_('grid.order',  $this->items, 'filesave.png', 'quotes.saveorder'); ?>
         <?php }?>
     </th>
-    <th width="3%"><?php echo JHtml::_('grid.sort',  'JSTATUS', 'a.published', $this->listDirn, $this->listOrder); ?></th>
+    <th width="3%"><?php echo JText::_('JSTATUS'); ?></th>
     <th width="3%" class="nowrap"><?php echo JHtml::_('grid.sort',  'JGRID_HEADING_ID', 'a.id', $this->listDirn, $this->listOrder); ?></th>
 </tr>
 	  

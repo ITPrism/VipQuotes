@@ -12,27 +12,41 @@
  */
 
 // no direct access
-defined('_JEXEC') or die();
+defined('_JEXEC') or die;
 
 jimport('joomla.application.component.view');
 
 class VipQuotesViewCategories extends JView {
     
-    protected $state = null;
-    protected $items = null;
+    protected $state      = null;
+    protected $items      = null;
     protected $pagination = null;
-    protected $option = null;
+    protected $option     = null;
+    
+    public function __construct($config){
+        
+        parent::__construct($config);
+        
+        $app = JFactory::getApplication();
+        /** @var $app JSite **/
+        
+        $this->option = $app->input->getCmd("option", "com_vipquotes", "GET");
+        
+    }
     
     public function display($tpl = null) {
         
-        $this->option     = JRequest::getCmd("option", "com_vipquotes", "GET");
-        
         // Initialise variables
-        $this->items  = $this->get('Items');
-        $this->state  = $this->get("State");
-        $this->params = $this->state->get("params");
+        $this->items          = $this->get('Items');
+        $this->state          = $this->get("State");
+        $this->params         = $params = $this->state->get("params");
+        $this->displayCounter = $params->get("displayCounter");
         
-        $this->assignRef( "version",    new VipQuotesVersion() );
+        if($this->displayCounter) {
+            $this->numbers = $this->get("Numbers");
+        }
+        
+        $this->version= new VipQuotesVersion();
         
         $this->prepareDocument();
                 
@@ -44,7 +58,7 @@ class VipQuotesViewCategories extends JView {
      */
     protected function prepareDocument(){
         
-        $app = JFactory::getApplication();
+        $app   = JFactory::getApplication();
         $menus = $app->getMenu();
         
         //Escape strings for HTML output

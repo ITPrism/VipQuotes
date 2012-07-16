@@ -28,10 +28,11 @@ class VipQuotesModelQuotes extends JModelList {
     public function __construct($config = array()){
         if(empty($config['filter_fields'])){
             $config['filter_fields'] = array(
-            	'id', 'a.id', 'author', 'a.author', 'quote', 'a.quote', 
-            	'date', 'a.date', 'votes', 'a.votes', 'rating', 'a.rating', 
-            	'likes', 'a.likes', 'published', 'a.published', 'catid', 'a.catid', 
-            	'ordering', 'a.ordering', 'user_id', 'a.user_id');
+            	'quote', 'a.quote', 
+            	'author', 'a.author', 
+            	'catid', 'a.catid', 
+            	'ordering', 'a.ordering'
+            );
         }
         
         parent::__construct($config);
@@ -53,26 +54,49 @@ class VipQuotesModelQuotes extends JModelList {
         $this->setState('params', $params);
         
         // Set limit
-        $limit              = $params->get("quotesLimit", $app->getCfg('list_limit', 0));
+        $limit              = $params->get("quotesLimit", $app->getCfg('list_limit', 20));
         $this->setState('list.limit', $limit);
         
-        $value = JRequest::getInt('limitstart', 0);
-        $this->setState('list.start', $value);
+        // Set limitstart
+        $limitstart = $app->input->getInt('limitstart', 0);
+        $this->setState('list.start', $limitstart);
         
-        $orderCol = JRequest::getCmd('filter_order', 'a.ordering');
-        if(!in_array($orderCol, $this->filter_fields)){
-            $orderCol = 'a.ordering';
+        // Set the category id
+        $this->setState('filter.catid', $app->input->getInt('catid'));
+        
+        // Set search query
+        $search = $app->input->getVar('q', "");
+        $this->setState('filter.search', $search);
+        
+        $orderBy = (int)$params->get("orderBy", 0);
+        $orderDirection = "ASC";
+        switch($orderBy) {
+            case 1:
+                $orderCol = "a.date";
+                break;
+
+            case 2:
+                $orderCol = "a.date";
+                $orderDirection = "DESC";
+                break;
+
+            case 3:
+                $orderCol = "a.author";
+                break;
+                
+            default:
+                $orderCol = "a.ordering";
+                break;
         }
+        
+        // Set the column using for ordering
         $this->setState('list.ordering', $orderCol);
         
-        $listOrder = JRequest::getCmd('filter_order_dir', 'ASC');
-        if(!in_array(strtoupper($listOrder), array('ASC', 'DESC', ''))){
-            $listOrder = 'ASC';
+        // Set the type of ordering
+        if(!in_array(strtoupper($orderDirection), array('ASC', 'DESC', ''))){
+            $orderDirection = 'ASC';
         }
-        $this->setState('list.direction', $listOrder);
-        
-        $this->setState('filter.catid', JRequest::getInt('catid'));
-        
+        $this->setState('list.direction', $orderDirection);
     }
     
     /**
@@ -89,7 +113,7 @@ class VipQuotesModelQuotes extends JModelList {
      */
     protected function getStoreId($id = ''){
         // Compile the store id.
-        $id .= ':' . $this->getState('filter.published');
+        $id .= ':' . $this->getState('filter.saerch');
         $id .= ':' . $this->getState('filter.catid');
         
         return parent::getStoreId($id);
@@ -110,8 +134,7 @@ class VipQuotesModelQuotes extends JModelList {
         $query->select(
             $this->getState(
             'list.select', 
-            'a.id, a.quote, a.author, a.date, ' .
-            'a.votes, a.rating, a.likes, a.published, ' . 
+            'a.id, a.quote, a.author, a.date, a.published, ' .
             'a.catid, a.ordering, a.user_id'));
         
         $query->from('#__vq_quotes AS a');
@@ -128,6 +151,15 @@ class VipQuotesModelQuotes extends JModelList {
         
         // Add the list ordering clause.
         $query->order($this->getState('list.ordering', 'a.ordering') . ' ' . $this->getState('list.direction', 'ASC'));
+        
+        // Filter by a search phrase
+        $search = $this->getState('filter.search');
+        
+        if(!empty($search)){
+            $escaped = $db->escape($search, true);
+            $quoted = $db->quote("%" . $escaped . "%", false);
+            $query->where('( a.quote LIKE ' . $quoted . ' OR ' . 'a.author LIKE ' . $quoted . ' )');
+        }
         
         return $query;
     }

@@ -24,6 +24,8 @@ jimport( 'joomla.application.component.modellist' );
  */
 class VipQuotesModelQuotes extends JModelList {
     
+    public $categories = null;
+    
 	 /**
      * Constructor.
      *
@@ -39,13 +41,7 @@ class VipQuotesModelQuotes extends JModelList {
                 'quote', 'a.quote',
                 'author', 'a.author',
                 'date', 'a.date',
-                'votes', 'a.votes',
-            	'rating', 'a.rating',
-                'likes', 'a.likes',
-                'published', 'a.published',
-            	'catid', 'a.catid',
-                'ordering', 'a.ordering',
-                'user_id', 'a.user_id'
+                'ordering', 'a.ordering'
             );
         }
 
@@ -62,19 +58,16 @@ class VipQuotesModelQuotes extends JModelList {
      */
     protected function populateState($ordering = null, $direction = null) {
         
-        // Initialise variables.
-        $app = JFactory::getApplication('administrator');
-
+        // Load the component parameters.
+        $params  = JComponentHelper::getParams('com_vipquotes');
+        $this->setState('params', $params);
+        
         // Load the filter state.
         $search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
         $this->setState('filter.search', $search);
 
         $state = $this->getUserStateFromRequest($this->context.'.filter.state', 'filter_state', '', 'string');
         $this->setState('filter.state', $state);
-
-        // Load the component parameters.
-        $params = JComponentHelper::getParams('com_vipquotes');
-        $this->setState('params', $params);
 
         // List state information.
         parent::populateState('a.ordering', 'asc');
@@ -96,7 +89,6 @@ class VipQuotesModelQuotes extends JModelList {
         // Compile the store id.
         $id.= ':' . $this->getState('filter.search');
         $id.= ':' . $this->getState('filter.state');
-//        $id.= ':' . $this->getState('filter.id');
 
         return parent::getStoreId($id);
     }
@@ -109,17 +101,18 @@ class VipQuotesModelQuotes extends JModelList {
      */
     protected function getListQuery() {
         
-        // Create a new query object.
         $db     = $this->getDbo();
         /** @var $db JDatabaseMySQLi **/
+        
+        // Create a new query object.
         $query  = $db->getQuery(true);
 
         // Select the required fields from the table.
         $query->select(
             $this->getState(
                 'list.select',
-                'a.id, a.quote, a.author,a.date, a.votes, ' .
-                'a.rating, a.likes, a.published, a.ordering,' . 
+                'a.id, a.quote, a.author, a.date, ' .
+                'a.published, a.ordering, ' . 
                 'a.catid, a.user_id'
             )
         );
@@ -159,7 +152,23 @@ class VipQuotesModelQuotes extends JModelList {
             $orderCol = 'a.catid '.$orderDirn.', a.ordering';
         }
         
-        
         return $orderCol.' '.$orderDirn;
+    }
+    
+    public function getCategories($options = array(), $recursive = false) {
+        
+        if(!$this->categories) {
+            $categories   = JCategories::getInstance('VipQuotes', $options);
+    		$parent       = $categories->get('root');
+    
+    		if (is_object($parent)) {
+    			$this->categories = $parent->getChildren($recursive);
+    		}
+    		else {
+    			$this->categories = array();
+    		}
+        }
+			
+        return $this->categories;
     }
 }

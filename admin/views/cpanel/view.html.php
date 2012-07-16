@@ -12,11 +12,23 @@
  */
 
 // no direct access
-defined('_JEXEC') or die();
+defined('_JEXEC') or die;
 
 jimport('joomla.application.component.view');
 
 class VipQuotesViewCpanel extends JView {
+    
+    protected $option = "";
+    
+    public function __construct($config){
+        
+        parent::__construct($config);
+        
+        $app = JFactory::getApplication();
+        /** @var $app JAdministrator **/
+        
+        $this->option = $app->input->get("option");
+    }
     
     public function display($tpl = null){
         
@@ -24,6 +36,8 @@ class VipQuotesViewCpanel extends JView {
         
         $this->addToolbar();
         $this->setDocument();
+        
+        $this->version = new VipQuotesVersion();
         
         parent::display($tpl);
     }
@@ -44,8 +58,9 @@ class VipQuotesViewCpanel extends JView {
 	 */
 	protected function setDocument() {
 	    
-		$document = JFactory::getDocument();
-		$document->setTitle(JText::_('COM_VIPQUOTES_CPANEL_ADMINISTRATION'));
+	    $this->document->addStyleSheet('../media/'.$this->option.'/css/bootstrap.min.css');
+	    $this->document->addStyleSheet('../media/'.$this->option.'/css/style.css');
+		$this->document->setTitle(JText::_('COM_VIPQUOTES_CPANEL_ADMINISTRATION'));
 		
 	}
 	

@@ -28,11 +28,16 @@ defined('_JEXEC') or die;?>
     		<img src="<?php echo $categoryImage;?>" alt="<?php echo $item->get("title");?>" />
     		</a><br />
     		<?php } ?>
-    		<a href="<?php echo JRoute::_("index.php?option=com_vipquotes&view=quotes&catid=" . $item->get("id")); ?>"><?php echo $item->get("title");?></a>
+    		<a href="<?php echo JRoute::_("index.php?option=com_vipquotes&view=quotes&catid=" . $item->get("id")); ?>">
+    		<?php echo $item->get("title");?>
+    		<?php if($this->displayCounter) {?>
+    		( <?php echo $this->numbers[$item->get("id")]; ?> )
+    		<?php }?>
+    		</a>
     	</div>
     <?php }?>
     
     <div class="clr">&nbsp;</div>
     
 </div>
-<?php echo $this->version->url;?>
+<?php echo $this->version->backlink;?>

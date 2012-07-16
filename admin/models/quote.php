@@ -102,8 +102,8 @@ class VipQuotesModelQuote extends JModelAdmin {
      */
     public function save($data){
         
-        $id        = JArrayHelper::getValue($data, "id");
         $quote     = JArrayHelper::getValue($data, "quote");
+        $id        = JArrayHelper::getValue($data, "id");
         $author    = JArrayHelper::getValue($data, "author");
         $catid     = JArrayHelper::getValue($data, "catid");
         $published = JArrayHelper::getValue($data, "published");
@@ -126,6 +126,26 @@ class VipQuotesModelQuote extends JModelAdmin {
         
         return $row->id;
     
+    }
+    
+    public function hasDuplication($quote, $itemId = null) {
+        
+        $db = JFactory::getDbo();
+        $query = $db->getQuery(true);
+        $query->select("COUNT(*)")
+        ->from("#__vq_quotes");
+        
+        if(!empty($itemId)) {
+            $query->where("`id` != " . (int)$itemId );
+        }
+        
+        $query->where("`quote` SOUNDS LIKE " . $db->quote($quote) );
+        
+        $db->setQuery($query);
+        $result = $db->loadResult();
+        
+        return (bool)$result; 
+            
     }
     
     /**

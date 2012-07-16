@@ -12,15 +12,28 @@
  */
 
 // no direct access
-defined('_JEXEC') or die();
+defined('_JEXEC') or die;
 
 jimport('joomla.application.component.view');
 
 class VipQuotesViewQuote extends JView {
     
+    protected $documentTitle;
+    protected $option;
+    
     protected $state;
     protected $item;
     protected $form;
+    
+    public function __construct($config) {
+        
+        parent::__construct($config);
+        
+        $app = JFactory::getApplication();
+        /** @var $app JAdministrator **/
+        
+        $this->option = $app->input->getCmd("option", "com_vipquotes", "GET");
+    }
     
     /**
      * Display the view
@@ -54,8 +67,10 @@ class VipQuotesViewQuote extends JView {
         JRequest::setVar('hidemainmenu', true);
         $isNew = ($this->item->id == 0);
         
-        JToolBarHelper::title($isNew ? JText::_('COM_VIPQUOTES_QUOTE_NEW')
-		                             : JText::_('COM_VIPQUOTES_QUOTE_EDIT'), 'vip-quotes-new');
+        $this->documentTitle = $isNew ? JText::_('COM_VIPQUOTES_QUOTE_NEW')
+		                             : JText::_('COM_VIPQUOTES_QUOTE_EDIT');
+        
+        JToolBarHelper::title($this->documentTitle, 'vip-quotes-new');
 		                             
         JToolBarHelper::apply('quote.apply');
         JToolBarHelper::save2new('quote.save2new');
@@ -76,17 +91,17 @@ class VipQuotesViewQuote extends JView {
 	 */
 	protected function setDocument() {
 	    
-	    $option = JRequest::getCmd("option");
-	    
 	    // Add behaviors
-		//JHtml::_('behavior.modal', 'a.vip-modal');
         JHtml::_('behavior.tooltip');
         JHtml::_('behavior.formvalidation');
         
-		$this->document->setTitle(JText::_('COM_VIPQUOTES_QUOTE_NEW_ADMINISTRATION'));
+		$this->document->setTitle($this->documentTitle . " | ". JText::_("COM_VIPQUOTES"));
         
 		// Add scripts
-		$this->document->addScript(JURI::root() . 'administrator/components/'.$option.'/views/'.$this->getName().'/submitbutton.js');
+		$this->document->addScript('../media/'.$this->option.'/js/admin/quote.js');
+		
+		// Add styles
+		$this->document->addStyleSheet('../media/'.$this->option.'/css/style.css');
         
 	}
 

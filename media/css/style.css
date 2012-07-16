@@ -1,8 +1,6 @@
 @CHARSET "UTF-8";
-/*
-.icon-48-vip-categories 	{ background-image: url(../images/folder_48.png); }
-.icon-48-vip-categories-new { background-image: url(../images/folder_add_48.png); }
-  */
+
+/* Backend */
 .icon-48-vip-quotes-new 	{ background-image: url(../images/quotes_add_48.png); }
 .icon-48-vip-quotes 	    { background-image: url(../images/quotes_48.png); }
 .icon-48-vip-settings 	    { background-image: url(../images/settings_48.png); }
@@ -24,7 +22,7 @@
 
 #itp-itprism {
     width: 400px;
-    height: 400px;
+    height: 500px;
     float: right;
 }
 
@@ -71,6 +69,8 @@
   text-align: left;
 }
 
+
+/* Frontend */
 .q_category {
 	float: left;
 	margin: 10px;
@@ -90,4 +90,13 @@
    text-align: center;
    font-weight: bold;
    padding: 10px 0 0 0;
+}
+
+.vq_search_form {
+	text-align: center;
+	margin: 10px 0px;
+}
+
+.vq_search_form .vqsearchbox {
+	width: 50%;
 }

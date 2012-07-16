@@ -36,9 +36,31 @@ defined('_JEXEC') or die;
     </div>
 </div>
 <div id="itp-itprism">
-    <img src="../media/com_vipquotes/images/logo.png" alt="<?php echo JText::_("COM_VIPQUOTES");?>" />
+    <a href="http://itprism.com/free-joomla-extensions/others/quotes-collection-manager"  target="_blank" ><img src="../media/com_vipquotes/images/logo.png" alt="<?php echo JText::_("COM_VIPQUOTES");?>" /></a>
     <a href="http://itprism.com" title="A Product of ITPrism.com"><img src="../media/com_vipquotes/images/product_of_itprism.png" alt="A Product of ITPrism.com" /></a>
     <p><?php echo JText::_("COM_VIPQUOTES_YOUR_VOTE"); ?></p>
     <p><?php echo JText::_("COM_VIPQUOTES_SPONSORSHIP"); ?></p>
     <p><?php echo JText::_("COM_VIPQUOTES_SUBSCRIPTION"); ?></p>
+    
+    <table class="table table-striped">
+    <tbody>
+        <tr>
+            <td><?php echo JText::_("COM_VIPQUOTES_INSTALLED_VERSION");?></td>
+            <td><?php echo $this->version->getMediumVersion();?></td>
+        </tr>
+        <tr>
+            <td><?php echo JText::_("COM_VIPQUOTES_RELEASE_DATE");?></td>
+            <td><?php echo $this->version->releaseDate?></td>
+        </tr>
+        <tr>
+            <td><?php echo JText::_("COM_VIPQUOTES_COPYRIGHT");?></td>
+            <td><?php echo $this->version->copyright;?></td>
+        </tr>
+        <tr>
+            <td><?php echo JText::_("COM_VIPQUOTES_LICENSE");?></td>
+            <td><?php echo $this->version->license;?></td>
+        </tr>
+    </tbody>
+    </table>
+    
 </div>

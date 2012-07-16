@@ -12,7 +12,7 @@
  */
 
 // no direct access
-defined('_JEXEC') or die();
+defined('_JEXEC') or die;
 
 jimport('joomla.application.component.view');
 jimport('joomla.application.categories');
@@ -23,13 +23,33 @@ class VipQuotesViewQuotes extends JView {
     protected $pagination;
     protected $state;
     
+    protected $option;
+    
+    public function __construct($config) {
+        
+        parent::__construct($config);
+        
+        $app = JFactory::getApplication();
+        /** @var $app JAdministrator **/
+        
+        $this->option = $app->input->getCmd("option", "com_vipquotes", "GET");
+    }
+    
     public function display($tpl = null){
         
-        $this->state = $this->get('State');
-        $this->items = $this->get('Items');
-        $this->pagination = $this->get('Pagination');
+        $categories_       = array();
         
-        $categories = VipquotesCategories::getCategories();
+        $this->state       = $this->get('State');
+        $this->items       = $this->get('Items');
+        $this->pagination  = $this->get('Pagination');
+        
+        $categories        = $this->get("Categories");
+        
+        foreach( $categories as $category ) {
+            $categories_[$category->id] = $category->title;
+        }
+        
+        $this->categories  = $categories_;
         
         // Check for errors.
         if(count($errors = $this->get('Errors'))){
@@ -45,10 +65,11 @@ class VipQuotesViewQuotes extends JView {
         $this->assign("listOrder", $listOrder);
         $this->assign("listDirn",  $listDirn);
         $this->assign("saveOrder", $saveOrder);
-        $this->assign("categories", $categories);
         
         // Prepare actions
         $this->addToolbar();
+        
+        // Prepare document
         $this->setDocument();
         
         parent::display($tpl);
@@ -70,9 +91,6 @@ class VipQuotesViewQuotes extends JView {
         JToolBarHelper::unpublishList("quotes.unpublish");
         JToolBarHelper::divider();
         JToolBarHelper::deleteList(JText::_("COM_VIPQUOTES_DELETE_ITEMS_QUESTION"), "quotes.delete");
-//        JToolBarHelper::divider();
-//        JToolBarHelper::custom('quotes.download', "vip-download", "", JText::_("COM_VIPQUOTES_DOWNLOAD"), false);
-//        JToolBarHelper::custom('quotes.downloadAll', "vip-download-all", "", JText::_("COM_VIPQUOTES_DOWNLOAD_ALL"), false);
         JToolBarHelper::divider();
         JToolBarHelper::custom('quotes.backToControlPanel', "vip-properties-back", "", JText::_("COM_VIPQUOTES_BACK"), false);
         
@@ -86,7 +104,11 @@ class VipQuotesViewQuotes extends JView {
 	protected function setDocument() 
 	{
 		$document = JFactory::getDocument();
-		$document->setTitle(JText::_('COM_VIPQUOTES_QUOTES_ADMINISTRATION'));
+		$document->setTitle(JText::_('COM_VIPQUOTES_QUOTES_LIST') . " | " . JText::_('COM_VIPQUOTES'));
+		
+		// Add styles
+		$this->document->addStyleSheet('../media/'.$this->option.'/css/style.css');
+		
 	}
     
 }

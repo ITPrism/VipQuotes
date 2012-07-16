@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <extension type="package" version="2.5" method="upgrade">
-	<name>VipQuotes Packages</name>
-	<packagename>VipQuotes</packagename>
+	<name>Vip Quotes Packages</name>
+	<packagename>Vip Quotes</packagename>
 	<creationDate>August, 2010</creationDate>
 	<author>Todor Iliev</author>
 	<authorEmail>todor@itprism.com</authorEmail>
@@ -13,12 +13,14 @@
 	<packager>Todor Iliev</packager>
 	<packagerurl>http://www.itprism.com</packagerurl>
 	<description><![CDATA[
-	<p><a href="http://itprism.com/free-joomla-extensions/others/quotes-collection-manager">Vip Quotes</a></p>
+	<p><a href="http://itprism.com/free-joomla-extensions/others/quotes-collection-manager" target="_blank">Vip Quotes</a> is an extension for Joomla! that provide ability to collect and share quotations.</p>
 	<p>Invest in the extension and help for its improvement. You can <a href="http://itprism.com/sponsorship" title="Sponsoring" target="_blank">sponsor the extension via SMS or PayPal</a>.</p>
 	<p><a href="http://itprism.com/" target="_blank">Subscribe for the newsletter</a> to receive information about updates and new ITPrism extensions.</p>
-	<p>Please, <a href="extensions.joomla.org/extensions/living/quotes/6877">vote for the extension</a> on Joomla! Extensions Directory</p>]]>
-	</description>
+	<p>Please, <a href="http://extensions.joomla.org/extensions/living/quotes/6877">vote for the extension</a> on Joomla! Extensions Directory</p>
+	]]></description>
 	<files folder="packages">
 		<file type="component" 	id="com_vipquotes" >com_vipquotes.zip</file>
+		<file type="module" 	id="mod_viplastquotes" client="site">mod_viplastquotes.zip</file>
+		<file type="module" 	id="mod_viprandomquotes" client="site">mod_viprandomquotes.zip</file>
 	</files>
 </extension>

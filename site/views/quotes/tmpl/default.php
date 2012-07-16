@@ -18,6 +18,13 @@ defined('_JEXEC') or die;?>
     <h1><?php echo $this->escape($this->params->get('page_heading')); ?></h1>
     <?php } ?>
     
+    <?php if($this->params->get("searchForm")) {?>
+    <form action="<?php echo JRoute::_("index.php?option=com_vipquotes&view=quotes&catid=".$this->category->get("id")); ?>" method="get" class="vq_search_form">
+    	<input type="text" name="q" value="<?php echo $this->escape($this->query);?>" class="inputbox vqsearchbox" />
+    	<input type="submit" name="search" value="<?php echo JText::_("COM_VIPQUOTES_SEARCH")?>" class="button" />
+    </form> 
+    <?php }?>
+    
     <div class="row-fluid vp_header">
         <div class="span8"><?php echo JText::_("COM_VIPQUOTES_QUOTE");?></div>
         <div class="span4"><?php echo JText::_("COM_VIPQUOTES_AUTHOR");?></div>
@@ -41,4 +48,4 @@ defined('_JEXEC') or die;?>
     </div>
     <div class="clr">&nbsp;</div>
 </div>
-<?php echo $this->version->url;?>
+<?php echo $this->version->backlink;?>

@@ -12,7 +12,7 @@
  */
 
 // No direct access
-defined('_JEXEC') or die();
+defined('_JEXEC') or die;
 
 jimport('joomla.application.component.controllerform');
 
@@ -21,7 +21,6 @@ jimport('joomla.application.component.controllerform');
  *
  * @package		ITPrism Components
  * @subpackage	VipQuotes
- * @since		1.6
  */
 class VipQuotesControllerQuote extends JControllerForm {
     
@@ -36,19 +35,23 @@ class VipQuotesControllerQuote extends JControllerForm {
         
         JRequest::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
         
-        $itemId  = JRequest::getInt("id");
+        $app = JFactory::getApplication();
+        /** @var $app JAdministrator **/
+        
         $msg     = "";
         $link    = "";
+        $itemId  = $app->input->getInt("id");
         
-        /***** Validate form data *****/
-        $data    = JRequest::getVar('jform', array(), 'post', 'array');
-        $model   = $this->getModel("Quote", "VipQuotesModel");
+        // Validate form data
+        $data    = $app->input->getVar('jform', array(), 'post', 'array');
+        $model   = $this->getModel();
         /** @var $model VipQuotesModelQuote **/
+        
         $form    = $model->getForm($data, false);
         /** @var $form JForm **/
         
         if(!$form){
-            throw new Exception($model->getError(), 500);
+            JError::raiseError(500, $model->getError());
         }
             
         // Test if the data is valid.
@@ -56,36 +59,60 @@ class VipQuotesControllerQuote extends JControllerForm {
         
         // Check for validation errors.
         if($validData === false){
-            JError::raiseWarning(500, $model->getError());
-            $this->defaultLink .= "&view=quote&layout=edit";
+            $this->setMessage($model->getError(), "notice");
             
-            if($itemId) {
-                $this->defaultLink .= "&id=" . JRequest::getInt("id");
-            } 
-            return $this->setRedirect(JRoute::_($this->defaultLink, false));
+            $link = $this->prepareRedirectLink($itemId);
+            $this->setRedirect(JRoute::_($link, false));
+            return;
+        }
+       
+        // Load component parameters.
+        $params  = JComponentHelper::getParams('com_vipquotes');
+        
+        // Check for duplications
+        if($params->get("checkQuotes")) {
+                
+            $quote          = JArrayHelper::getValue($data, "quote");
+            
+            if($model->hasDuplication($quote, $itemId)) {
+                
+                $this->setMessage(JText::_('COM_VIPQUOTES_ERROR_DUPLICATION'), "notice");
+                
+                $link = $this->prepareRedirectLink($itemId);
+                $this->setRedirect(JRoute::_($link, false));
+                return;
+            }
         }
             
         try{
-            
             $itemId = $model->save($validData);
-                
-        }catch(Exception $e){
-            
-            $itpSecurity = new ITPrismSecurity($e);
-            $itpSecurity->alertMe();
-            
-            JError::raiseError(500, JText::_('ITP_ERROR_SYSTEM'));
-            return false;
-        
+        } catch(Exception $e){
+            throw new Exception( JText::_('ITP_ERROR_SYSTEM'), 500);
         }
         
-        $msg  = JText::_('COM_VIPQUOTES_QUOTE_SAVED');
+        $this->setMessage(JText::_('COM_VIPQUOTES_QUOTE_SAVED'), "message");
+
         $link = $this->prepareRedirectLink($itemId);
-        
-        $this->setRedirect(JRoute::_($link, false), $msg);
+        $this->setRedirect(JRoute::_($link, false));
     
     }
     
+    /**
+     * Cancel operations
+     *
+     */
+    public function cancel(){
+        
+        $link = $this->prepareRedirectLink();
+        $this->setRedirect(JRoute::_($link, false));
+    
+    }
+    
+    /**
+     * 
+     * Prepare return link
+     * @param integer $itemId
+     */
     protected function prepareRedirectLink($itemId = 0) {
         
         $task = $this->getTask();
@@ -110,17 +137,6 @@ class VipQuotesControllerQuote extends JControllerForm {
         }
         
         return $link;
-    }
-    
-    /**
-     * Cancel operations
-     *
-     */
-    public function cancel(){
-        
-        $msg = "";
-        $this->setRedirect(JRoute::_($this->defaultLink . "&view=quotes", false), $msg);
-    
     }
     
 }
