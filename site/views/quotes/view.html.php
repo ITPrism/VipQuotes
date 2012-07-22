@@ -12,9 +12,9 @@
  */
 
 // no direct access
-defined('_JEXEC') or die();
+defined('_JEXEC') or die;
 
-jimport( 'joomla.application.categories' );
+jimport('joomla.application.categories');
 jimport('joomla.application.component.view');
 
 class VipQuotesViewQuotes extends JView {
@@ -26,14 +26,8 @@ class VipQuotesViewQuotes extends JView {
     protected $option= null;
     
     public function __construct($config){
-        
         parent::__construct($config);
-        
-        $app = JFactory::getApplication();
-        /** @var $app JSite **/
-        
-        $this->option = $app->input->getCmd("option", "com_vipquotes", "GET");
-        
+        $this->option = JFactory::getApplication()->input->getCmd("option");
     }
     
     /**
@@ -94,16 +88,17 @@ class VipQuotesViewQuotes extends JView {
         // Escape strings for HTML output
         $this->pageclass_sfx = htmlspecialchars($this->params->get('pageclass_sfx'));
         
-        $menus      = $app->getMenu();
-        // Because the application sets a default page title,
-        // we need to get it from the menu item itself
-        $menu       = $menus->getActive();
-        
         // Preparet page heading
         if(!$this->params->get("page_heading")){
             if(!empty($category->title)) {
                 $this->params->def('page_heading', $category->title);
             } else {
+                
+                $menus = $app->getMenu();
+                
+                // Because the application sets a default page title,
+                // we need to get it from the menu item itself
+                $menu  = $menus->getActive();
                 if($menu) {
                     $this->params->def('page_heading', $menu->title);
                 } else {

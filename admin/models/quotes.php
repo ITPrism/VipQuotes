@@ -132,8 +132,10 @@ class VipQuotesModelQuotes extends JModelList {
             if (stripos($search, 'id:') === 0) {
                 $query->where('a.id = '.(int) substr($search, 3));
             } else {
-                $search = $db->quote('%'.$db->escape($search, true).'%');
-                $query->where('(a.quote LIKE '.$search.') OR (a.author LIKE '.$search.')');
+                
+                $escaped = $db->escape($search, true);
+                $quoted  = $db->quote("%" . $escaped . "%", false);
+                $query->where('(a.quote LIKE '.$quoted.') OR (a.author LIKE '.$quoted.')');
             }
         }
 

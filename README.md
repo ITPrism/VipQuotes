@@ -1,10 +1,15 @@
 Vip Quotes for Joomla! 
 ==========================
-( Version 2.0 )
+( Version 2.1 )
 --------------------------
 
 Changelog
 ---------
+
+v2.1
+---------
+* [#1] Fixed the bug with ability to create categories.
+* Improved
 
 v2.0
 ---------
@@ -33,3 +38,4 @@ v1.2
 ---------
 * Added search form
 * Added several options
+

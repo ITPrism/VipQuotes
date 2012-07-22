@@ -156,17 +156,14 @@ class VipQuotesModelQuote extends JModelAdmin {
     public function delete($itemsIds){
         
         $db = JFactory::getDbo();
+        $query = $db->getQuery(true);
         
         $tableQuotes   = $db->quoteName('#__vq_quotes');
         $columnId      = $db->quoteName('id');
         
-        // Delete records 
-        $query = "
-			DELETE  
-			FROM 
-			     $tableQuotes 
-			WHERE   
-			     $columnId IN ( " . implode(",", $itemsIds) . " )";
+        $query
+            ->delete($tableQuotes)
+            ->where($columnId. " IN ( " . implode(",", $itemsIds) . " )");
         
         $db->setQuery($query);
         $db->query();

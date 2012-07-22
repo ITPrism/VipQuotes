@@ -23,5 +23,5 @@ jimport('joomla.application.component.controller');
 $controller = JController::getInstance("VipQuotes");
 
 // Perform the Request task
-$controller->execute(JRequest::getCmd('task'));
+$controller->execute(JFactory::getApplication()->input->getCmd('task'));
 $controller->redirect();

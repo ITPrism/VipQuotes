@@ -6,7 +6,7 @@ class VipQuotesCategories extends JCategories
 {
 	public function __construct($options = array())
 	{
-		$options['table'] = '#__vq_quotes';
+		$options['table']     = '#__vq_quotes';
 		$options['extension'] = 'com_vipquotes';
 		parent::__construct($options);
 	}
@@ -16,17 +16,14 @@ class VipQuotesCategories extends JCategories
 	    $db = JFactory::getDbo();
 	    /** @var $db JDatabaseMySQLi **/
 	    
-	    $query = "
-	    	SELECT
-	    		id, 
-	    		title
-	    	FROM
-	    		`#__categories`
-	    	WHERE
-	    		`extension` = " . $db->quote("com_vipquotes");
+	    $query = $db->getQuery(true);
+	    $query
+	        ->select("id, title")
+	        ->from("#__categories")
+	        ->where($db->quoteName(extension). " = " . $db->quote("com_vipquotes"));
 	    
 	    $db->setQuery($query);
-	    return $db->loadAssocList("id","title");
+	    return $db->loadAssocList("id", "title");
 	}
 	
 }

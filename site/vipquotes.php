@@ -16,9 +16,8 @@ defined('_JEXEC') or die;
 
 require_once ( JPATH_COMPONENT_ADMINISTRATOR . DS. "libraries" . DS ."init.php" );
 
-jimport('joomla.log.loggers.formattedtext');
 jimport('joomla.application.component.controller');
 
 $controller = JController::getInstance('VipQuotes');
-$controller->execute(JRequest::getCmd('task'));
+$controller->execute(JFactory::getApplication()->input->getCmd('task'));
 $controller->redirect();

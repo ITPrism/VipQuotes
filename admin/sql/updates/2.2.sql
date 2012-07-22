@@ -1,5 +1,13 @@
 SET FOREIGN_KEY_CHECKS=0;
 
+DROP TABLE IF EXISTS `#__vq_quotes`;
+
+DROP TABLE IF EXISTS `#__vq_votes`;
+
+DROP TABLE IF EXISTS `#__vq_history`;
+
+DROP TABLE IF EXISTS `#__vq_categories`;
+
 CREATE TABLE IF NOT EXISTS `#__vq_quotes` (
   `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `quote` varchar(5120) NOT NULL,

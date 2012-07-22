@@ -26,13 +26,8 @@ class VipQuotesViewQuotes extends JView {
     protected $option;
     
     public function __construct($config) {
-        
         parent::__construct($config);
-        
-        $app = JFactory::getApplication();
-        /** @var $app JAdministrator **/
-        
-        $this->option = $app->input->getCmd("option", "com_vipquotes", "GET");
+        $this->option = JFactory::getApplication()->input->get("option");
     }
     
     public function display($tpl = null){
@@ -50,12 +45,6 @@ class VipQuotesViewQuotes extends JView {
         }
         
         $this->categories  = $categories_;
-        
-        // Check for errors.
-        if(count($errors = $this->get('Errors'))){
-            JError::raiseError(500, implode("\n", $errors));
-            return false;
-        }
         
         // Prepare filters
         $listOrder  = $this->escape($this->state->get('list.ordering'));
@@ -101,14 +90,8 @@ class VipQuotesViewQuotes extends JView {
 	 *
 	 * @return void
 	 */
-	protected function setDocument() 
-	{
-		$document = JFactory::getDocument();
-		$document->setTitle(JText::_('COM_VIPQUOTES_QUOTES_LIST') . " | " . JText::_('COM_VIPQUOTES'));
-		
-		// Add styles
-		$this->document->addStyleSheet('../media/'.$this->option.'/css/style.css');
-		
+	protected function setDocument() {
+		$this->document->setTitle(JText::_('COM_VIPQUOTES_QUOTES_LIST') . " | " . JText::_('COM_VIPQUOTES'));
 	}
     
 }

@@ -21,17 +21,12 @@ class VipQuotesViewCategories extends JView {
     protected $state      = null;
     protected $items      = null;
     protected $pagination = null;
+    
     protected $option     = null;
     
     public function __construct($config){
-        
         parent::__construct($config);
-        
-        $app = JFactory::getApplication();
-        /** @var $app JSite **/
-        
-        $this->option = $app->input->getCmd("option", "com_vipquotes", "GET");
-        
+        $this->option = JFactory::getApplication()->input->getCmd("option");
     }
     
     public function display($tpl = null) {

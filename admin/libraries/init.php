@@ -14,7 +14,7 @@
 // no direct access
 defined('_JEXEC') or die;
 
-jimport('joomla.log.loggers.formattedtext');
+jimport('joomla.log.log');
 
 if(!defined("VIPQUOTES_COMPONENT_ADMINISTRATOR")) {
     define("VIPQUOTES_COMPONENT_ADMINISTRATOR", JPATH_ADMINISTRATOR . DS. "components" . DS ."com_vipquotes");
@@ -27,4 +27,11 @@ JLoader::register("VipQuotesVersion", VIPQUOTES_COMPONENT_ADMINISTRATOR . DS . "
 JLoader::register("VipQuotesCategories", VIPQUOTES_COMPONENT_ADMINISTRATOR . DS . "helpers" . DS . "category.php");
 JLoader::register("VipQuotesHelper", VIPQUOTES_COMPONENT_ADMINISTRATOR . DS . "helpers" . DS . "helper.php");
 
-jimport('itprism.security');
+// Add the logger.
+JLog::addLogger(
+     // Pass an array of configuration options
+    array(
+        // Set the name of the log file
+        'text_file' => 'error.php',
+     )
+);

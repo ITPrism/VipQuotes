@@ -33,7 +33,7 @@ class VipQuotesControllerQuote extends JControllerForm {
      */
     public function save(){
         
-        JRequest::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+        JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
         
         $app = JFactory::getApplication();
         /** @var $app JAdministrator **/

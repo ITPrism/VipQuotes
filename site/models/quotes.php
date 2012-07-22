@@ -12,7 +12,7 @@
  */
 
 // no direct access
-defined('_JEXEC') or die();
+defined('_JEXEC') or die;
 
 jimport('joomla.application.component.modellist');
 
@@ -157,7 +157,7 @@ class VipQuotesModelQuotes extends JModelList {
         
         if(!empty($search)){
             $escaped = $db->escape($search, true);
-            $quoted = $db->quote("%" . $escaped . "%", false);
+            $quoted  = $db->quote("%" . $escaped . "%", false);
             $query->where('( a.quote LIKE ' . $quoted . ' OR ' . 'a.author LIKE ' . $quoted . ' )');
         }
         

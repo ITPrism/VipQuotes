@@ -27,9 +27,9 @@ class VipQuotesHelper {
             $query  = $db->getQuery(true);
             
             $query
-            ->select("id, alias")
-            ->from("#__categories")
-            ->where("extension=" . $db->quote($extension));
+                ->select("id, alias")
+                ->from("#__categories")
+                ->where("extension=" . $db->quote($extension));
 
             $db->setQuery($query);
             $categories = $db->loadAssocList("id", "alias");

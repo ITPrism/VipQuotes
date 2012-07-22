@@ -26,4 +26,21 @@
         <field name="quotesLimit" type="text" default="20" label="COM_VIPQUOTES_LIMIT" description="COM_VIPQUOTES_LIMIT_DESC" />
 	</fieldset>
     
+    <fieldset
+        name="permissions"
+        label="JCONFIG_PERMISSIONS_LABEL"
+        description="JCONFIG_PERMISSIONS_DESC"
+        >
+
+        <field
+            name="rules"
+            type="rules"
+            label="JCONFIG_PERMISSIONS_LABEL"
+            class="inputbox"
+            filter="rules"
+            validate="rules"
+            component="com_vipquotes"
+            section="component" />
+    </fieldset>
+    
 </config>

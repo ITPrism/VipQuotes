@@ -11,7 +11,7 @@
  * other free or open source software licenses.
  */
 
-defined('_JEXEC') or die();
+defined('_JEXEC') or die;
 
 /**
  * Method to build Route

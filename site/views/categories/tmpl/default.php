@@ -30,9 +30,11 @@ defined('_JEXEC') or die;?>
     		<?php } ?>
     		<a href="<?php echo JRoute::_("index.php?option=com_vipquotes&view=quotes&catid=" . $item->get("id")); ?>">
     		<?php echo $item->get("title");?>
-    		<?php if($this->displayCounter) {?>
-    		( <?php echo $this->numbers[$item->get("id")]; ?> )
-    		<?php }?>
+    		<?php if($this->displayCounter) {
+    		    $number = JArrayHelper::getValue($this->numbers, $item->get("id"));
+    		?>
+    		( <?php echo intval($number); ?> )
+    		<?php } ?>
     		</a>
     	</div>
     <?php }?>

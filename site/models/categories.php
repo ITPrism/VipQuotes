@@ -12,7 +12,7 @@
  */
 
 // no direct access
-defined('_JEXEC') or die();
+defined('_JEXEC') or die;
 
 jimport('joomla.application.component.modellist');
 
@@ -56,16 +56,16 @@ class VipQuotesModelCategories extends JModelList {
         $limit              = $app->getCfg('list_limit', 0);
         $this->setState('list.limit', $limit);
         
-        $value = JRequest::getInt('limitstart', 0);
+        $value = $app->input->getInt('limitstart', 0);
         $this->setState('list.start', $value);
         
-        $orderCol = JRequest::getCmd('filter_order', 'a.title');
+        $orderCol = $app->input->getCmd('filter_order', 'a.title');
         if(!in_array($orderCol, $this->filter_fields)){
             $orderCol = 'a.title';
         }
         $this->setState('list.ordering', $orderCol);
         
-        $listOrder = JRequest::getCmd('filter_order_dir', 'ASC');
+        $listOrder = $app->input->getCmd('filter_order_dir', 'ASC');
         if(!in_array(strtoupper($listOrder), array('ASC', 'DESC', ''))){
             $listOrder = 'ASC';
         }
@@ -101,8 +101,8 @@ class VipQuotesModelCategories extends JModelList {
     public function getNumbers() {
         
         if (!count($this->numbers)) {
-            $db = JFactory::getDbo();
-            $query = $db->getQuery(true);
+            $db     = JFactory::getDbo();
+            $query  = $db->getQuery(true);
             
             $query->select("
             	catid, 

@@ -11,7 +11,7 @@
  * other free or open source software licenses.
  */
 
-defined('_JEXEC') or die('Restricted access');
+defined('_JEXEC') or die;
 class VipQuotesTableQuote extends JTable {
     
     public function __construct( $db ) {

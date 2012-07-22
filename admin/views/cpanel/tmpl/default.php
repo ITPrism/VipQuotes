@@ -43,24 +43,24 @@ defined('_JEXEC') or die;
     <p><?php echo JText::_("COM_VIPQUOTES_SUBSCRIPTION"); ?></p>
     
     <table class="table table-striped">
-    <tbody>
-        <tr>
-            <td><?php echo JText::_("COM_VIPQUOTES_INSTALLED_VERSION");?></td>
-            <td><?php echo $this->version->getMediumVersion();?></td>
-        </tr>
-        <tr>
-            <td><?php echo JText::_("COM_VIPQUOTES_RELEASE_DATE");?></td>
-            <td><?php echo $this->version->releaseDate?></td>
-        </tr>
-        <tr>
-            <td><?php echo JText::_("COM_VIPQUOTES_COPYRIGHT");?></td>
-            <td><?php echo $this->version->copyright;?></td>
-        </tr>
-        <tr>
-            <td><?php echo JText::_("COM_VIPQUOTES_LICENSE");?></td>
-            <td><?php echo $this->version->license;?></td>
-        </tr>
-    </tbody>
+        <tbody>
+            <tr>
+                <td><?php echo JText::_("COM_VIPQUOTES_INSTALLED_VERSION");?></td>
+                <td><?php echo $this->version->getMediumVersion();?></td>
+            </tr>
+            <tr>
+                <td><?php echo JText::_("COM_VIPQUOTES_RELEASE_DATE");?></td>
+                <td><?php echo $this->version->releaseDate?></td>
+            </tr>
+            <tr>
+                <td><?php echo JText::_("COM_VIPQUOTES_COPYRIGHT");?></td>
+                <td><?php echo $this->version->copyright;?></td>
+            </tr>
+            <tr>
+                <td><?php echo JText::_("COM_VIPQUOTES_LICENSE");?></td>
+                <td><?php echo $this->version->license;?></td>
+            </tr>
+        </tbody>
     </table>
     
 </div>

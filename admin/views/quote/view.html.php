@@ -18,21 +18,16 @@ jimport('joomla.application.component.view');
 
 class VipQuotesViewQuote extends JView {
     
-    protected $documentTitle;
-    protected $option;
-    
     protected $state;
     protected $item;
     protected $form;
     
+    protected $documentTitle;
+    protected $option;
+    
     public function __construct($config) {
-        
         parent::__construct($config);
-        
-        $app = JFactory::getApplication();
-        /** @var $app JAdministrator **/
-        
-        $this->option = $app->input->getCmd("option", "com_vipquotes", "GET");
+        $this->option = JFactory::getApplication()->input->get("option");
     }
     
     /**
@@ -43,12 +38,6 @@ class VipQuotesViewQuote extends JView {
         $this->state= $this->get('State');
         $this->item = $this->get('Item');
         $this->form = $this->get('Form');
-        
-        // Check for errors.
-        if(count($errors = $this->get('Errors'))){
-            JError::raiseError(500, implode("\n", $errors));
-            return false;
-        }
         
         // Prepare actions, behaviors, scritps and document
         $this->addToolbar();
@@ -64,7 +53,7 @@ class VipQuotesViewQuote extends JView {
      */
     protected function addToolbar(){
         
-        JRequest::setVar('hidemainmenu', true);
+        JFactory::getApplication()->input->set('hidemainmenu', true);
         $isNew = ($this->item->id == 0);
         
         $this->documentTitle = $isNew ? JText::_('COM_VIPQUOTES_QUOTE_NEW')
@@ -98,11 +87,8 @@ class VipQuotesViewQuote extends JView {
 		$this->document->setTitle($this->documentTitle . " | ". JText::_("COM_VIPQUOTES"));
         
 		// Add scripts
-		$this->document->addScript('../media/'.$this->option.'/js/admin/quote.js');
+		$this->document->addScript('../media/'.$this->option.'/js/admin/'.strtolower($this->getName()).'.js');
 		
-		// Add styles
-		$this->document->addStyleSheet('../media/'.$this->option.'/css/style.css');
-        
 	}
 
 }

@@ -12,7 +12,7 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die();
+defined('_JEXEC') or die;
 
 jimport( 'joomla.application.component.controller' );
 
@@ -24,13 +24,23 @@ jimport( 'joomla.application.component.controller' );
   */
 class VipQuotesController extends JController {
     
+    protected $option;
+    
+	public function __construct($config = array())	{
+		parent::__construct($config);
+        $this->option = JFactory::getApplication()->input->get("option", "com_itpdonate", "GET");
+	}
+	
 	public function display( ) {
 
-		$app = JFactory::getApplication();
-        /** @var $app JAdministrator **/
+		$document = JFactory::getDocument();
+		/** @var $document JDocumentHtml **/
 		
-        $viewName      = $app->input->getCmd('view', 'cpanel');
-        JRequest::setVar("view", $viewName);
+		// Add component style
+        $document->addStyleSheet('../media/'.$this->option.'/css/style.css');
+        
+        $viewName      = JFactory::getApplication()->input->getCmd('view', 'cpanel');
+        JFactory::getApplication()->input->set("view", $viewName);
         
         parent::display();
         return $this;
