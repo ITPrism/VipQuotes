@@ -8,7 +8,7 @@ Changelog
 
 v2.1
 ---------
-* [#1](https://github.com/ITPrism/VipQuotes/issues/1 "Impossible to create a New Category") Fixed the bug with ability to create categories.
+* [[#1]](https://github.com/ITPrism/VipQuotes/issues/1 "Impossible to create a New Category") Fixed the bug with ability to create categories.
 * Improved
 
 v2.0
