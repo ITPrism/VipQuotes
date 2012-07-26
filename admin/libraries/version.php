@@ -40,7 +40,7 @@ class VipQuotesVersion {
      * 
      * @var integer
      */
-    public $devLevel  = '1';
+    public $devLevel  = '2';
     
     /**
      * Release Type
@@ -61,7 +61,7 @@ class VipQuotesVersion {
      * 
      * @var string
      */
-    public $releaseDate= '22-July-2012';
+    public $releaseDate= '26-July-2012';
     
     /**
      * License
