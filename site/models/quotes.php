@@ -143,9 +143,9 @@ class VipQuotesModelQuotes extends JModelList {
         $query->where('a.published = 1');
         
         // Filter by a single or group of categories
-        $categoryId = $this->getState('filter.catid');
+        $categoryId = intval($this->getState('filter.catid'));
         
-        if(!empty($categoryId) AND is_numeric($categoryId)){
+        if(!empty($categoryId)){
             $query->where('a.catid = ' . (int)$categoryId);
         }
         

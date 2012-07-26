@@ -1,10 +1,14 @@
 Vip Quotes for Joomla! 
 ==========================
-( Version 2.1 )
+( Version 2.2 )
 --------------------------
 
 Changelog
 ---------
+
+v2.2
+---------
+* Improved
 
 v2.1
 ---------

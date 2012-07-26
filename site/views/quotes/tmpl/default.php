@@ -18,8 +18,10 @@ defined('_JEXEC') or die;?>
     <h1><?php echo $this->escape($this->params->get('page_heading')); ?></h1>
     <?php } ?>
     
-    <?php if($this->params->get("searchForm")) {?>
-    <form action="<?php echo JRoute::_("index.php?option=com_vipquotes&view=quotes&catid=".$this->category->get("id")); ?>" method="get" class="vq_search_form">
+    <?php if($this->params->get("searchForm")) {
+        $catIdParam = (!is_null($this->category)) ? "&catid=".$this->category->get("id") : "";
+        ?>
+    <form action="<?php echo JRoute::_("index.php?option=com_vipquotes&view=quotes".$catIdParam); ?>" method="get" class="vq_search_form">
     	<input type="text" name="q" value="<?php echo $this->escape($this->query);?>" class="inputbox vqsearchbox" />
     	<input type="submit" name="search" value="<?php echo JText::_("COM_VIPQUOTES_SEARCH")?>" class="button" />
     </form> 

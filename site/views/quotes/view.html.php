@@ -50,11 +50,11 @@ class VipQuotesViewQuotes extends JView {
 			$options      = array("catid"=>$categoryId);
 			$categories   = JCategories::getInstance('VipQuotes');
 			$category     = $categories->get($categoryId);
+			
+            if(!$category->published){
+                throw new Exception(JText::_("ITP_ERROR_CATEGORY_DOES_NOT_EXIST"), 404);
+            }
             
-        }
-        
-        if(!$category OR empty($category->published)){
-            throw new Exception(JText::_("ITP_ERROR_CATEGORY_DOES_NOT_EXIST"), 404);
         }
        
         // Get search phrase

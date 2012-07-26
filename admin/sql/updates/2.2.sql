@@ -1,6 +1,8 @@
 SET FOREIGN_KEY_CHECKS=0;
 
-DROP TABLE IF EXISTS `#__vq_quotes`;
+DROP TABLE IF EXISTS `tmp_#__vq_quotes`;
+
+RENAME TABLE `#__vq_quotes` TO `tmp_#__vq_quotes`;
 
 DROP TABLE IF EXISTS `#__vq_votes`;
 
@@ -27,5 +29,7 @@ CREATE TABLE IF NOT EXISTS `#__vq_quotes` (
 ENGINE=INNODB
 CHARACTER SET utf8 
 COLLATE utf8_general_ci ;
+
+INSERT INTO `#__vq_quotes` (`id`,`quote`,`author`,`date`,`published`,`catid`,`ordering`,`user_id`) SELECT `id`,`quote`,`author`,`date`,`published`,`catid`,`ordering`,`user_id` FROM `tmp_#__vq_quotes`;
 
 SET FOREIGN_KEY_CHECKS=1;
