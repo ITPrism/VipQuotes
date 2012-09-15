@@ -54,7 +54,7 @@
 	</files>
 
 	<languages folder="site">
-		<language tag="en-GB">languages/en-GB/en-GB.com_vipquotes.ini</language>
+		<language tag="en-GB">language/en-GB/en-GB.com_vipquotes.ini</language>
 	</languages>
 	
 	
@@ -84,8 +84,8 @@
 		</files>
 		
 		<languages folder="admin">
-			<language tag="en-GB">languages/en-GB/en-GB.com_vipquotes.ini</language>
-			<language tag="en-GB">languages/en-GB/en-GB.com_vipquotes.sys.ini</language>
+			<language tag="en-GB">language/en-GB/en-GB.com_vipquotes.ini</language>
+			<language tag="en-GB">language/en-GB/en-GB.com_vipquotes.sys.ini</language>
 		</languages>
 			
 		</administration>
