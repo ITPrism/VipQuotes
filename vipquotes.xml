@@ -7,13 +7,8 @@
 	<authorUrl>http://itprism.com</authorUrl>
 	<copyright>Copyright (C) 2010 Todor Iliev ( ITPrism.com )</copyright>
 	<license>http://www.gnu.org/copyleft/gpl.html</license>
-	<version>2.2</version>
-	<description><![CDATA[
-	<p><a href="http://itprism.com/free-joomla-extensions/others/quotes-collection-manager" target="_blank">Vip Quotes</a> is an extension for Joomla! that provide ability to collect and share quotations.</p>
-	<p>Invest in the extension and help for its improvement. You can <a href="http://itprism.com/sponsorship" title="Sponsoring" target="_blank">sponsor the extension via SMS or PayPal</a>.</p>
-	<p><a href="http://itprism.com/" target="_blank">Subscribe for the newsletter</a> to receive <strong>gifts</strong>, <strong>discount codes</strong>, information about <strong>updates</strong> and information about <strong>new ITPrism extensions</strong>.</p>
-	<p>Please, <a href="http://extensions.joomla.org/extensions/living/quotes/6877" target="_blank">vote for the extension</a> on Joomla! Extensions Directory</p>
-	]]></description>
+	<version>2.3</version>
+	<description>COM_VIPQUOTES_DESCRIPTION</description>
 
 	<install>
         <sql>
@@ -33,8 +28,6 @@
 		</schemas>
 	</update>
 	
-    <scriptfile>install.php</scriptfile>
-		
 	<media destination="com_vipquotes" folder="media">
 		<filename>index.html</filename>
 		<folder>css</folder>	
@@ -51,6 +44,7 @@
 		<folder>controllers</folder>
 		<folder>models</folder>
 		<folder>views</folder>
+		<folder>helpers</folder>
 	</files>
 
 	<languages folder="site">
@@ -60,13 +54,6 @@
 	
 	<administration>
 		<menu img="../media/com_vipquotes/images/menu_vipquotes.png" link="option=com_vipquotes">com_vipquotes</menu>
-		<submenu>
-			<menu img="../media/com_vipquotes/images/menu_icon_cpanel.png" link="option=com_vipquotes">COM_VIPQUOTES_CP</menu>
-			<menu img="../media/com_vipquotes/images/menu_icon_quotes_new.png" link="option=com_vipquotes&amp;view=quote&amp;layout=edit">COM_VIPQUOTES_NEW_QUOTE</menu>
-			<menu img="../media/com_vipquotes/images/menu_icon_quotes.png" link="option=com_vipquotes&amp;view=quotes">COM_VIPQUOTES_QUOTES_LIST</menu>
-			<menu img="../media/com_vipquotes/images/menu_icon_category_new.png" link="option=com_categories&amp;view=category&amp;layout=edit&amp;extension=com_vipquotes">COM_VIPQUOTES_NEW_CATEGORY</menu>
-			<menu img="../media/com_vipquotes/images/menu_icon_category.png" link="option=com_categories&amp;extension=com_vipquotes">COM_VIPQUOTES_CATEGORY_LIST</menu>
-		</submenu>
 	
 		<files folder="admin">		    		
 			<folder>controllers</folder>

@@ -14,23 +14,25 @@
 // no direct access
 defined( "_JEXEC" ) or die;
 
-jimport('joomla.application.component.helper');
-
-$moduleClassSfx = htmlspecialchars($params->get('moduleclass_sfx'));
+JLoader::register("VipQuotesHelperRoute", JPATH_ADMINISTRATOR.DIRECTORY_SEPARATOR."components".DIRECTORY_SEPARATOR."com_vipquotes".DIRECTORY_SEPARATOR."helpers".DIRECTORY_SEPARATOR."route.php");
 
 // Get random item from database
-$db   =   JFactory::getDBO();
-$query = $db->getQuery(true);
+$db    =   JFactory::getDBO();
+$query =   $db->getQuery(true);
 $query
-    ->select("quote, author")
-    ->from("#__vq_quotes")
-    ->where("published = 1")
+    ->select("a.quote, b.name AS author")
+    ->select($query->concatenate(array("b.id", "b.alias"),":") . " AS author_slug")
+    ->from("#__vq_quotes AS a")
+    ->innerJoin("#__vq_authors AS b ON a.author_id = b.id")
+    ->where("a.published = 1")
     ->order("RAND()");
 
 $db->setQuery($query);
 $item = $db->loadObject();
 
 if(!empty($item)) {
+    
+    $item->quote = strip_tags($item->quote);
     
     if ( $params->get('display_quotes', 1) ) {
     	$item->quote = '"' . $item->quote . '"';

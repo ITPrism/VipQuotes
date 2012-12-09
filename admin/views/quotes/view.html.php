@@ -37,7 +37,7 @@ class VipQuotesViewQuotes extends JView {
         $this->state       = $this->get('State');
         $this->items       = $this->get('Items');
         $this->pagination  = $this->get('Pagination');
-        
+
         $categories        = $this->get("Categories");
         
         foreach( $categories as $category ) {
@@ -51,14 +51,14 @@ class VipQuotesViewQuotes extends JView {
         $listDirn   = $this->escape($this->state->get('list.direction'));
         $saveOrder  = (strcmp($listOrder, 'a.ordering') != 0 ) ? false : true;
         
-        $this->assign("listOrder", $listOrder);
-        $this->assign("listDirn",  $listDirn);
-        $this->assign("saveOrder", $saveOrder);
+        $this->listOrder = $listOrder;
+        $this->listDirn  = $listDirn;
+        $this->saveOrder = $saveOrder;
         
-        // Prepare actions
+        // Add submenu
+        VipQuotesHelper::addSubmenu($this->getName());
+        
         $this->addToolbar();
-        
-        // Prepare document
         $this->setDocument();
         
         parent::display($tpl);
@@ -81,7 +81,7 @@ class VipQuotesViewQuotes extends JView {
         JToolBarHelper::divider();
         JToolBarHelper::deleteList(JText::_("COM_VIPQUOTES_DELETE_ITEMS_QUESTION"), "quotes.delete");
         JToolBarHelper::divider();
-        JToolBarHelper::custom('quotes.backToControlPanel', "vip-properties-back", "", JText::_("COM_VIPQUOTES_BACK"), false);
+        JToolBarHelper::custom('quotes.backToDashboard', "vip-dashboard-back", "", JText::_("COM_VIPQUOTES_BACK_DASHBOARD"), false);
         
     }
     
@@ -91,7 +91,7 @@ class VipQuotesViewQuotes extends JView {
 	 * @return void
 	 */
 	protected function setDocument() {
-		$this->document->setTitle(JText::_('COM_VIPQUOTES_QUOTES_LIST') . " | " . JText::_('COM_VIPQUOTES'));
+		$this->document->setTitle(JText::_('COM_VIPQUOTES_QUOTES') . " | " . JText::_('COM_VIPQUOTES'));
 	}
     
 }

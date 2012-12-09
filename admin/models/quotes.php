@@ -12,9 +12,9 @@
  */
 
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die;
 
-jimport( 'joomla.application.component.modellist' );
+jimport('joomla.application.component.modellist');
 
 /**
  * It is a Projects model
@@ -23,8 +23,6 @@ jimport( 'joomla.application.component.modellist' );
  * @todo gets the destination dir from parameters
  */
 class VipQuotesModelQuotes extends JModelList {
-    
-    public $categories = null;
     
 	 /**
      * Constructor.
@@ -39,8 +37,7 @@ class VipQuotesModelQuotes extends JModelList {
             $config['filter_fields'] = array(
                 'id', 'a.id',
                 'quote', 'a.quote',
-                'author', 'a.author',
-                'date', 'a.date',
+                'date', 'a.created',
                 'ordering', 'a.ordering'
             );
         }
@@ -63,11 +60,17 @@ class VipQuotesModelQuotes extends JModelList {
         $this->setState('params', $params);
         
         // Load the filter state.
-        $search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
-        $this->setState('filter.search', $search);
+        $value = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
+        $this->setState('filter.search', $value);
 
-        $state = $this->getUserStateFromRequest($this->context.'.filter.state', 'filter_state', '', 'string');
-        $this->setState('filter.state', $state);
+        $value = $this->getUserStateFromRequest($this->context.'.filter.state', 'filter_state', '', 'string');
+        $this->setState('filter.state', $value);
+        
+        $value = $this->getUserStateFromRequest($this->context.'.filter.category_id', 'filter_category_id', 0, 'int');
+        $this->setState('filter.category_id', $value);
+        
+        $value = $this->getUserStateFromRequest($this->context.'.filter.user_id', 'filter_user_id', 0, 'int');
+        $this->setState('filter.user_id', $value);
 
         // List state information.
         parent::populateState('a.ordering', 'asc');
@@ -111,13 +114,29 @@ class VipQuotesModelQuotes extends JModelList {
         $query->select(
             $this->getState(
                 'list.select',
-                'a.id, a.quote, a.author, a.date, ' .
+                'a.id, a.quote, a.created, ' .
                 'a.published, a.ordering, ' . 
-                'a.catid, a.user_id'
+                'a.catid, a.user_id, '.
+                'c.name as user_name'
             )
         );
         $query->from('`#__vq_quotes` AS a');
 
+        // Join
+        $query->join("LEFT", '`#__users` AS c ON a.user_id = c.id');
+        
+        // Filter by user id
+        $userId = $this->getState('filter.user_id');
+        if (!empty($userId)) {
+            $query->where('a.user_id = '.(int) $userId);
+        }
+        
+        // Filter by category id
+        $categoryId = $this->getState('filter.category_id');
+        if (!empty($categoryId)) {
+            $query->where('a.catid = '.(int) $categoryId);
+        }
+        
         // Filter by state
         $state = $this->getState('filter.state');
         if (is_numeric($state)) {
@@ -135,7 +154,7 @@ class VipQuotesModelQuotes extends JModelList {
                 
                 $escaped = $db->escape($search, true);
                 $quoted  = $db->quote("%" . $escaped . "%", false);
-                $query->where('(a.quote LIKE '.$quoted.') OR (a.author LIKE '.$quoted.')');
+                $query->where('(a.quote LIKE '.$quoted.')');
             }
         }
 
@@ -159,18 +178,27 @@ class VipQuotesModelQuotes extends JModelList {
     
     public function getCategories($options = array(), $recursive = false) {
         
-        if(!$this->categories) {
-            $categories   = JCategories::getInstance('VipQuotes', $options);
-    		$parent       = $categories->get('root');
-    
-    		if (is_object($parent)) {
-    			$this->categories = $parent->getChildren($recursive);
-    		}
-    		else {
-    			$this->categories = array();
-    		}
-        }
+        // Get a storage key.
+		$store = $this->getStoreId("categories");
+
+		// Try to load the data from internal storage.
+		if (isset($this->cache[$store])) {
+			return $this->cache[$store];
+		}
+		
+        $categories   = JCategories::getInstance('vipquotes', $options);
+		$parent       = $categories->get('root');
+
+		if (is_object($parent)) {
+			$categories = $parent->getChildren($recursive);
+		}
+		else {
+			$categories = array();
+		}
+		
+		$this->cache[$store] = $categories;
 			
-        return $this->categories;
+        return $categories;
     }
+    
 }

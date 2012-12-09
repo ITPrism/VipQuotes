@@ -1,14 +1,25 @@
 @CHARSET "UTF-8";
 
 /* Backend */
-.icon-48-vip-quotes-new 	{ background-image: url(../images/quotes_add_48.png); }
 .icon-48-vip-quotes 	    { background-image: url(../images/quotes_48.png); }
+.icon-48-vip-new-quote 	{ background-image: url(../images/quote_new_48.png); }
+.icon-48-vip-edit-quote 	{ background-image: url(../images/quote_edit_48.png); }
+.icon-48-vip-authors 	    { background-image: url(../images/authors_48.png); }
+.icon-48-vip-new-author 	    { background-image: url(../images/author_new_48.png); }
+.icon-48-vip-edit-author 	    { background-image: url(../images/author_edit_48.png); }
 .icon-48-vip-settings 	    { background-image: url(../images/settings_48.png); }
-.icon-48-vip-properties 	{ background-image: url(../images/properties_48.png); }
+.icon-48-vip-dashboard 	{ background-image: url(../images/dashboard_48.png); }
 
-.icon-32-vip-properties-back { background-image: url(../images/properties_back_32.png); }
+.icon-32-vip-dashboard-back { background-image: url(../images/dashboard_back_32.png); }
 .icon-32-vip-download { background-image: url(../images/download_32.png); }
 .icon-32-vip-download-all { background-image: url(../images/download_all_32.png); }
+
+.icon-48-vip-facebook-pages 	{ background-image: url(../images/facebook_48.png); }
+.icon-48-vip-facebook-tabs 	{ background-image: url(../images/facebook_tabs_48.png); }
+.icon-48-vip-facebook-add-tab 	{ background-image: url(../images/facebook_add_tab_48.png); }
+.icon-48-vip-facebook-edit-tab 	{ background-image: url(../images/facebook_edit_tab_48.png); }
+.icon-32-vip-update { background-image: url(../images/update_32.png); }
+.icon-32-vip-connect { background-image: url(../images/connect_32.png); }
 
 .clr{
   clear: both;
@@ -69,6 +80,9 @@
   text-align: left;
 }
 
+.img_author {
+	margin-left:20px;
+}
 
 /* Frontend */
 .q_category {
@@ -99,4 +113,124 @@
 
 .vq_search_form .vqsearchbox {
 	width: 50%;
+}
+
+/*** Site ***/
+
+/* Form */
+#eq-form  fieldset {
+  padding: 1em;
+}
+  
+#eq-form  legend {
+  border-bottom: 1px solid #999999;
+  width: 100%;
+}
+
+#eq-form button {
+	margin-top: 20px;
+}
+
+#eq-form  label {
+  display: block;
+  margin: 20px 0px 5px 0px;
+  font-weight: bold;
+  font-size: medium;
+}
+
+#eq-form input, #eq-form textarea, #eq-form select {
+    background: none repeat scroll 0 0 #FFFFFF;
+    border: 1px solid #999999;
+    padding: 5px 3px;
+    width: 302px;
+}
+
+.itp_edit_icon {
+	float: left;
+	margin-right: 5px;
+}
+
+.itp-center {
+	text-align: center;
+}
+
+#authorbox{  
+    background:#EFEFEF;  
+    border:1px solid #CECFD0;  
+    width: 100%;  
+    margin:0 auto;  
+    margin-bottom:10px;  
+    overflow:hidden;  
+}  
+#authorbox h4{  
+	  font-size:16px;  
+	  color:#191919;  
+	  margin:0;  
+	  padding:10px 10px 5px 10px;  
+ }  
+.authortext{  
+	  /* padding-left:200px;  */
+ }  
+#authorbox img{  
+	  margin:0;  
+	  padding:10px;  
+	  float:left;  
+ }  
+ #authorbox p{  
+	  color:#191919;  
+	  margin:0;  
+	  padding:0px 10px 10px 10px;  
+ }  
+ #authorbox h4 > a{  
+	  text-decoration:none;  
+ }  
+#authorbox p{  
+	  color:#191919;  
+ } 
+    
+ 
+ blockquote {
+	display: inline-block; /* this and width auto make the width fit the size of the text */
+	width: 95%;
+	margin: 1em;
+	padding: 1em;
+	background-color: #f9f9f9;
+	font-style: italic;
+	-moz-box-shadow: 0 0 5px #888;
+	-webkit-box-shadow: 0 0 5px#888;
+	box-shadow: 0 0 5px #888;
+	
+	/*
+	border: 1px solid #ccc;
+border-radius: 6px;
+box-shadow: 1px 1px 1px #ccc;
+*/
+}
+blockquote p:before {
+	font-size: 3em;
+	color: #ccc;
+	content: open-quote;
+	vertical-align: -0.25em;
+}
+blockquote p:after {
+	font-size: 3em;
+	color: #ccc;
+	content: close-quote;
+	vertical-align: -0.25em;
+}
+
+
+.itp-vq a {
+	text-decoration: none !important;
+	color: black !important;
+}
+
+.itp-vq a:hover {
+	text-decoration: underline !important;
+	color: black !important;
+}
+
+.itpvq-img-center{
+	vertical-align: middle  !important;
+	text-align: center !important;
 }

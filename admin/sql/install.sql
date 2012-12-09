@@ -1,23 +1,57 @@
 SET FOREIGN_KEY_CHECKS=0;
 
+CREATE TABLE IF NOT EXISTS `#__vq_authors` (
+  `id` smallint(6) NOT NULL AUTO_INCREMENT,
+  `name` varchar(128) NOT NULL,
+  `bio` text,
+  `image` varchar(24) NOT NULL DEFAULT '',
+  `thumb` varchar(24) NOT NULL DEFAULT '',
+  `alias` varchar(128) NOT NULL,
+  `hits` smallint(5) unsigned NOT NULL DEFAULT '0',
+  `ordering` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `published` tinyint(1) unsigned NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `alias` (`alias`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `#__vq_pages` (
+  `id` smallint(5) unsigned NOT NULL AUTO_INCREMENT,
+  `page_id` bigint(20) NOT NULL DEFAULT '0',
+  `title` varchar(512) NOT NULL,
+  `page_url` varchar(255) NOT NULL DEFAULT '',
+  `pic` varchar(255) NOT NULL DEFAULT '',
+  `pic_square` varchar(255) NOT NULL DEFAULT '',
+  `fans` int(11) unsigned NOT NULL DEFAULT '0',
+  `type` varchar(32) NOT NULL DEFAULT '',
+  `published` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `page_id` (`page_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Facebook pages';
+
 CREATE TABLE IF NOT EXISTS `#__vq_quotes` (
-  `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `quote` varchar(5120) NOT NULL,
-  `author` varchar(128) NOT NULL,
-  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `published` tinyint(1) UNSIGNED NOT NULL,
-  `catid` smallint(6) UNSIGNED NOT NULL,
-  `ordering` smallint(6) UNSIGNED NOT NULL,
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `quote` text,
+  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `published` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  `ordering` smallint(5) unsigned NOT NULL DEFAULT '0',
+  `hits` smallint(5) unsigned NOT NULL DEFAULT '0',
+  `author_id` smallint(6) DEFAULT '0',
+  `catid` int(11) DEFAULT '0',
   `user_id` int(11) NOT NULL,
-  PRIMARY KEY(`id`),
-  INDEX `idx_itpvq_user_id`(`user_id`),
-  CONSTRAINT `FK_itpvq_user_id` FOREIGN KEY (`user_id`)
-    REFERENCES `#__users`(`id`)
-    ON DELETE CASCADE
-    ON UPDATE RESTRICT
-)
-ENGINE=INNODB
-CHARACTER SET utf8 
-COLLATE utf8_general_ci ;
+  PRIMARY KEY (`id`),
+  KEY `idx_itpvq_quser_id` (`user_id`),
+  KEY `idx_itpvq_qcat_id` (`catid`),
+  KEY `idx_itpvq_qauthor_id` (`author_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `#__vq_tabs` (
+  `id` smallint(5) unsigned NOT NULL AUTO_INCREMENT,
+  `title` varchar(64) NOT NULL,
+  `app_id` bigint(20) NOT NULL,
+  `published` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  `page_id` bigint(20) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `idx_itpvp_page_id` (`page_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 SET FOREIGN_KEY_CHECKS=1;

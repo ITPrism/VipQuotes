@@ -24,14 +24,14 @@ defined('_JEXEC') or die;?>
     		    $categoryImage = JArrayHelper::getValue($categoryParams, "image");
     		    if($categoryImage) {
     		?>
-    		<a href="<?php echo JRoute::_("index.php?option=com_vipquotes&view=quotes&catid=" . $item->get("id")); ?>">
-    		<img src="<?php echo $categoryImage;?>" alt="<?php echo $item->get("title");?>" />
+    		<a href="<?php echo JRoute::_(VipQuotesHelperRoute::getCategoryRoute($item->id)); ?>">
+    		<img src="<?php echo $categoryImage;?>" alt="<?php echo $item->title;?>" />
     		</a><br />
     		<?php } ?>
-    		<a href="<?php echo JRoute::_("index.php?option=com_vipquotes&view=quotes&catid=" . $item->get("id")); ?>">
-    		<?php echo $item->get("title");?>
+    		<a href="<?php echo JRoute::_(VipQuotesHelperRoute::getCategoryRoute($item->id)); ?>">
+    		<?php echo $item->title;?>
     		<?php if($this->displayCounter) {
-    		    $number = JArrayHelper::getValue($this->numbers, $item->get("id"));
+    		    $number = JArrayHelper::getValue($this->numbers, $item->id);
     		?>
     		( <?php echo intval($number); ?> )
     		<?php } ?>
@@ -40,6 +40,16 @@ defined('_JEXEC') or die;?>
     <?php }?>
     
     <div class="clr">&nbsp;</div>
+    <div class="pagination">
     
+        <?php if ($this->params->def('show_pagination_results', 1)) : ?>
+            <p class="counter">
+                <?php echo $this->pagination->getPagesCounter(); ?>
+            </p>
+        <?php endif; ?>
+    
+        <?php echo $this->pagination->getPagesLinks(); ?>
+    </div>
+    <div class="clr">&nbsp;</div>
 </div>
-<?php echo $this->version->backlink;?>
+<?php echo $this->version->backlink; ?>

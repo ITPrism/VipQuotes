@@ -22,13 +22,13 @@ defined('_JEXEC') or die;
 	     <?php echo JHtml::_('grid.sort',  'COM_VIPQUOTES_QUOTE', 'a.quote', $this->listDirn, $this->listOrder); ?>
 	</th>
 	<th width="10%">
-		<?php echo JText::_('COM_VIPQUOTES_AUTHOR'); ?>
-	</th>
-	<th width="10%">
 	     <?php echo JText::_('JCATEGORY'); ?>
     </th>
+    <th width="10%">
+	     <?php echo JText::_('COM_VIPQUOTES_USER'); ?>
+    </th>
 	<th width="10%">
-		<?php echo JHtml::_('grid.sort',  'COM_VIPQUOTES_DATE', 'a.date', $this->listDirn, $this->listOrder); ?>
+		<?php echo JHtml::_('grid.sort',  'COM_VIPQUOTES_DATE', 'a.created', $this->listDirn, $this->listOrder); ?>
 	</th>
 	<th width="10%">
         <?php echo JHtml::_('grid.sort',  'JGRID_HEADING_ORDERING', 'a.ordering', $this->listDirn, $this->listOrder); ?>

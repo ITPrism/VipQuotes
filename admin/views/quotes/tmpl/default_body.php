@@ -19,18 +19,23 @@ defined('_JEXEC') or die;
 	?>
 	<tr class="row<?php echo $i % 2; ?>">
         <td ><?php echo JHtml::_('grid.id', $i, $item->id); ?></td>
-		<td><a href="<?php echo JRoute::_("index.php?option=com_vipquotes&amp;view=quote&amp;layout=edit&amp;id=".$item->id);?>" ><?php echo $item->quote; ?></a></td>
-		<td><?php echo $item->author; ?></td>
+		<td><a href="<?php echo JRoute::_("index.php?option=com_vipquotes&view=quote&layout=edit&id=".$item->id);?>" >
+		<?php echo JHTML::_('string.truncate', $item->quote, 128, true, false); ?>
+		</a></td>
 		<td class="center">
 		   <?php 
 		   $category = JArrayHelper::getValue($this->categories, $item->catid); 
 		   if(!empty($category)) {
-              echo $category;
+              echo $this->escape($category);
            } else {
                echo JText::_("COM_VIPQUOTES_UNCATEGORISED");
 		   }?>
         </td>
-		<td class="center nowrap"><?php echo JHtml::_('date', $item->date, JText::_('DATE_FORMAT_LC4')); ?></td>
+        <td class="center">
+		   <?php echo $this->escape($item->user_name); ?>
+        </td>
+        
+		<td class="center nowrap"><?php echo JHtml::_('date', $item->created, JText::_('DATE_FORMAT_LC4')); ?></td>
         <td class="order">
         <?php
             $disabled = $this->saveOrder ?  '' : 'disabled="disabled"';
@@ -52,7 +57,7 @@ defined('_JEXEC') or die;
         <input type="text" name="order[]" size="5" value="<?php echo $item->ordering;?>" <?php echo $disabled ?> class="text-area-order" />
         </td>
         <td class="center"><?php echo JHtml::_('jgrid.published', $item->published, $i, "quotes."); ?></td>
-        <td class="center"><?php echo $item->id;?></td>
+        <td class="center"><?php echo (int)$item->id;?></td>
 	</tr>
 <?php }?>
 	  

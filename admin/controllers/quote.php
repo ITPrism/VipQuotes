@@ -40,10 +40,9 @@ class VipQuotesControllerQuote extends JControllerForm {
         
         $msg     = "";
         $link    = "";
-        $itemId  = $app->input->getInt("id");
+        $data    = $app->input->post->get('jform', array(), 'array');
+        $itemId  = JArrayHelper::getValue($data, "id");
         
-        // Validate form data
-        $data    = $app->input->getVar('jform', array(), 'post', 'array');
         $model   = $this->getModel();
         /** @var $model VipQuotesModelQuote **/
         
@@ -51,13 +50,13 @@ class VipQuotesControllerQuote extends JControllerForm {
         /** @var $form JForm **/
         
         if(!$form){
-            JError::raiseError(500, $model->getError());
+            throw new Exception($model->getError());
         }
             
         // Test if the data is valid.
         $validData = $model->validate($form, $data);
         
-        // Check for validation errors.
+        // Check for errors.
         if($validData === false){
             $this->setMessage($model->getError(), "notice");
             
@@ -70,10 +69,8 @@ class VipQuotesControllerQuote extends JControllerForm {
         $params  = JComponentHelper::getParams('com_vipquotes');
         
         // Check for duplications
-        if($params->get("checkQuotes")) {
-                
-            $quote          = JArrayHelper::getValue($data, "quote");
-            
+        if($params->get("quotes_check_quotes")) {
+            $quote = JArrayHelper::getValue($data, "quote");
             if($model->hasDuplication($quote, $itemId)) {
                 
                 $this->setMessage(JText::_('COM_VIPQUOTES_ERROR_DUPLICATION'), "notice");
@@ -87,7 +84,7 @@ class VipQuotesControllerQuote extends JControllerForm {
         try{
             $itemId = $model->save($validData);
         } catch(Exception $e){
-            throw new Exception( JText::_('ITP_ERROR_SYSTEM'), 500);
+            throw new Exception( JText::_('COM_VIPQUOTES_ERROR_SYSTEM'), 500);
         }
         
         $this->setMessage(JText::_('COM_VIPQUOTES_QUOTE_SAVED'), "message");
@@ -102,10 +99,8 @@ class VipQuotesControllerQuote extends JControllerForm {
      *
      */
     public function cancel(){
-        
         $link = $this->prepareRedirectLink();
         $this->setRedirect(JRoute::_($link, false));
-    
     }
     
     /**
@@ -121,18 +116,18 @@ class VipQuotesControllerQuote extends JControllerForm {
         // Prepare redirection
         switch($task) {
             case "apply":
-                $link .= "&view=quote&layout=edit";
+                $link .= "&view=".$this->view_item."&layout=edit";
                 if(!empty($itemId)) {
                     $link .= "&id=" . (int)$itemId; 
                 }
                 break;
                 
             case "save2new":
-                $link .= "&view=quote&layout=edit";
+                $link .= "&view=".$this->view_item."&layout=edit";
                 break;
                 
             default:
-                $link .= "&view=quotes";
+                $link .= "&view=".$this->view_list;
                 break;
         }
         

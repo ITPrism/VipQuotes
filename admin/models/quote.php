@@ -31,18 +31,6 @@ class VipQuotesModelQuote extends JModelAdmin {
     protected $text_prefix = 'COM_VIPQUOTES';
     
     /**
-     * Constructor.
-     *
-     * @param   array   $config An optional associative array of configuration settings.
-     *
-     * @see     JController
-     * @since   1.6
-     */
-    public function __construct($config = array()){
-        parent::__construct($config);
-    }
-    
-    /**
      * Returns a reference to the a Table object, always creating it.
      *
      * @param   type    The table type to instantiate
@@ -64,11 +52,9 @@ class VipQuotesModelQuote extends JModelAdmin {
      * @since   1.6
      */
     public function getForm($data = array(), $loadData = true){
-        // Initialise variables.
-        $app = JFactory::getApplication();
         
         // Get the form.
-        $form = $this->loadForm('com_vipquotes.quote', 'quote', array('control' => 'jform', 'load_data' => $loadData));
+        $form = $this->loadForm($this->option.'.quote', 'quote', array('control' => 'jform', 'load_data' => $loadData));
         if(empty($form)){
             return false;
         }
@@ -83,11 +69,20 @@ class VipQuotesModelQuote extends JModelAdmin {
      * @since   1.6
      */
     protected function loadFormData(){
+        
+        $app = JFactory::getApplication();
+        /** @var $app JAdministrator **/
+        
         // Check the session for previously entered form data.
-        $data = JFactory::getApplication()->getUserState('com_vipquotes.edit.quote.data', array());
+        $data = $app->getUserState($this->option.'.edit.quote.data', array());
         
         if(empty($data)){
             $data = $this->getItem();
+            
+            // Prime some default values.
+			if ($this->getState('quote.id') == 0) {
+				$data->set('catid', $app->input->getInt('catid', $app->getUserState($this->option.'.quotes.filter.category_id')));
+			}
         }
         
         return $data;
@@ -102,9 +97,8 @@ class VipQuotesModelQuote extends JModelAdmin {
      */
     public function save($data){
         
-        $quote     = JArrayHelper::getValue($data, "quote");
         $id        = JArrayHelper::getValue($data, "id");
-        $author    = JArrayHelper::getValue($data, "author");
+        $quote     = JArrayHelper::getValue($data, "quote");
         $catid     = JArrayHelper::getValue($data, "catid");
         $published = JArrayHelper::getValue($data, "published");
         
@@ -117,23 +111,55 @@ class VipQuotesModelQuote extends JModelAdmin {
             $row->set("user_id", $user->id);
         }
         
-        $row->set("quote", $quote);
-        $row->set("author", $author);
-        $row->set("catid", $catid);
+        $row->set("quote",     $quote);
+        $row->set("catid",     $catid);
         $row->set("published", $published);
         
+        // Prepare the row for saving
+		$this->prepareTable($row);
+		
         $row->store();
         
         return $row->id;
     
     }
     
+	/**
+	 * Prepare and sanitise the table prior to saving.
+	 *
+	 * @since	1.6
+	 */
+	protected function prepareTable(&$table) {
+	    
+        // get maximum order number
+		if (empty($table->id)) {
+
+			// Set ordering to the last item if not set
+			if (empty($table->ordering)) {
+				$db     = JFactory::getDbo();
+				$query  = $db->getQuery(true);
+				$query
+				    ->select("MAX(ordering)")
+				    ->from("#__vq_quotes");
+				
+			    $db->setQuery($query, 0, 1);
+				$max = $db->loadResult();
+
+				$table->ordering = $max+1;
+			}
+		}
+        
+	}
+	
     public function hasDuplication($quote, $itemId = null) {
         
-        $db = JFactory::getDbo();
-        $query = $db->getQuery(true);
-        $query->select("COUNT(*)")
-        ->from("#__vq_quotes");
+        $db     = JFactory::getDbo();
+        /** @var $db JDatabaseMySQLi **/
+        
+        $query  = $db->getQuery(true);
+        $query
+            ->select("COUNT(*)")
+            ->from("#__vq_quotes");
         
         if(!empty($itemId)) {
             $query->where("`id` != " . (int)$itemId );
@@ -155,8 +181,10 @@ class VipQuotesModelQuote extends JModelAdmin {
      */
     public function delete($itemsIds){
         
-        $db = JFactory::getDbo();
-        $query = $db->getQuery(true);
+        $db     = JFactory::getDbo();
+        /** @var $db JDatabaseMySQLi **/
+        
+        $query  = $db->getQuery(true);
         
         $tableQuotes   = $db->quoteName('#__vq_quotes');
         $columnId      = $db->quoteName('id');
@@ -168,19 +196,6 @@ class VipQuotesModelQuote extends JModelAdmin {
         $db->setQuery($query);
         $db->query();
     
-    }
-    
-	/**
-     * A protected method to get a set of ordering conditions.
-     *
-     * @param   object  A record object.
-     * @return  array   An array of conditions to add to add to ordering queries.
-     * @since   1.6
-     */
-    protected function getReorderConditions($table){
-        $condition = array();
-        $condition[] = 'catid = '.(int) $table->catid;
-        return $condition;
     }
     
 }

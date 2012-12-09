@@ -12,15 +12,15 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die();
+defined('_JEXEC') or die;
 
 jimport( 'joomla.application.component.controlleradmin' );
 
 /**
- * VipQuotes Projects Controller
+ * Vip Quotes Controller
  *
  * @package     ITPrism Components
- * @subpackage  VipQuotes
+ * @subpackage  Vip Quotes
   */
 class VipQuotesControllerQuotes extends JControllerAdmin {
     
@@ -38,13 +38,11 @@ class VipQuotesControllerQuotes extends JControllerAdmin {
      * @since   1.6
      */
     public function getModel($name = 'Quote', $prefix = 'VipQuotesModel', $config = array('ignore_request' => true)) {
-        
         $model = parent::getModel($name, $prefix, $config);
         return $model;
     }
     
-    public function backToControlPanel() {
-        
+    public function backToDashboard() {
         $this->setRedirect( JRoute::_($this->defaultLink, false) );
         
     }

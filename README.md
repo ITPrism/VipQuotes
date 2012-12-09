@@ -1,45 +1,28 @@
 Vip Quotes for Joomla! 
 ==========================
-( Version 2.2 )
+( Version 2.3 )
 --------------------------
 
 Changelog
 ---------
 
+v2.3
+---------
+
+* Added Search Plugin
+* Improved Vip Last Quotes Module
+* Improved Vip Random Quotes Module
+* Improved SEO
+* Fixed some issues 
+
+
 v2.2
 ---------
+* Added fron-end interface for adding quotes
+* Added new views - a list with auhtors' quotes, a quote view
+* Added authors
+* Added new options - ordering, security, 
 * Improved
 
-v2.1
----------
-* [[#1]](https://github.com/ITPrism/VipQuotes/issues/1 "Impossible to create a New Category") Fixed the bug with ability to create categories.
-* Improved
 
-v2.0
----------
-* Refactored and ported to Joomla! 2.5
-
-v1.6
----------
-* Fixed bugs
-
-v1.5
----------
-* Now you can create a view with categories.
-* SEF routed.
-* Some bug fixed.
-
-v1.4
----------
-* Now you can create a quotes list by category.
-
-v1.3
----------
-* Added search options ( You can search by author and phrase )
-* Changed inline style to CSS classes
-
-v1.2
----------
-* Added search form
-* Added several options
 

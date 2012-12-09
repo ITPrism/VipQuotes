@@ -32,16 +32,18 @@ class VipQuotesViewCategories extends JView {
     public function display($tpl = null) {
         
         // Initialise variables
-        $this->items          = $this->get('Items');
         $this->state          = $this->get("State");
-        $this->params         = $params = $this->state->get("params");
-        $this->displayCounter = $params->get("displayCounter");
+        $this->items          = $this->get('Items');
+        $this->pagination     = $this->get('Pagination');
         
+        $this->params         = $params = $this->state->get("params");
+        $this->displayCounter = $params->get("categories_display_counter");
+
         if($this->displayCounter) {
-            $this->numbers = $this->get("Numbers");
+            $this->numbers    = $this->get("Numbers");
         }
         
-        $this->version= new VipQuotesVersion();
+        $this->version        = new VipQuotesVersion();
         
         $this->prepareDocument();
                 
@@ -71,13 +73,9 @@ class VipQuotesViewCategories extends JView {
         // Set page title
         $title = $this->params->get('page_title', '');
         if(empty($title)){
-            
             $title = $app->getCfg('sitename');
-            
         }elseif($app->getCfg('sitename_pagetitles', 0)){
-            
             $title = JText::sprintf('JPAGETITLE', $app->getCfg('sitename'), $title);
-            
         }
         $this->document->setTitle($title);
         

@@ -14,24 +14,17 @@
 // no direct access
 defined('_JEXEC') or die;
 
-jimport('joomla.log.log');
+jimport('joomla.utilities.arrayhelper');
 
 if(!defined("VIPQUOTES_COMPONENT_ADMINISTRATOR")) {
-    define("VIPQUOTES_COMPONENT_ADMINISTRATOR", JPATH_ADMINISTRATOR . DS. "components" . DS ."com_vipquotes");
+    define("VIPQUOTES_COMPONENT_ADMINISTRATOR", JPATH_ADMINISTRATOR . DIRECTORY_SEPARATOR. "components" . DIRECTORY_SEPARATOR ."com_vipquotes");
 }
 
 // Register Component libraries
-JLoader::register("VipQuotesVersion", VIPQUOTES_COMPONENT_ADMINISTRATOR . DS . "libraries" . DS . "version.php");
+JLoader::register("VipQuotesVersion", VIPQUOTES_COMPONENT_ADMINISTRATOR . DIRECTORY_SEPARATOR . "libraries" . DIRECTORY_SEPARATOR . "version.php");
 
 // Register helpers
-JLoader::register("VipQuotesCategories", VIPQUOTES_COMPONENT_ADMINISTRATOR . DS . "helpers" . DS . "category.php");
-JLoader::register("VipQuotesHelper", VIPQUOTES_COMPONENT_ADMINISTRATOR . DS . "helpers" . DS . "helper.php");
+JLoader::register("VipQuotesHelper", VIPQUOTES_COMPONENT_ADMINISTRATOR . DIRECTORY_SEPARATOR . "helpers" . DIRECTORY_SEPARATOR . "vipquotes.php");
+JLoader::register("VipQuotesCategories", VIPQUOTES_COMPONENT_ADMINISTRATOR . DIRECTORY_SEPARATOR . "helpers" . DIRECTORY_SEPARATOR . "category.php");
+JLoader::register("VipQuotesHelperRoute", VIPQUOTES_COMPONENT_ADMINISTRATOR . DIRECTORY_SEPARATOR . "helpers" . DIRECTORY_SEPARATOR . "route.php");
 
-// Add the logger.
-JLog::addLogger(
-     // Pass an array of configuration options
-    array(
-        // Set the name of the log file
-        'text_file' => 'error.php',
-     )
-);

@@ -59,7 +59,11 @@ class VipQuotesViewQuote extends JView {
         $this->documentTitle = $isNew ? JText::_('COM_VIPQUOTES_QUOTE_NEW')
 		                             : JText::_('COM_VIPQUOTES_QUOTE_EDIT');
         
-        JToolBarHelper::title($this->documentTitle, 'vip-quotes-new');
+		if(!$isNew) {
+            JToolBarHelper::title($this->documentTitle, 'vip-edit-quote');
+		} else {
+		    JToolBarHelper::title($this->documentTitle, 'vip-new-quote');
+		}
 		                             
         JToolBarHelper::apply('quote.apply');
         JToolBarHelper::save2new('quote.save2new');

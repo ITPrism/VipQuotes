@@ -20,9 +20,6 @@ defined('_JEXEC') or die;
             <legend><?php echo JText::_("COM_VIPQUOTES_QUOTE_INFORMATION"); ?></legend>
             
             <ul class="adminformlist">
-                <li><?php echo $this->form->getLabel('author'); ?>
-                <?php echo $this->form->getInput('author'); ?></li>
-    
                 <li><?php echo $this->form->getLabel('catid'); ?>
                 <?php echo $this->form->getInput('catid'); ?></li>
                 
