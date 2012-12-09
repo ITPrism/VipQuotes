@@ -15,11 +15,4 @@
 defined('_JEXEC') or die; ?>
 <?php if (!empty($item)) {?>
     <div><?php echo $item->quote;?></div>
-    <?php if( $params->get('display_author', 1) ) {?>
-        <?php if( $params->get('author_linkable', 1) ) {?>
-    	<div><a href="<?php  echo JRoute::_(VipQuotesHelperRoute::getAuthorRoute($item->author_slug)); ?>"><?php echo $item->author;?></a></div>
-    	<?php }else{?>
-    	<div><strong><?php echo $item->author;?></strong></div>
-	    <?php }?>
-	<?php }?>
 <?php } ?>

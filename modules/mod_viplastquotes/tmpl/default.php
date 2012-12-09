@@ -17,14 +17,6 @@ defined('_JEXEC') or die; ?>
     if (!empty($items)) {
         foreach($items as $item) {
             echo "<div>$item->quote</div>";
-             
-            if($params->get('display_author', 1)) {
-                if($params->get('author_linkable', 1)) {
-                    echo '<div><a href="'. JRoute::_(VipQuotesHelperRoute::getAuthorRoute($item->author_slug)).'">'.$item->author.'</a></div>';
-                } else {
-                    echo '<div><strong>'.$item->author.'</strong></div>';
-                }
-            }
             echo '<div style="clear:both;">&nbsp;</div>';
         }
     }

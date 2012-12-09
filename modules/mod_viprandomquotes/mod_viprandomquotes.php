@@ -20,10 +20,8 @@ JLoader::register("VipQuotesHelperRoute", JPATH_ADMINISTRATOR.DIRECTORY_SEPARATO
 $db    =   JFactory::getDBO();
 $query =   $db->getQuery(true);
 $query
-    ->select("a.quote, b.name AS author")
-    ->select($query->concatenate(array("b.id", "b.alias"),":") . " AS author_slug")
+    ->select("a.quote")
     ->from("#__vq_quotes AS a")
-    ->innerJoin("#__vq_authors AS b ON a.author_id = b.id")
     ->where("a.published = 1")
     ->order("RAND()");
 
@@ -39,7 +37,6 @@ if(!empty($item)) {
     }
     
     $item->quote = htmlentities($item->quote, ENT_QUOTES, "UTF-8");
-    $item->author = htmlentities($item->author, ENT_QUOTES, "UTF-8");
 }
 
 require JModuleHelper::getLayoutPath('mod_viprandomquotes', $params->get('layout', 'default'));
