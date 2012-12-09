@@ -14,10 +14,8 @@
 // no direct access
 defined('_JEXEC') or die; ?>
 <?php 
-    if (!empty($items)) {
-        foreach($items as $item) {
-            echo "<div>$item->quote</div>";
-            echo '<div style="clear:both;">&nbsp;</div>';
-        }
+    foreach($items as $item) {
+        echo "<div>".$item->quote."</div>";
+        echo '<div style="clear:both;">&nbsp;</div>';
     }
 ?>
