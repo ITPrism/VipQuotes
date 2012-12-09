@@ -27,15 +27,6 @@
 					label="JFIELD_PLG_SEARCH_SEARCHLIMIT_LABEL"
 					size="5"
 				/>
-
-				<field name="search_author" type="radio"
-					default="1"
-					label="PLG_SEARCH_VIPQUOTES_AUTHOR_NAME_LABEL"
-					description="PLG_SEARCH_VIPQUOTES_AUTHOR_NAME_DESC"
-				>
-					<option value="0">JOFF</option>
-					<option value="1">JON</option>
-				</field>
 				
 			</fieldset>
 		</fields>

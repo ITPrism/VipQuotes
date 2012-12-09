@@ -63,7 +63,6 @@ class plgSearchVipQuotes extends JPlugin {
 		    return array();
 		}
 
-		$searchAuthor   = $this->params->get('search_author',	1);
 		$limit	        = $this->params->def('search_limit',	20);
 		
 		$text = JString::trim($text);
@@ -73,11 +72,6 @@ class plgSearchVipQuotes extends JPlugin {
 
 		$return = array();
 		$return = $this->searchQuotes($text, $phrase, $ordering, $limit);
-		
-		if($searchAuthor) {
-		    $authors = $this->searchAuthors($text, $phrase, $ordering, $limit);
-		    $return  = array_merge($return, $authors);
-		}
 		
 		return $return;
 	}
@@ -156,12 +150,10 @@ class plgSearchVipQuotes extends JPlugin {
 		
 		// Select
 		$query->select('a.id, a.quote AS text, a.created, a.catid');
-		$query->select('b.name as author');
 		$query->select('c.title as section, 2 AS browsernav, '.$case_when1);
 		
 		// FROM and JOIN
 		$query->from('#__vq_quotes AS a');
-		$query->innerJoin('#__vq_authors AS b ON a.author_id = b.id');
 		$query->innerJoin('#__categories AS c ON c.id = a.catid');
 		
 		// WHERE
@@ -179,7 +171,7 @@ class plgSearchVipQuotes extends JPlugin {
 		    
 			foreach($rows as $key => $row) {
 				$rows[$key]->href       = VipQuotesHelperRoute::getQuoteRoute($row->id, $row->catslug);
-				$rows[$key]->title      = JText::sprintf("PLG_SEARCH_VIPQUOTES_RESULT_TITLE", $rows[$key]->section, $rows[$key]->author);
+				$rows[$key]->title      = JText::sprintf("PLG_SEARCH_VIPQUOTES_RESULT_TITLE", $rows[$key]->section);
 				$rows[$key]->text       = strip_tags($rows[$key]->text);
 			}
 
@@ -193,108 +185,4 @@ class plgSearchVipQuotes extends JPlugin {
 		return $return;
 	}
 	
-	private function searchAuthors($text, $phrase, $ordering, $limit) {
-	    
-	    $db		    = JFactory::getDbo();
-	    $searchText = $text;
-	    $wheres	    = array();
-	    
-		switch ($phrase){
-		    
-			case 'exact':
-				$text		= $db->quote('%'.$db->escape($text, true).'%', false);
-				$wheres[]	= 'a.name LIKE '.$text;
-				$where		= '(' . implode(') OR (', $wheres) . ')';
-				break;
-
-			case 'all':
-			case 'any':
-			default:
-				$words	= explode(' ', $text);
-				foreach ($words as $word) {
-					$word		= $db->quote('%'.$db->escape($word, true).'%', false);
-					$wheres[]	= 'a.name LIKE '.$word;
-					$wheres[]	= implode(' OR ', $wheres);
-				}
-				$where	= '(' . implode(($phrase == 'all' ? ') AND (' : ') OR ('), $wheres) . ')';
-				break;
-		}
-
-		switch ($ordering) {
-		    
-			case 'oldest':
-				$order = 'a.id ASC';
-				break;
-
-			case 'popular':
-				$order = 'a.hits DESC';
-				break;
-
-			case 'alpha':
-				$order = 'a.name ASC';
-				break;
-
-			case 'category':
-				$order = 'a.name ASC';
-				break;
-
-			case 'newest':
-			default:
-				$order = 'a.id DESC';
-				
-		}
-
-		$return = array();
-		
-		$query	= $db->getQuery(true);
-
-		$case_when1 = ' CASE WHEN ';
-		$case_when1 .= $query->charLength('a.alias');
-		$case_when1 .= ' THEN ';
-		$a_id = $query->castAsChar('a.id');
-		$case_when1 .= $query->concatenate(array($a_id, 'a.alias'), ':');
-		$case_when1 .= ' ELSE ';
-		$case_when1 .= $a_id.' END as slug';
-		
-		// Select
-		$query->select('a.id, a.name AS title, a.bio AS text');
-		$query->select('2 AS browsernav, '.$case_when1);
-		
-		// FROM and JOIN
-		$query->from('#__vq_authors AS a');
-		
-		// WHERE
-		$query->where("( a.published = 1 )");
-		$query->where($where);
-		
-		// ORDER
-		$query->order($order);
-//		var_dump((string)$query);exit;
-		
-	    $db->setQuery($query, 0, $limit);
-		
-		$rows     = $db->loadObjectList();
-		
-		$section  = JText::_('PLG_SEARCH_VIPQUOTES');
-		
-		$return   = array();
-		if ($rows) {
-		    
-			foreach($rows as $key => $row) {
-			    
-				$rows[$key]->href       = VipQuotesHelperRoute::getAuthorRoute($row->slug);
-				$rows[$key]->text       = strip_tags($rows[$key]->text);
-				$rows[$key]->section    = $section;
-				$rows[$key]->created    = null;
-			}
-
-			foreach($rows as $key => $quote) {
-				if (searchHelper::checkNoHTML($quote, $searchText, array('url', 'text', 'title'))) {
-					$return[] = $quote;
-				}
-			}
-		}
-		
-		return $return;
-	}
 }
