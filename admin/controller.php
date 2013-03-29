@@ -28,7 +28,7 @@ class VipQuotesController extends JController {
     
 	public function __construct($config = array())	{
 		parent::__construct($config);
-        $this->option = JFactory::getApplication()->input->get("option", "com_itpdonate", "GET");
+        $this->option = JFactory::getApplication()->input->get("option", "com_vipquotes", "GET");
 	}
 	
 	public function display( ) {
@@ -37,7 +37,7 @@ class VipQuotesController extends JController {
 		/** @var $document JDocumentHtml **/
 		
 		// Add component style
-        $document->addStyleSheet('../media/'.$this->option.'/css/style.css');
+        $document->addStyleSheet('../media/'.$this->option.'/css/admin/style.css');
         
         $viewName      = JFactory::getApplication()->input->getCmd('view', 'dashboard');
         JFactory::getApplication()->input->set("view", $viewName);

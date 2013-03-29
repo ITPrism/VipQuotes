@@ -31,6 +31,9 @@ class VipQuotesViewCategories extends JView {
     
     public function display($tpl = null) {
         
+        $app = JFactory::getApplication();
+        /** @var $app JSite **/
+        
         // Initialise variables
         $this->state          = $this->get("State");
         $this->items          = $this->get('Items');
@@ -40,13 +43,20 @@ class VipQuotesViewCategories extends JView {
         $this->displayCounter = $params->get("categories_display_counter");
 
         if($this->displayCounter) {
-            $this->numbers    = $this->get("Numbers");
+            $this->numbers = $this->get("Numbers");
         }
         
         $this->version        = new VipQuotesVersion();
         
         $this->prepareDocument();
                 
+        // Prepare TMPL variable
+        $tmpl = $app->input->get->get("tmpl", "");
+        $this->tmplValue = "";
+        if(strcmp("component", $tmpl) == 0) {
+            $this->tmplValue = "&tmpl=component";
+        }
+        
         parent::display($tpl);
     }
     
@@ -90,7 +100,7 @@ class VipQuotesViewCategories extends JView {
         }
         
         // Head styles
-        $this->document->addStyleSheet( JURI::root() . 'media/'.$this->option.'/css/style.css');
+        $this->document->addStyleSheet( JURI::root() . 'media/'.$this->option.'/css/site/style.css');
         
     }
     

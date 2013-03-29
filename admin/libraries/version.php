@@ -40,14 +40,14 @@ class VipQuotesVersion {
      * 
      * @var integer
      */
-    public $devLevel  = '3';
+    public $devLevel  = '4';
     
     /**
      * Release Type
      * 
      * @var integer
      */
-    public $releaseType  = 'Lite';
+    public $releaseType  = 'Pro';
     
     /**
      * Development Status
@@ -61,7 +61,7 @@ class VipQuotesVersion {
      * 
      * @var string
      */
-    public $releaseDate= '08-December-2012';
+    public $releaseDate= '10-March-2012';
     
     /**
      * License

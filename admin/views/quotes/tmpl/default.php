@@ -13,7 +13,6 @@
 
 // no direct access
 defined('_JEXEC') or die;
-JHtml::_('behavior.tooltip');
 ?>
 <form action="<?php echo JRoute::_('index.php?option=com_vipquotes&view=quotes'); ?>" method="post" name="adminForm" id="adminForm">
     <fieldset id="filter-bar">
@@ -49,10 +48,10 @@ JHtml::_('behavior.tooltip');
 	   <tbody><?php echo $this->loadTemplate('body');?></tbody>
 	</table>
 
-<input type="hidden" name="boxchecked" value="0" />
-<input type="hidden" name="task" value="" />
-<input type="hidden" name="filter_order" value="<?php echo $this->listOrder; ?>" />
-<input type="hidden" name="filter_order_Dir" value="<?php echo $this->listDirn; ?>" />
-<?php echo JHtml::_('form.token'); ?>
+    <input type="hidden" name="boxchecked" value="0" />
+    <input type="hidden" name="task" value="" />
+    <input type="hidden" name="filter_order" value="<?php echo $this->listOrder; ?>" />
+    <input type="hidden" name="filter_order_Dir" value="<?php echo $this->listDirn; ?>" />
+    <?php echo JHtml::_('form.token'); ?>
 
 </form>

@@ -2,12 +2,12 @@
 <extension type="module" version="2.5" client="site" method="upgrade">
 	<name>MOD_VIPLASTQUOTES</name>
 	<author>Todor Iliev</author>
-	<creationDate>January, 2011</creationDate>
 	<copyright>Copyright (C) 2010 Todor Iliev ( ITPrism.com )</copyright>
 	<license>http://www.gnu.org/copyleft/gpl.html</license>
 	<authorEmail>todor@itprism.com</authorEmail>
 	<authorUrl>http://itprism.com</authorUrl>
-	<version>2.3</version>
+	<version>2.4</version>
+	<creationDate>10 March, 2013</creationDate>
 	<description>MOD_VIPLASTQUOTES_DESCRIPTION</description>
 	
 	<languages folder="language">

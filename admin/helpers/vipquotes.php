@@ -17,7 +17,10 @@
  */
 class VipQuotesHelper {
 	
-    public static $extension = 'com_vipquotes';
+    public static $extension         = 'com_vipquotes';
+    
+    public static $categoriesAliases = null;
+    public static $usersOptions      = null;
     
 	/**
 	 * Configure the Linkbar.
@@ -29,22 +32,48 @@ class VipQuotesHelper {
 	    
 	    JSubMenuHelper::addEntry(
 			JText::_('COM_VIPQUOTES_DASHBOARD'),
-			'index.php?option=com_vipquotes&view=dashboard',
+			'index.php?option='.self::$extension.'&view=dashboard',
 			$vName == 'dashboard'
 		);
 		
 		JSubMenuHelper::addEntry(
 			JText::_('COM_VIPQUOTES_CATEGORIES'),
-			'index.php?option=com_categories&extension=com_vipquotes',
+			'index.php?option=com_categories&extension='.self::$extension,
 			$vName == 'categories'
 		);
-		
+
 		JSubMenuHelper::addEntry(
 			JText::_('COM_VIPQUOTES_QUOTES'),
-			'index.php?option=com_vipquotes&amp;view=quotes',
+			'index.php?option='.self::$extension.'&amp;view=quotes',
 			$vName == 'quotes'
 		);
 		
 	}
+    
+    public static function getUsersOptions() {
+        
+        if(is_null(self::$usersOptions)) {
+            
+            $db     = JFactory::getDbo();
+            $query  = $db->getQuery(true);
+            
+            $query
+                ->select("id AS value, name AS text")
+                ->from("#__users")
+                ->order("name");
+
+            $db->setQuery($query);
+            $rows = $db->loadAssocList();
+            
+            if(!$rows) {
+                $rows = array();
+            }
+            
+    		self::$usersOptions = $rows;
+        }
+        
+        return self::$usersOptions;
+			
+    }
     
 }

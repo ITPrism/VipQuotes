@@ -31,10 +31,8 @@ defined('_JEXEC') or die;
                echo JText::_("COM_VIPQUOTES_UNCATEGORISED");
 		   }?>
         </td>
-        <td class="center">
-		   <?php echo $this->escape($item->user_name); ?>
-        </td>
-        
+        <td class="center"><?php echo $this->escape($item->user_name); ?></td>
+        <td class="center"><?php echo intval($item->hits); ?></td>
 		<td class="center nowrap"><?php echo JHtml::_('date', $item->created, JText::_('DATE_FORMAT_LC4')); ?></td>
         <td class="order">
         <?php

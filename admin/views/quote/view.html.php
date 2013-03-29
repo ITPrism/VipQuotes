@@ -59,20 +59,16 @@ class VipQuotesViewQuote extends JView {
         $this->documentTitle = $isNew ? JText::_('COM_VIPQUOTES_QUOTE_NEW')
 		                             : JText::_('COM_VIPQUOTES_QUOTE_EDIT');
         
-		if(!$isNew) {
-            JToolBarHelper::title($this->documentTitle, 'vip-edit-quote');
-		} else {
-		    JToolBarHelper::title($this->documentTitle, 'vip-new-quote');
-		}
-		                             
         JToolBarHelper::apply('quote.apply');
         JToolBarHelper::save2new('quote.save2new');
         JToolBarHelper::save('quote.save');
     
         if(!$isNew){
             JToolBarHelper::cancel('quote.cancel', 'JTOOLBAR_CANCEL');
+            JToolBarHelper::title($this->documentTitle, 'vip-edit-quote');
         }else{
             JToolBarHelper::cancel('quote.cancel', 'JTOOLBAR_CLOSE');
+            JToolBarHelper::title($this->documentTitle, 'vip-new-quote');
         }
         
     }
@@ -84,13 +80,12 @@ class VipQuotesViewQuote extends JView {
 	 */
 	protected function setDocument() {
 	    
-	    // Add behaviors
-        JHtml::_('behavior.tooltip');
-        JHtml::_('behavior.formvalidation');
-        
 		$this->document->setTitle($this->documentTitle . " | ". JText::_("COM_VIPQUOTES"));
         
 		// Add scripts
+		JHtml::_('behavior.tooltip');
+        JHtml::_('behavior.formvalidation');
+        
 		$this->document->addScript('../media/'.$this->option.'/js/admin/'.strtolower($this->getName()).'.js');
 		
 	}

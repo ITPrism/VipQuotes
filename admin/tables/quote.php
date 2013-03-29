@@ -15,9 +15,7 @@ defined('_JEXEC') or die;
 class VipQuotesTableQuote extends JTable {
     
     public function __construct( $db ) {
-        
         parent::__construct( '#__vq_quotes', 'id', $db );
-        
     }
     
 }

@@ -37,7 +37,8 @@ class VipQuotesModelQuotes extends JModelList {
             $config['filter_fields'] = array(
                 'id', 'a.id',
                 'quote', 'a.quote',
-                'date', 'a.created',
+                'created', 'a.created',
+            	'hits', 'a.hits',
                 'ordering', 'a.ordering'
             );
         }
@@ -114,16 +115,16 @@ class VipQuotesModelQuotes extends JModelList {
         $query->select(
             $this->getState(
                 'list.select',
-                'a.id, a.quote, a.created, ' .
+                'a.id, a.quote, a.created, a.hits, ' .
                 'a.published, a.ordering, ' . 
                 'a.catid, a.user_id, '.
-                'c.name as user_name'
+                'c.name AS user_name'
             )
         );
-        $query->from('`#__vq_quotes` AS a');
+        $query->from($db->quoteName('#__vq_quotes') .' AS a');
 
         // Join
-        $query->join("LEFT", '`#__users` AS c ON a.user_id = c.id');
+        $query->leftJoin($db->quoteName('#__users') .' AS c ON a.user_id = c.id');
         
         // Filter by user id
         $userId = $this->getState('filter.user_id');
@@ -167,8 +168,8 @@ class VipQuotesModelQuotes extends JModelList {
     
     protected function getOrderString() {
         
-        $orderCol   = $this->getState('list.ordering');
-        $orderDirn  = $this->getState('list.direction');
+        $orderCol   = $this->getState('list.ordering',  'a.id');
+        $orderDirn  = $this->getState('list.direction', 'asc');
         if ($orderCol == 'a.ordering') {
             $orderCol = 'a.catid '.$orderDirn.', a.ordering';
         }

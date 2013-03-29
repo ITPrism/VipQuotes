@@ -112,7 +112,7 @@ class VipQuotesModelCategories extends JModelList {
                 'a.metadesc, a.metakey, a.params '
             )
         );
-        $query->from('`#__categories` AS a');
+        $query->from($db->quoteName("#__categories") . ' AS a');
 
         // Filter by state
         $query->where('a.extension = "com_vipquotes"');
@@ -125,44 +125,17 @@ class VipQuotesModelCategories extends JModelList {
         return $query;
     }
     
-    /*public function getItems( $recursive = false ){
-        
-        if (!count($this->items)) {
-			
-			// import Joomla Categories library
-			//if you forget this -> Fatal error: Class 'JCategories' not found in ...
-			jimport( 'joomla.application.categories' );
-
-			$options = array();
-
-			$categories   = JCategories::getInstance('VipQuotes', $options);
-			$this->parent = $categories->get('root');
-
-			if (is_object($this->parent)) {
-				$this->items = $this->parent->getChildren($recursive);
-			}
-			else {
-				$this->items = false;
-			}
-		}
-
-		return $this->items;
-		
-    }*/
-    
     public function getNumbers() {
         
         if (!count($this->numbers)) {
             $db     = JFactory::getDbo();
             $query  = $db->getQuery(true);
             
-            $query->select("
-            	catid, 
-            	COUNT(*) AS number"
-            )
-            ->from("#__vq_quotes")
-            ->where("published = 1")
-            ->group("catid");
+            $query
+                ->select("a.catid, COUNT(*) AS number")
+                ->from( $db->quoteName("#__vq_quotes") . ' AS a' )
+                ->where("a.published = 1")
+                ->group("a.catid");
             
             $db->setQuery($query);
             $results = $db->loadAssocList("catid", "number");

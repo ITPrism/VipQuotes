@@ -76,6 +76,7 @@ function VipQuotesBuildRoute(&$query){
     	        
     	        break;
     	        
+    	        
 	        case "quote":
 	            
     	        $catId      = $query['catid'];
@@ -87,7 +88,7 @@ function VipQuotesBuildRoute(&$query){
 				unset($query['id']);
 	            unset($query['catid']);
     	        break;
-    	        
+	       
     	}
         
 	}
@@ -151,6 +152,11 @@ function VipQuotesParseRoute($segments){
 		JLoader::register("VipQuotesHelperRoute", JPATH_ADMINISTRATOR.DIRECTORY_SEPARATOR."components".DIRECTORY_SEPARATOR."com_vipquotes".DIRECTORY_SEPARATOR."helpers".DIRECTORY_SEPARATOR."route.php");
 		
 		switch($view) {
+		    
+		    case "category":
+		        
+                
+		        break;
 		        
 		    case "categories":
 		        

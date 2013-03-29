@@ -50,9 +50,11 @@ class VipQuotesViewCategory extends JView {
 			$category   = JCategories::getInstance('VipQuotes')->get($categoryId);
 			
             if(!$category->published){
-                throw new Exception(JText::_("ITP_ERROR_CATEGORY_DOES_NOT_EXIST"), 404);
+                throw new Exception(JText::_("COM_VIPQUOTES_ERROR_CATEGORY_DOES_NOT_EXIST"), 404);
             }
             
+        } else {
+            throw new Exception(JText::_("COM_VIPQUOTES_ERROR_CATEGORY_DOES_NOT_EXIST"), 404);
         }
        
         // Get search phrase
@@ -65,12 +67,49 @@ class VipQuotesViewCategory extends JView {
         $this->params     = $this->state->get("params");
         
         $this->category   = $category;
+        $this->userId     = JFactory::getUser()->get("id");
+        
+        $this->categories = array();
+        if($this->params->get("category_display_category", 1)) {
+            $this->categories = $this->get("Categories");
+        }
+        
+        $this->listView   = $this->params->get("category_list_view", "table");
         
         $this->version    = new VipQuotesVersion();
         
+        $this->prepareFilters();
         $this->prepareDocument();
         
+        // Prepare TMPL variable
+        $tmpl = $app->input->get->get("tmpl", "");
+        $this->tmplValue = "";
+        if(strcmp("component", $tmpl) == 0) {
+            $this->tmplValue = "&tmpl=component";
+        }
+        
         parent::display($tpl);
+    }
+    
+    protected function prepareFilters() {
+        
+        // Filters
+        $this->filterOrdering  = $this->params->get("category_display_filter_ordering", 0);
+        
+        if($this->filterOrdering) {
+            $this->displayFilters = true;
+        } else {
+            $this->displayFilters = false;
+        }
+        
+        if($this->filterOrdering) {
+            $this->orderingOptions    =  array(
+                array("value"=>'0', "text"=> JText::_("COM_VIPQUOTES_ORDER_OPTION_ORDERING")),
+                array("value"=>'1', "text"=> JText::_("COM_VIPQUOTES_ORDER_OPTION_ADDED_ASC")),
+                array("value"=>'2', "text"=> JText::_("COM_VIPQUOTES_ORDER_OPTION_ADDED_DESC")),
+            );
+        }
+        
     }
     
     /**
@@ -117,8 +156,13 @@ class VipQuotesViewCategory extends JView {
         }
         
         // Head styles
-        $this->document->addStyleSheet('media/'.$this->option.'/css/bootstrap.min.css');
-        $this->document->addStyleSheet('media/'.$this->option.'/css/style.css');
+        $this->document->addStyleSheet('media/'.$this->option.'/css/site/bootstrap.min.css');
+        $this->document->addStyleSheet('media/'.$this->option.'/css/site/style.css');
+        
+        // Add scripts
+        if($this->displayFilters) {
+		    $this->document->addScript('media/'.$this->option.'/js/site/'.strtolower($this->getName()).'.js');
+        }
     }
     
     private function prepearePageHeading() {

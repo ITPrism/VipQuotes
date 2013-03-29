@@ -1,5 +1,3 @@
-SET FOREIGN_KEY_CHECKS=0;
-
 CREATE TABLE IF NOT EXISTS `#__vq_authors` (
   `id` smallint(6) NOT NULL AUTO_INCREMENT,
   `name` varchar(128) NOT NULL,
@@ -24,8 +22,7 @@ CREATE TABLE IF NOT EXISTS `#__vq_pages` (
   `fans` int(11) unsigned NOT NULL DEFAULT '0',
   `type` varchar(32) NOT NULL DEFAULT '',
   `published` tinyint(1) unsigned NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `page_id` (`page_id`)
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Facebook pages';
 
 CREATE TABLE IF NOT EXISTS `#__vq_quotes` (
@@ -50,8 +47,5 @@ CREATE TABLE IF NOT EXISTS `#__vq_tabs` (
   `app_id` bigint(20) NOT NULL,
   `published` tinyint(1) unsigned NOT NULL DEFAULT '0',
   `page_id` bigint(20) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `idx_itpvp_page_id` (`page_id`)
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
-
-SET FOREIGN_KEY_CHECKS=1;

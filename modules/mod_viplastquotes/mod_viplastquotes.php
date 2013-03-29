@@ -14,6 +14,8 @@
 // no direct access
 defined( "_JEXEC" ) or die;
 
+JLoader::register("VipQuotesHelperRoute", JPATH_ADMINISTRATOR.DIRECTORY_SEPARATOR."components".DIRECTORY_SEPARATOR."com_vipquotes".DIRECTORY_SEPARATOR."helpers".DIRECTORY_SEPARATOR."route.php");
+
 $limit     = $params->get('number', 10);
 
 // Get random item from database
@@ -28,14 +30,18 @@ $query
 $db->setQuery($query, 0, $limit);
 $items = $db->loadObjectList();
 
-for($i = 0, $max = count($items); $i < $max; $i++) {
-    $items[$i]->quote = strip_tags($items[$i]->quote);
+if(!empty($items)) {
     
-    if ( $params->get('display_quotes', 1) ) {
-    	$items[$i]->quote = '"' . $items[$i]->quote . '"';
+    foreach($items as &$item) {
+        
+        $item->quote = strip_tags($item->quote);
+        
+        if ( $params->get('display_quotes', 1) ) {
+        	$item->quote = '"' . $item->quote . '"';
+        }
+        
+        $item->quote  = htmlentities($item->quote, ENT_QUOTES, "UTF-8");
     }
-    
-    $items[$i]->quote  = htmlentities($items[$i]->quote, ENT_QUOTES, "UTF-8");
 }
 
 require JModuleHelper::getLayoutPath('mod_viplastquotes', $params->get('layout', 'default'));

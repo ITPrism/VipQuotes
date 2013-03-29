@@ -1,33 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <config>
-    
-    <fieldset name="categories" label="COM_VIPQUOTES_CATEGORIES" description="COM_VIPQUOTES_CATEGORIES_PARAMS">
-        <field name="categories_order_by" type="list" default="0" label="COM_VIPQUOTES_ORDER_BY" description="COM_VIPQUOTES_ORDER_BY_DESC">
-            <option value="0">COM_VIPQUOTES_ORDERING</option>
-            <option value="1">COM_VIPQUOTES_DATE</option>
-            <option value="2">COM_VIPQUOTES_DATE_REVERSE</option>
-            <option value="3">COM_VIPQUOTES_NAME</option>
-        </field>
-        <field name="categories_display_counter" type="radio" default="0" label="COM_VIPQUOTES_COUNTER" description="COM_VIPQUOTES_COUNTER_DESC">
-            <option value="0">JNO</option>
-            <option value="1">JYES</option>
-        </field>
-        <field name="categories_breadcrumb" type="radio" default="0" label="COM_VIPQUOTES_BREADCRUMB" description="COM_VIPQUOTES_BREADCRUMB_DESC">
-            <option value="0">JNO</option>
-            <option value="1">JYES</option>
-        </field>
-        <field name="categories_limit" type="text" default="20" label="COM_VIPQUOTES_LIMIT" description="COM_VIPQUOTES_LIMIT_DESC" />
-    </fieldset>
-    
-    <fieldset name="quotes" label="COM_VIPQUOTES_CATEGORY" description="COM_VIPQUOTES_CATEGORY_PARAMS">
-        <field name="quotes_order_by" type="list" default="0" label="COM_VIPQUOTES_ORDER_BY" description="COM_VIPQUOTES_ORDER_BY_DESC">
-            <option value="0">COM_VIPQUOTES_ORDERING</option>
-            <option value="1">COM_VIPQUOTES_DATE</option>
-            <option value="2">COM_VIPQUOTES_DATE_REVERSE</option>
-        </field>
-        <field name="quotes_limit" type="text" default="20" label="COM_VIPQUOTES_LIMIT" description="COM_VIPQUOTES_LIMIT_DESC" />
-    </fieldset>
-    
     <fieldset name="quote" label="COM_VIPQUOTES_QUOTE" description="COM_VIPQUOTES_QUOTE_PARAMS">
         <field name="quote_display_hits" type="radio" default="1" label="COM_VIPQUOTES_DISPLAY_HITS" description="COM_VIPQUOTES_DISPLAY_HITS_DESC">
             <option value="0">JNO</option>
@@ -36,6 +8,27 @@
     </fieldset>
     
     <fieldset name="security" label="COM_VIPQUOTES_SECURITY" description="COM_VIPQUOTES_SECURITY_DESC">
+        <field
+            name="captcha"
+            type="plugins"
+            folder="captcha"
+            default=""
+            label="COM_VIPQUOTES_CAPTCHA"
+            description="COM_VIPQUOTES_CAPTCHA_DESC"
+            filter="cmd" >
+            <option
+                value="">JOPTION_USE_DEFAULT</option>
+            <option
+                value="0">JOPTION_DO_NOT_USE</option>
+        </field>
+        <field name="security_auto_publishing" type="radio" default="0" label="COM_VIPQUOTES_AUTO_PUBLISH" description="COM_VIPQUOTES_AUTO_PUBLISH_DESC">
+            <option value="0">JNO</option>
+            <option value="1">JYES</option>
+        </field>
+        <field name="security_send_mail" type="radio" default="0" label="COM_VIPQUOTES_SEND_MAIL" description="COM_VIPQUOTES_SEND_MAIL_DESC">
+            <option value="0">JNO</option>
+            <option value="1">JYES</option>
+        </field>
         <field name="security_check_quotes" type="radio" default="0" label="COM_VIPQUOTES_VERIFY" description="COM_VIPQUOTES_VERIFY_FORM_DESC">
             <option value="0">JNO</option>
             <option value="1">JYES</option>

@@ -46,13 +46,13 @@ class VipQuotesViewQuote extends JView {
         $this->userId     = JFactory::getUser()->get("id");
         
         if(!$this->item->published) {
-            throw new Exception(JText::_("ITP_ERROR_QUOTE_DOES_NOT_EXIST"), 404);
+            throw new Exception(JText::_("COM_VIPQUOTES_ERROR_QUOTE_DOES_NOT_EXIST"), 404);
         }
         
         // Checking for published category
 		$category         = JCategories::getInstance('VipQuotes')->get($this->item->catid);
         if(!$category->published){
-            throw new Exception(JText::_("ITP_ERROR_CATEGORY_DOES_NOT_EXIST"), 404);
+            throw new Exception(JText::_("COM_VIPQUOTES_ERROR_CATEGORY_DOES_NOT_EXIST"), 404);
         }
         
         $this->category   = $category; 
@@ -62,6 +62,13 @@ class VipQuotesViewQuote extends JView {
         $model->hit($this->item->id);
         
         $this->version        = new VipQuotesVersion();
+        
+        // Prepare TMPL variable
+        $tmpl = $app->input->get->get("tmpl", "");
+        $this->tmplValue = "";
+        if(strcmp("component", $tmpl) == 0) {
+            $this->tmplValue = "&tmpl=component";
+        }
         
         // Prepare document
         $this->prepareDocument();
@@ -112,8 +119,8 @@ class VipQuotesViewQuote extends JView {
         }
         
         // Head styles
-        $this->document->addStyleSheet('media/'.$this->option.'/css/bootstrap.min.css');
-        $this->document->addStyleSheet('media/'.$this->option.'/css/style.css');
+        $this->document->addStyleSheet('media/'.$this->option.'/css/site/bootstrap.min.css');
+        $this->document->addStyleSheet('media/'.$this->option.'/css/site/style.css');
     }
 
     private function prepearePageHeading() {

@@ -22,14 +22,20 @@ jimport('joomla.application.component.controllerform');
  * @package		ITPrism Components
  * @subpackage	VipQuotes
  */
-class VipQuotesControllerQuote extends JControllerForm {
+class VipQuotesControllerQuote extends VipQuotesControllerAdminForm {
     
-    // Check the table in so it can be edited.... we are done with it anyway
-    private $defaultLink = 'index.php?option=com_vipquotes';
+    
+	/**
+     * Proxy for getModel.
+     * @since   1.6
+     */
+    public function getModel($name = 'Quote', $prefix = 'VipQuotesModel', $config = array('ignore_request' => true)) {
+        $model = parent::getModel($name, $prefix, $config);
+        return $model;
+    }
     
     /**
      * Save an item
-     *
      */
     public function save(){
         
@@ -82,7 +88,14 @@ class VipQuotesControllerQuote extends JControllerForm {
         }
             
         try{
+            
+            // Verify for enabled magic quotes
+            if( get_magic_quotes_gpc() ) {
+                $validData["quote"] = stripcslashes($validData["quote"]);
+            }
+            
             $itemId = $model->save($validData);
+            
         } catch(Exception $e){
             throw new Exception( JText::_('COM_VIPQUOTES_ERROR_SYSTEM'), 500);
         }
@@ -92,46 +105,6 @@ class VipQuotesControllerQuote extends JControllerForm {
         $link = $this->prepareRedirectLink($itemId);
         $this->setRedirect(JRoute::_($link, false));
     
-    }
-    
-    /**
-     * Cancel operations
-     *
-     */
-    public function cancel(){
-        $link = $this->prepareRedirectLink();
-        $this->setRedirect(JRoute::_($link, false));
-    }
-    
-    /**
-     * 
-     * Prepare return link
-     * @param integer $itemId
-     */
-    protected function prepareRedirectLink($itemId = 0) {
-        
-        $task = $this->getTask();
-        $link = $this->defaultLink;
-        
-        // Prepare redirection
-        switch($task) {
-            case "apply":
-                $link .= "&view=".$this->view_item."&layout=edit";
-                if(!empty($itemId)) {
-                    $link .= "&id=" . (int)$itemId; 
-                }
-                break;
-                
-            case "save2new":
-                $link .= "&view=".$this->view_item."&layout=edit";
-                break;
-                
-            default:
-                $link .= "&view=".$this->view_list;
-                break;
-        }
-        
-        return $link;
     }
     
 }

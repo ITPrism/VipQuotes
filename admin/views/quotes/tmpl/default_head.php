@@ -27,6 +27,9 @@ defined('_JEXEC') or die;
     <th width="10%">
 	     <?php echo JText::_('COM_VIPQUOTES_USER'); ?>
     </th>
+    <th width="5%">
+        <?php echo JHtml::_('grid.sort',  'COM_VIPQUOTES_HITS', 'a.hits', $this->listDirn, $this->listOrder); ?>
+    </th>
 	<th width="10%">
 		<?php echo JHtml::_('grid.sort',  'COM_VIPQUOTES_DATE', 'a.created', $this->listDirn, $this->listOrder); ?>
 	</th>

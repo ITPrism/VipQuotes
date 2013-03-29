@@ -79,6 +79,19 @@ class VipQuotesViewQuotes extends JView {
         JToolBarHelper::publishList("quotes.publish");
         JToolBarHelper::unpublishList("quotes.unpublish");
         JToolBarHelper::divider();
+        
+        // Add custom buttons
+		$bar = JToolBar::getInstance('toolbar');
+		
+		// Import
+		$link = JRoute::_('index.php?option=com_vipquotes&view=import');
+		$bar->appendButton('Link', 'upload', JText::_("COM_VIPQUOTES_IMPORT"), $link);
+		
+		// Export
+		$link = JRoute::_('index.php?option=com_vipquotes&task=export.download&format=raw');
+		$bar->appendButton('Link', 'export', JText::_("COM_VIPQUOTES_EXPORT"), $link);
+		JToolBarHelper::divider();
+		
         JToolBarHelper::deleteList(JText::_("COM_VIPQUOTES_DELETE_ITEMS_QUESTION"), "quotes.delete");
         JToolBarHelper::divider();
         JToolBarHelper::custom('quotes.backToDashboard', "vip-dashboard-back", "", JText::_("COM_VIPQUOTES_BACK_DASHBOARD"), false);

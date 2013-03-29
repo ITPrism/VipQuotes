@@ -18,6 +18,8 @@ jimport('joomla.application.component.modellist');
 
 class VipQuotesModelCategory extends JModelList {
     
+    protected $categories = null;
+    
     /**
      * Constructor.
      *
@@ -55,18 +57,29 @@ class VipQuotesModelCategory extends JModelList {
         $this->setState('params', $params);
         
         // Set limit
-        $limit              = $params->get("quotes_limit", $app->getCfg('list_limit', 20));
-        $this->setState('list.limit', $limit);
+        $value             = $params->get("category_quotes_limit", $app->getCfg('list_limit', 20));
+        $this->setState('list.limit', $value);
         
         // Set limitstart
-        $limitstart = $app->input->getInt('limitstart', 0);
-        $this->setState('list.start', $limitstart);
+        $value             = $app->input->getInt('limitstart', 0);
+        $this->setState('list.start', $value);
         
         // Set the category id
         $this->setState('filter.catid', $app->input->getInt('id'));
         
+        // Filters
+        
+        // Ordering
+        $displeyFilterOrdering = $params->get("category_display_filter_ordering", 0);
+        if($displeyFilterOrdering) {
+            $filterOrdering = $app->getUserStateFromRequest($this->context."filter.ordering", "filter_ordering", 0);
+        } else {
+            $filterOrdering = $params->get("category_quotes_order_by", 0);
+        }
+        $this->setState('filter.ordering', $filterOrdering);
+
         // Ordering state
-        $this->prepareOrderingState($params);
+        $this->prepareOrderingState($filterOrdering);
         
     }
     
@@ -106,7 +119,7 @@ class VipQuotesModelCategory extends JModelList {
             $this->getState(
             'list.select', 
             'a.id, a.quote, a.hits, a.created, a.published, ' .
-            'a.catid, a.ordering, a.user_id '
+            'a.catid, a.ordering, a.user_id'
         ));
         
         $query->from('#__vq_quotes AS a');
@@ -116,22 +129,27 @@ class VipQuotesModelCategory extends JModelList {
         
         // Filter by a single or group of categories
         $categoryId = intval($this->getState('filter.catid'));
-        
         if(!empty($categoryId)){
             $query->where('a.catid = ' . (int)$categoryId);
         }
         
         // Add the list ordering clause.
-        $query->order($this->getState('list.ordering', 'a.ordering') . ' ' . $this->getState('list.direction', 'ASC'));
+        $orderString = $this->getOrderString();
+        $query->order($db->escape($orderString));
         
         return $query;
     }
     
-    protected function prepareOrderingState($params) {
+    /**
+     * 
+     * Prepare a string used for ordering results
+     * @param integer $filterOrdering
+     */
+    protected function prepareOrderingState($filterOrdering) {
         
         $listOrder = 'ASC';
         
-        switch($params->get("quotes_order_by", 0)) {
+        switch($filterOrdering) {
             case 1:
                 $orderCol  = "a.created";
                 break;
@@ -141,6 +159,10 @@ class VipQuotesModelCategory extends JModelList {
                 $listOrder = "DESC";
                 break;
 
+            case 3:
+                $orderCol = "b.name";
+                break;
+                
             default:
                 $orderCol = "a.ordering";
                 break;
@@ -157,7 +179,37 @@ class VipQuotesModelCategory extends JModelList {
         
     }
     
-    public function getStart(){
-        return $this->getState('list.start');
+    public function getCategories() {
+        
+        if( is_null($this->categories) ) {
+            
+            $db     = $this->getDbo();
+            /** @var $db JDatabaseMySQLi **/
+            
+            // Create a new query object.
+            $query  = $db->getQuery(true);
+    
+            // Select the required fields from the table.
+            $query
+                ->select('a.id, a.title, a.alias')
+                ->from($db->quoteName("#__categories") . ' AS a')
+                ->where('a.extension = "com_vipquotes"')
+                ->where('a.published = 1');
+    
+            $db->setQuery($query);
+            $this->categories = $db->loadAssocList("id");
+            
+        }
+        
+        return $this->categories;
     }
+    
+    protected function getOrderString() {
+        
+        $orderCol   = $this->getState('list.ordering');
+        $orderDirn  = $this->getState('list.direction');
+        
+        return $orderCol.' '.$orderDirn;
+    }
+    
 }

@@ -31,7 +31,7 @@ class JFormFieldVqCategories extends JFormFieldList {
      * @var     string
      * @since   1.6
      */
-    protected $type = 'VqCategories';
+    protected $type = 'vqcategories';
     
     /**
      * Method to get the field options.

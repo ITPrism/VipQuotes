@@ -62,11 +62,14 @@ class VipQuotesViewDashboard extends JView {
 	 */
 	protected function setDocument() {
 	    
+	    $this->document->setTitle(JText::_('COM_VIPQUOTES_DASHBOARD_ADMINISTRATION'));
+	    
+	    // Styles
+	    $this->document->addStyleSheet('../media/'.$this->option.'/css/admin/bootstrap.min.css');
+	    
+	    // Scripts
 	    JHtml::_('behavior.modal', 'a.modal');
 	    
-	    $this->document->addStyleSheet('../media/'.$this->option.'/css/bootstrap.min.css');
-		$this->document->setTitle(JText::_('COM_VIPQUOTES_DASHBOARD_ADMINISTRATION'));
-		
 	}
 	
 }

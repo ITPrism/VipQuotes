@@ -13,24 +13,15 @@
 
 // no direct access
 defined('_JEXEC') or die;
-
 ?>
 <div class="itp-vq<?php echo $this->pageclass_sfx;?>">
     <?php if ($this->params->get('show_page_heading', 1)) { ?>
     <h1><?php echo $this->escape($this->params->get('page_heading')); ?></h1>
     <?php } ?>
     
-    <div class="row-fluid vp_header">
-        <div class="span12"><?php echo JText::_("COM_VIPQUOTES_QUOTE");?></div>
-    </div>
-    <?php foreach($this->items as $item) {?>
-    <div class="row-fluid">
-        <div class="span12">
-            <a href="<?php echo JRoute::_(VipQuotesHelperRoute::getQuoteRoute($item->id, $item->catid));?>"><?php echo $item->quote?></a>
-        </div>
-    </div>
-	<?php }?>
-    <div class="clr">&nbsp;</div>
+    <?php echo $this->loadTemplate($this->listView);?>
+    
+    <div class="clearfix">&nbsp;</div>
     <div class="pagination">
     
         <?php if ($this->params->def('show_pagination_results', 1)) : ?>
@@ -41,6 +32,6 @@ defined('_JEXEC') or die;
     
         <?php echo $this->pagination->getPagesLinks(); ?>
     </div>
-    <div class="clr">&nbsp;</div>
+    <div class="clearfix">&nbsp;</div>
 </div>
 <?php echo $this->version->backlink; ?>

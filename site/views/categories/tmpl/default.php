@@ -24,11 +24,11 @@ defined('_JEXEC') or die;?>
     		    $categoryImage = JArrayHelper::getValue($categoryParams, "image");
     		    if($categoryImage) {
     		?>
-    		<a href="<?php echo JRoute::_(VipQuotesHelperRoute::getCategoryRoute($item->id)); ?>">
+    		<a href="<?php echo JRoute::_(VipQuotesHelperRoute::getCategoryRoute($item->id).$this->tmplValue); ?>">
     		<img src="<?php echo $categoryImage;?>" alt="<?php echo $item->title;?>" />
     		</a><br />
     		<?php } ?>
-    		<a href="<?php echo JRoute::_(VipQuotesHelperRoute::getCategoryRoute($item->id)); ?>">
+    		<a href="<?php echo JRoute::_(VipQuotesHelperRoute::getCategoryRoute($item->id).$this->tmplValue); ?>">
     		<?php echo $item->title;?>
     		<?php if($this->displayCounter) {
     		    $number = JArrayHelper::getValue($this->numbers, $item->id);
