@@ -161,6 +161,7 @@ class VipQuotesViewCategory extends JView {
         
         // Add scripts
         if($this->displayFilters) {
+            JHTML::_('behavior.framework');
 		    $this->document->addScript('media/'.$this->option.'/js/site/'.strtolower($this->getName()).'.js');
         }
     }

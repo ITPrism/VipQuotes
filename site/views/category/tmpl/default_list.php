@@ -25,9 +25,6 @@ if($displayCategory OR $displayDate) {
 <?php foreach($this->items as $item) {?>
 <div class="row-fluid vq-row">
     <div class="span12">
-        <?php if(!empty($this->userId) AND ( $this->userId == $item->user_id)) {?>
-    	<a href="<?php echo JRoute::_(VipQuotesHelperRoute::getFormRoute($item->id));?>" class="itp_edit_icon" ><img src="media/com_vipquotes/images/icon_edit_16.png" alt="<?php echo JText::_("JGLOBAL_EDIT");?>" /></a>
-        <?php }?>
         <a href="<?php echo JRoute::_(VipQuotesHelperRoute::getQuoteRoute($item->id, $item->catid).$this->tmplValue);?>"><?php echo $item->quote?></a>
     </div>
     
