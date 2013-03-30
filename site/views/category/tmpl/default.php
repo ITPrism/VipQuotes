@@ -19,6 +19,9 @@ defined('_JEXEC') or die;
     <h1><?php echo $this->escape($this->params->get('page_heading')); ?></h1>
     <?php } ?>
     
+    <?php if($this->displayFilters) {
+        echo $this->loadTemplate("filters");
+    }?>
     <?php echo $this->loadTemplate($this->listView);?>
     
     <div class="clearfix">&nbsp;</div>
