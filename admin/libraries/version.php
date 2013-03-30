@@ -47,7 +47,7 @@ class VipQuotesVersion {
      * 
      * @var integer
      */
-    public $releaseType  = 'Pro';
+    public $releaseType  = 'Lite';
     
     /**
      * Development Status

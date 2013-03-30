@@ -113,8 +113,6 @@ class VipQuotesModelImport extends JModelForm {
         
         if(!empty($data)) {
             
-            $authors = VipQuotesHelper::getAuthors();
-            
             $items  = array();
             $db     = JFactory::getDbo();
             $userId = JFactory::getUser()->id;
@@ -126,25 +124,8 @@ class VipQuotesModelImport extends JModelForm {
                     continue;
                 }
                 
-                $author   = JString::trim( JArrayHelper::getValue($data[$i], 1) );
-                $authorId = array_search($author, $authors);
-                
-                if(!$authorId){
-                    $authorTable        = $this->getTable("Author", "VipQuotesTable");
-                    $authorTable->name  = $author;
-                    $authorTable->alias = JApplication::stringURLSafe($author);
-                    
-                    $authorTable->store();
-                    $authorId = $authorTable->id;
-                    
-                    // Add the new author to the list with others
-                    $authors[$authorId] = $author;
-                }
-                
                 $table            = $this->getTable("Quote", "VipQuotesTable");
                 $table->quote     = $quote;
-                $table->user_id   = (int)$userId;
-                $table->author_id = (int)$authorId;
                 $table->store();
                 
             }
