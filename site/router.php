@@ -46,7 +46,7 @@ function VipQuotesBuildRoute(&$query){
 		if (empty($query['Itemid']) OR ($mOption !== "com_vipquotes")) {
 			$segments[] = $query['view'];
 		}
-
+        unset($query['view']);
 	};
     
     // are we dealing with a category or author that is attached to a menu item?
