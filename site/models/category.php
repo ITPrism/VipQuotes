@@ -119,7 +119,7 @@ class VipQuotesModelCategory extends JModelList {
             $this->getState(
             'list.select', 
             'a.id, a.quote, a.hits, a.created, a.published, ' .
-            'a.catid, a.ordering, a.user_id'
+            'a.catid, a.ordering'
         ));
         
         $query->from('#__vq_quotes AS a');

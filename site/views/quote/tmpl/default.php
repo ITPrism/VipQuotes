@@ -13,7 +13,6 @@
 
 // no direct access
 defined('_JEXEC') or die;
-$formItemId = (!empty($this->formItemId)) ? "&Itemid=".$this->formItemId : ""; 
 ?>
 <div class="itp-vq<?php echo $this->pageclass_sfx;?>">
     <?php if ($this->params->get('show_page_heading', 1)) { ?>

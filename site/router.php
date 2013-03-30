@@ -47,10 +47,6 @@ function VipQuotesBuildRoute(&$query){
 			$segments[] = $query['view'];
 		}
 
-		// We need to keep the view for forms since they never have their own menu item
-		if ($view != 'form') {
-			unset($query['view']);
-		}
 	};
     
     // are we dealing with a category or author that is attached to a menu item?

@@ -81,29 +81,6 @@ abstract class VipQuotesHelperRoute {
 	}
 
 	/**
-	 * @param	int		$id		The id of the weblink.
-	 * @param	string	$return	The return page variable.
-	 */
-	public static function getFormRoute($id) {
-	    
-		$needles = array(
-			'form'   => array(0)
-		);
-
-		//Create the link
-		$link = 'index.php?option=com_vipquotes&view=form&id='. $id;
-
-		// Looking for menu item (Itemid)
-		if ($item = self::_findItem($needles)) {
-			$link .= '&Itemid='.$item;
-		} elseif ($item = self::_findItem()) { // Get the menu item (Itemid) from the active (current) item.
-			$link .= '&Itemid='.$item;
-		}
-
-		return $link;
-	}
-
-	/**
 	 * 
 	 * Routing a link for category or categories view
 	 * @param integer $catid

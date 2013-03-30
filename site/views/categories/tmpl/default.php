@@ -39,7 +39,7 @@ defined('_JEXEC') or die;?>
     	</div>
     <?php }?>
     
-    <div class="clr">&nbsp;</div>
+    <div class="clearefix">&nbsp;</div>
     <div class="pagination">
     
         <?php if ($this->params->def('show_pagination_results', 1)) : ?>
@@ -50,6 +50,6 @@ defined('_JEXEC') or die;?>
     
         <?php echo $this->pagination->getPagesLinks(); ?>
     </div>
-    <div class="clr">&nbsp;</div>
+    <div class="clearefix">&nbsp;</div>
 </div>
 <?php echo $this->version->backlink; ?>
