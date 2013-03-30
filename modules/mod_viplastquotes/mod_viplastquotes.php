@@ -14,8 +14,6 @@
 // no direct access
 defined( "_JEXEC" ) or die;
 
-JLoader::register("VipQuotesHelperRoute", JPATH_ADMINISTRATOR.DIRECTORY_SEPARATOR."components".DIRECTORY_SEPARATOR."com_vipquotes".DIRECTORY_SEPARATOR."helpers".DIRECTORY_SEPARATOR."route.php");
-
 $limit     = $params->get('number', 10);
 
 // Get random item from database
