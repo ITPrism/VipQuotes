@@ -34,15 +34,16 @@ function VipQuotesBuildRoute(&$query){
         $menuItem = $menu->getItem($query['Itemid']);
     }
     
-    $mView	= (empty($menuItem->query['view']))   ? null : $menuItem->query['view'];
-	$mCatid	= (empty($menuItem->query['catid']))  ? null : $menuItem->query['catid'];
-	$mId	= (empty($menuItem->query['id']))     ? null : $menuItem->query['id'];
+    $mView	= (empty($menuItem->query['view']))       ? null : $menuItem->query['view'];
+	$mCatid	= (empty($menuItem->query['catid']))      ? null : $menuItem->query['catid'];
+	$mId	= (empty($menuItem->query['id']))         ? null : $menuItem->query['id'];
+	$mOption = (empty($menuItem->query['option']))    ? null : $menuItem->query['option'];
 
 	// If is set view and Itemid missing, we have to put the view to the segments
 	if (isset($query['view'])) {
 		$view = $query['view'];
 		
-		if (empty($query['Itemid'])) {
+		if (empty($query['Itemid']) OR ($mOption !== "com_vipquotes")) {
 			$segments[] = $query['view'];
 		}
 
