@@ -15,6 +15,11 @@ defined('_JEXEC') or die;
 
 jimport('joomla.application.categories');
 
+// Load router
+if(!class_exists("VipQuotesHelperRoute")) {
+    JLoader::register("VipQuotesHelperRoute", JPATH_SITE.DIRECTORY_SEPARATOR."components".DIRECTORY_SEPARATOR."com_vipquotes".DIRECTORY_SEPARATOR."helpers" . DIRECTORY_SEPARATOR . "route.php");
+}
+
 /**
  * Method to build Route
  * @param array $query
@@ -34,10 +39,10 @@ function VipQuotesBuildRoute(&$query){
         $menuItem = $menu->getItem($query['Itemid']);
     }
     
+    $mOption = (empty($menuItem->query['option']))    ? null : $menuItem->query['option'];
     $mView	= (empty($menuItem->query['view']))       ? null : $menuItem->query['view'];
 	$mCatid	= (empty($menuItem->query['catid']))      ? null : $menuItem->query['catid'];
 	$mId	= (empty($menuItem->query['id']))         ? null : $menuItem->query['id'];
-	$mOption = (empty($menuItem->query['option']))    ? null : $menuItem->query['option'];
 
 	// If is set view and Itemid missing, we have to put the view to the segments
 	if (isset($query['view'])) {
@@ -76,14 +81,22 @@ function VipQuotesBuildRoute(&$query){
     	        
 	        case "quote":
 	            
-    	        $catId      = $query['catid'];
-    	        VipQuotesHelperRoute::prepareCategoriesSegments($catId, $segments, $mId);
-    	        
+    	        if(!isset($query['catid'])) {
+	                if($menuItem->query["view"] == "category") {
+	                    $catId  = $menuItem->query["id"];
+	                }
+	            } else {
+        	        $catId      = $query['catid'];
+	            }
+	            
+	            VipQuotesHelperRoute::prepareCategoriesSegments($catId, $segments, $mId);
+	            
     	        $id = $query['id'];
 				$segments[] = $id;
 				
 				unset($query['id']);
 	            unset($query['catid']);
+	            
     	        break;
 	       
     	}
@@ -119,8 +132,6 @@ function VipQuotesParseRoute($segments){
     $menu       = $app->getMenu();
     $item       = $menu->getActive();
     
-    $db         = JFactory::getDBO();
-    
     // Count route segments
     $count      = count($segments);
     
@@ -137,68 +148,79 @@ function VipQuotesParseRoute($segments){
 	// then we assume it is a category.  If they don't we assume it is an quote
 	if ($count == 1) {
 	    
-	    $view = $item->query["view"];
+	    // We check if it is a quote.
+	    // Only quotes ids are true numeric.
+	    // So, it is a quote.
+	    if(is_numeric($segments[0])) {
+	        
+	       $id = $segments[0];
+	        
+	       $quote = VipQuotesHelperRoute::getQuote($id);
+	       if ($quote) {
+	           $vars['view']   = 'quote';
+	           $vars['catid']  = (int)$quote->catid;
+	           $vars['id']     = (int)$id;
+	       
+	           return $vars;
+	       }
+	       
+	    }
 	    
-		// we check to see if an alias is given.  If not, we assume it is an quote
-		if (false === strpos($segments[0], ':')) {
-			$vars['view'] = 'quote';
-			$vars['id']   = (int)$segments[0];
-			return $vars;
-		}
-
-		JLoader::register("VipQuotesHelperRoute", JPATH_ADMINISTRATOR.DIRECTORY_SEPARATOR."components".DIRECTORY_SEPARATOR."com_vipquotes".DIRECTORY_SEPARATOR."helpers".DIRECTORY_SEPARATOR."route.php");
-		
-		switch($view) {
-		    
-		    case "category":
-		        
-                
-		        break;
-		        
-		    case "categories":
-		        
-        		list($id, $alias) = explode(':', $segments[0], 2);
-        
-        		// First we check if it is a category
-        		$category = JCategories::getInstance('VipQuotes')->get($id);
-        
-        		if ($category && $category->alias == $alias) {
-        			$vars['view'] = 'category';
-        			$vars['id']   = $id;
-        
-        			return $vars;
-        			
-        		} 
-        		
-        		// Second we check if it is a quote
-    		    $quote = VipQuotesHelperRoute::getQuote($id);
-    			if ($quote) {
-    				$vars['view']   = 'quote';
-    				$vars['catid']  = (int)$quote->catid;
-    				$vars['id']     = (int)$id;
-    
-    				return $vars;
-    			}
-        		
-		        break;
-		}
+	    list($id, $alias) = explode(':', $segments[0], 2);
+	    
+	    // First we check if it is a category
+	    $category = JCategories::getInstance('VipQuotes')->get($id);
+	    if ($category && $category->alias == $alias) {
+	        $vars['view'] = 'category';
+	        $vars['id']   = $id;
+	    
+	        return $vars;
+	         
+	    }
 		
 	}
 	
+    // COUNT >= 2
 	
-    // if there was more than one segment, then we can determine where the URL points to
-	// because the first segment will have the target category id prepended to it.  If the
-	// last segment has a number prepended, it is an quote, otherwise, it is a category.
-	$catId     = (int)$segments[0];
-	$quoteId   = (int)$segments[$count - 1];
+	if($count >= 2) {
+	     
+	    // We check if it is a quote.
+	    // Only quotes ids are true numeric.
+	    // So, it is a quote.
+	    if(is_numeric($segments[$count-1])) {
 
-	if ($quoteId > 0) {
-		$vars['view']   = 'quote';
-		$vars['catid']  = $catId;
-		$vars['id']     = $quoteId;
-	} else {
-		$vars['view']   = 'category';
-		$vars['id']     = $catId;
+	        $id = $segments[$count-1];
+	        
+	        $quote = VipQuotesHelperRoute::getQuote($id);
+	        if ($quote) {
+	            $vars['view']   = 'quote';
+	            $vars['catid']  = (int)$quote->catid;
+	            $vars['id']     = (int)$id;
+	             
+	            return $vars;
+	        }
+	        
+	    }
+	    
+	    list($id, $alias) = explode(':', $segments[$count-1], 2);
+	    
+	    // First we check if it is a category
+	    $category = JCategories::getInstance('VipQuotes')->get($id);
+	    if ($category && $category->alias == $alias) {
+	        $vars['view'] = 'category';
+	        $vars['id']   = $id;
+	         
+	        return $vars;
+	    }
+	    
+        // Check for author
+        $author = VipQuotesHelperRoute::getAuthor($id);
+        if(!empty($author) AND ($author->alias == $alias)) {
+            $vars['view'] = 'author';
+            $vars['id']   = (int)$id;
+            return $vars;
+        }
+	             
 	}
 
     return $vars;

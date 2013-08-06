@@ -22,7 +22,7 @@ defined('_JEXEC') or die;
 	     <?php echo JHtml::_('grid.sort',  'COM_VIPQUOTES_QUOTE', 'a.quote', $this->listDirn, $this->listOrder); ?>
 	</th>
 	<th width="10%">
-	     <?php echo JText::_('JCATEGORY'); ?>
+	     <?php echo JHtml::_('grid.sort',  'JCATEGORY', 'b.title', $this->listDirn, $this->listOrder); ?>
     </th>
     <th width="5%">
         <?php echo JHtml::_('grid.sort',  'COM_VIPQUOTES_HITS', 'a.hits', $this->listDirn, $this->listOrder); ?>

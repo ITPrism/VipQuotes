@@ -28,7 +28,7 @@ class VipQuotesController extends JController {
     
 	public function __construct($config = array())	{
 		parent::__construct($config);
-        $this->option = JFactory::getApplication()->input->get("option", "com_vipquotes", "GET");
+        $this->option = JFactory::getApplication()->input->get("option", "com_vipquotes", "get");
 	}
 	
 	public function display( ) {

@@ -14,7 +14,7 @@
 // No direct access
 defined('_JEXEC') or die;
 
-jimport('joomla.application.component.controllerform');
+jimport('itprism.controller.form.backend');
 
 /**
  * Quote controller class.
@@ -22,7 +22,7 @@ jimport('joomla.application.component.controllerform');
  * @package		ITPrism Components
  * @subpackage	VipQuotes
  */
-class VipQuotesControllerQuote extends VipQuotesControllerAdminForm {
+class VipQuotesControllerQuote extends ITPrismControllerFormBackend {
     
     
 	/**
@@ -44,10 +44,13 @@ class VipQuotesControllerQuote extends VipQuotesControllerAdminForm {
         $app = JFactory::getApplication();
         /** @var $app JAdministrator **/
         
-        $msg     = "";
-        $link    = "";
         $data    = $app->input->post->get('jform', array(), 'array');
         $itemId  = JArrayHelper::getValue($data, "id");
+        
+        $redirectOptions = array(
+            "task" => $this->getTask(),
+            "id"   => $itemId
+        );
         
         $model   = $this->getModel();
         /** @var $model VipQuotesModelQuote **/
@@ -64,10 +67,7 @@ class VipQuotesControllerQuote extends VipQuotesControllerAdminForm {
         
         // Check for errors.
         if($validData === false){
-            $this->setMessage($model->getError(), "notice");
-            
-            $link = $this->prepareRedirectLink($itemId);
-            $this->setRedirect(JRoute::_($link, false));
+            $this->displayNotice($form->getErrors(), $redirectOptions);
             return;
         }
        
@@ -77,12 +77,14 @@ class VipQuotesControllerQuote extends VipQuotesControllerAdminForm {
         // Check for duplications
         if($params->get("quotes_check_quotes")) {
             $quote = JArrayHelper::getValue($data, "quote");
+            
             if($model->hasDuplication($quote, $itemId)) {
                 
-                $this->setMessage(JText::_('COM_VIPQUOTES_ERROR_DUPLICATION'), "notice");
+                $redirectOptions = array(
+                    "view" => "quotes",
+                );
                 
-                $link = $this->prepareRedirectLink($itemId);
-                $this->setRedirect(JRoute::_($link, false));
+                $this->displayNotice(JText::_('COM_VIPQUOTES_ERROR_DUPLICATION'), $redirectOptions);
                 return;
             }
         }
@@ -91,19 +93,19 @@ class VipQuotesControllerQuote extends VipQuotesControllerAdminForm {
             
             // Verify for enabled magic quotes
             if( get_magic_quotes_gpc() ) {
-                $validData["quote"] = stripcslashes($validData["quote"]);
+                $validData["quote"] = stripslashes($validData["quote"]);
             }
             
             $itemId = $model->save($validData);
             
+            $redirectOptions["id"] = $itemId;
+            
         } catch(Exception $e){
-            throw new Exception( JText::_('COM_VIPQUOTES_ERROR_SYSTEM'), 500);
+            JLog::add($e->getMessage());
+            throw new Exception( JText::_('COM_VIPQUOTES_ERROR_SYSTEM'), ITPrismErrors::CODE_ERROR);
         }
         
-        $this->setMessage(JText::_('COM_VIPQUOTES_QUOTE_SAVED'), "message");
-
-        $link = $this->prepareRedirectLink($itemId);
-        $this->setRedirect(JRoute::_($link, false));
+        $this->displayMessage(JText::_('COM_VIPQUOTES_QUOTE_SAVED'), $redirectOptions);
     
     }
     

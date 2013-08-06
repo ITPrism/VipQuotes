@@ -13,14 +13,6 @@
 
 // no direct access
 defined('_JEXEC') or die;
-$displayCategory     = $this->params->get("category_display_category", 1);
-$displayDate         = $this->params->get("category_display_date", 0);
-
-if($displayCategory OR $displayDate) {
-    $displayInfo = true;
-} else {
-    $displayInfo = false;
-}
 ?>
 <div class="row-fluid vp_header">
     <div class="span12"><?php echo JText::_("COM_VIPQUOTES_QUOTE");?></div>
@@ -32,22 +24,15 @@ if($displayCategory OR $displayDate) {
             <a href="<?php echo JRoute::_(VipQuotesHelperRoute::getQuoteRoute($item->id, $item->catid).$this->tmplValue);?>"><?php echo $item->quote?></a>
         </div>
     </div>
-    
-    <?php if($displayInfo) {?>
+        
+    <?php if($this->displayInfo) {?>
     <div class="row-fluid vq-info-row">
-        <?php if($displayDate) { ?>
-         <div class="span4">
-         <?php $date = JHTML::_('date', $item->created, JText::_('DATE_FORMAT_LC3'));
-         echo JText::sprintf("COM_VIPQUOTES_PUBLISHED_ON_S", $date);?>
-         </div>
-        <?php }?>
-        
-        <?php if($displayCategory AND isset($this->categories[$item->catid])) { ?>
-         <div class="span4">
-             <?php echo JText::_("COM_VIPQUOTES_CATEGORY"); ?> : <a href="<?php echo JRoute::_(VipQuotesHelperRoute::getCategoryRoute($item->catid).$this->tmplValue);?>"><?php echo JArrayHelper::getValue($this->categories[$item->catid], "title");?></a>
-         </div>
-        <?php }?>
-        
+        <div class="span12">
+        <?php 
+        $categoryTitle = JArrayHelper::getValue($this->categories[$item->catid], "title");
+        echo Jhtml::_("vipquotes.information", $item, $categoryTitle, $this->displayCategory, $this->displayDate, null, $this->displayHits, $this->tmplValue);
+        ?>
+        </div>
     </div>
     <?php }?>
 </div>

@@ -1,13 +1,14 @@
 CREATE TABLE IF NOT EXISTS `#__vq_authors` (
   `id` smallint(6) NOT NULL AUTO_INCREMENT,
   `name` varchar(128) NOT NULL,
+  `alias` varchar(64) NOT NULL,
   `bio` text,
-  `image` varchar(24) NOT NULL DEFAULT '',
-  `thumb` varchar(24) NOT NULL DEFAULT '',
-  `alias` varchar(128) NOT NULL,
+  `image` varchar(32) DEFAULT NULL,
+  `thumb` varchar(32) DEFAULT NULL,
+  `copyright` varchar(1024) DEFAULT NULL,
   `hits` smallint(5) unsigned NOT NULL DEFAULT '0',
   `ordering` tinyint(3) unsigned NOT NULL DEFAULT '0',
-  `published` tinyint(1) unsigned NOT NULL DEFAULT '1',
+  `published` tinyint(1) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `alias` (`alias`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;

@@ -18,8 +18,6 @@ jimport('joomla.application.component.modellist');
 
 class VipQuotesModelCategory extends JModelList {
     
-    protected $categories = null;
-    
     /**
      * Constructor.
      *
@@ -177,31 +175,6 @@ class VipQuotesModelCategory extends JModelList {
         }
         $this->setState('list.direction', $listOrder);
         
-    }
-    
-    public function getCategories() {
-        
-        if( is_null($this->categories) ) {
-            
-            $db     = $this->getDbo();
-            /** @var $db JDatabaseMySQLi **/
-            
-            // Create a new query object.
-            $query  = $db->getQuery(true);
-    
-            // Select the required fields from the table.
-            $query
-                ->select('a.id, a.title, a.alias')
-                ->from($db->quoteName("#__categories") . ' AS a')
-                ->where('a.extension = "com_vipquotes"')
-                ->where('a.published = 1');
-    
-            $db->setQuery($query);
-            $this->categories = $db->loadAssocList("id");
-            
-        }
-        
-        return $this->categories;
     }
     
     protected function getOrderString() {

@@ -14,18 +14,18 @@
 // no direct access
 defined('_JEXEC') or die;
 ?>
-<div class="itp-vq<?php echo $this->pageclass_sfx;?>">
+<div class="vq-quote<?php echo $this->pageclass_sfx;?>">
     <?php if ($this->params->get('show_page_heading', 1)) { ?>
     <h1><?php echo $this->escape($this->params->get('page_heading')); ?></h1>
     <?php } ?>
     <?php if($this->params->get("quote_display_hits", 0)) {?>
-	<dl class="article-info">
-        <dd class="hits"><?php echo JText::sprintf("COM_VIPQUOTES_HITS", $this->item->hits);?></dd>
-    </dl>
+	<div class="vq-hits"><?php echo JText::sprintf("COM_VIPQUOTES_HITS", $this->item->hits);?></div>
     <?php }?>
 
+    <?php echo $this->item->event->onContentBeforeDisplay;?>
 	<blockquote>
-    	<?php echo $this->item->quote; ?>
+		<?php echo $this->item->quote; ?>
 	</blockquote>   
+	<?php echo $this->item->event->onContentAfterDisplay;?>
 </div>
 <?php echo $this->version->backlink; ?>

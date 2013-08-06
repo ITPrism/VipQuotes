@@ -34,6 +34,39 @@ abstract class VipQuotesHelperRoute {
 	protected static $lookup;
 
 	/**
+	 * This method route item in the view "quotes".
+	 */
+	public static function getQuotesRoute() {
+	
+	    /**
+	     *
+	     * # category
+	     * We will check for view category first. If find a menu item with view "category" and "id" eqallity of the key,
+	     * we will get that menu item ( Itemid ).
+	     *
+	     * # categories view
+	     * If miss a menu item with view "category" we continue with searchin but now for view "categories".
+	     * It is assumed view "categories" will be in the first level of the menu.
+	     * The view "categories" won't contain category ID so it has to contain 0 for ID key.
+	     */
+	    $needles = array(
+	            'quotes' => array(0),
+	    );
+	
+	    //Create the link
+	    $link = 'index.php?option=com_vipquotes&view=quotes';
+	
+	    // Looking for menu item (Itemid)
+	    if ($item = self::_findItem($needles)) {
+	        $link .= '&Itemid='.$item;
+	    } elseif ($item = self::_findItem()) { // Get the menu item (Itemid) from the active (current) item.
+	        $link .= '&Itemid='.$item;
+	    }
+	
+	    return $link;
+	}
+	
+	/**
 	 * This method route quote in the view "category".
 	 * 
 	 * @param	int	The route of the quote
@@ -53,19 +86,19 @@ abstract class VipQuotesHelperRoute {
 	     * The view "categories" won't contain category ID so it has to contain 0 for ID key. 
 	     */
 		$needles = array(
-			'category'   => array((int) $id),
-		    'categories' => array(0)
+			'quote'   => array((int) $id)
 		);
 
 		//Create the link
 		$link = 'index.php?option=com_vipquotes&view=quote&id='. $id;
 		if ($catid > 1) {
 			$categories = JCategories::getInstance('VipQuotes');
-			$category   = $categories->get($catid);
+			$category   = $categories->get((int)$catid);
 
 			if($category) {
-				$needles['category']   = array_reverse($category->getPath());
-//				$needles['categories'] = $needles['category'];
+				$needles['category']     = array_reverse($category->getPath());
+				$needles['categories']   = $needles['category'];
+				$needles['categories'][] = 0;
 				$link .= '&catid='.$catid;
 			}
 		}
@@ -109,7 +142,7 @@ abstract class VipQuotesHelperRoute {
 			} else { // Continue to search and deep inside
 			    
 				//Create the link
-				$link = 'index.php?option=com_vipquotes&view=category&id='.$id;
+				$link = 'index.php?option=com_vipquotes&view=category&id='.$catid;
 
 				if ($category) {
 					$catids  = array_reverse($category->getPath());
@@ -118,6 +151,8 @@ abstract class VipQuotesHelperRoute {
 						'category'   => $catids,
 						'categories' => $catids
 					);
+					
+					$needles['categories'][] = 0;
 					
 					// Looking for menu item (Itemid)
 					if ($item = self::_findItem($needles)) {
@@ -239,10 +274,11 @@ abstract class VipQuotesHelperRoute {
         $db     = JFactory::getDbo();
         $query  = $db->getQuery(true);
         
+        
         $query
-            ->select("catid")
-            ->from("#__vq_qutoes")
-            ->where("id = " . $db->quote($id));
+            ->select("a.catid")
+            ->from($db->quoteName("#__vq_quotes") . " AS a" )
+            ->where("a.id = " . $db->quote($id));
 
         $db->setQuery($query, 0, 1);
         $result = $db->loadObject();

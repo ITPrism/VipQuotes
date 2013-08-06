@@ -22,7 +22,7 @@ defined('_JEXEC') or die;
         </div>
     <?php }?>
     
-    <?php if($this->tmplValue) {?>
+    <?php if(!empty($this->tmplValue)) {?>
     	<input type="hidden" name="tmpl" value="component" />
     <?php }?>
     

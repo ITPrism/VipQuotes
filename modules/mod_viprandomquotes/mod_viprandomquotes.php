@@ -14,12 +14,24 @@
 // no direct access
 defined( "_JEXEC" ) or die;
 
+$moduleclass_sfx = htmlspecialchars($params->get('moduleclass_sfx'));
+
+JLoader::register("VipQuotesHelperRoute", JPATH_ADMINISTRATOR.DIRECTORY_SEPARATOR."components".DIRECTORY_SEPARATOR."com_vipquotes".DIRECTORY_SEPARATOR."helpers".DIRECTORY_SEPARATOR."route.php");
+
 // Get random item from database
 $db    =   JFactory::getDBO();
 $query =   $db->getQuery(true);
 $query
     ->select("a.quote")
-    ->from("#__vq_quotes AS a")
+    ->from("#__vq_quotes AS a");
+
+// Filter by category id
+$categoryId = $params->get("category", 0);
+if(!empty($categoryId)) {
+    $query->where("a.catid = ".(int)$categoryId);
+}
+
+$query
     ->where("a.published = 1")
     ->order("RAND()");
 

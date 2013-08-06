@@ -59,7 +59,7 @@ class VipQuotesModelExport extends JModel {
         if(is_null($output)) {
             $output = '<xml/>';
         }
-        $xml = new VipQuotesSimpleXml($output);
+        $xml = new ITPrismXmlSimple($output);
 
         if(!empty($root) AND !empty($child) ) {
             

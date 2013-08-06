@@ -25,12 +25,6 @@ jimport('joomla.application.component.modeladmin');
 class VipQuotesModelQuote extends JModelAdmin {
     
     /**
-     * @var     string  The prefix to use with controller messages.
-     * @since   1.6
-     */
-    protected $text_prefix = 'COM_VIPQUOTES';
-    
-    /**
      * Returns a reference to the a Table object, always creating it.
      *
      * @param   type    The table type to instantiate
@@ -80,7 +74,7 @@ class VipQuotesModelQuote extends JModelAdmin {
             $data = $this->getItem();
             
             // Prime some default values.
-			if ($this->getState('quote.id') == 0) {
+			if ($this->getState($this->getName().'.id') == 0) {
 				$data->set('catid', $app->input->getInt('catid', $app->getUserState($this->option.'.quotes.filter.category_id')));
 			}
         }
@@ -139,8 +133,8 @@ class VipQuotesModelQuote extends JModelAdmin {
 				$db     = JFactory::getDbo();
 				$query  = $db->getQuery(true);
 				$query
-				    ->select("MAX(ordering)")
-				    ->from("#__vq_quotes");
+				    ->select("MAX(a.ordering)")
+				    ->from($db->quoteName("#__vq_quotes") . " AS a");
 				
 			    $db->setQuery($query, 0, 1);
 				$max = $db->loadResult();
@@ -159,13 +153,13 @@ class VipQuotesModelQuote extends JModelAdmin {
         $query  = $db->getQuery(true);
         $query
             ->select("COUNT(*)")
-            ->from("#__vq_quotes");
+            ->from($db->quoteName("#__vq_quotes") . " AS a");
         
         if(!empty($itemId)) {
-            $query->where("`id` != " . (int)$itemId );
+            $query->where("a.id != " . (int)$itemId );
         }
         
-        $query->where("`quote` SOUNDS LIKE " . $db->quote($quote) );
+        $query->where("a.quote SOUNDS LIKE " . $db->quote($quote) );
         
         $db->setQuery($query);
         $result = $db->loadResult();
@@ -186,12 +180,9 @@ class VipQuotesModelQuote extends JModelAdmin {
         
         $query  = $db->getQuery(true);
         
-        $tableQuotes   = $db->quoteName('#__vq_quotes');
-        $columnId      = $db->quoteName('id');
-        
         $query
-            ->delete($tableQuotes)
-            ->where($columnId. " IN ( " . implode(",", $itemsIds) . " )");
+            ->delete($db->quoteName('#__vq_quotes'))
+            ->where($db->quoteName('id')." IN ( " . implode(",", $itemsIds) . " )");
         
         $db->setQuery($query);
         $db->query();

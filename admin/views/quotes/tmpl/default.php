@@ -29,11 +29,6 @@ defined('_JEXEC') or die;
 				<?php echo JHtml::_('select.options', JHtml::_('category.options', 'com_vipquotes'), 'value', 'text', $this->state->get('filter.category_id'));?>
 			</select>
 			
-			<select name="filter_user_id" class="inputbox" onchange="this.form.submit()">
-				<option value=""><?php echo JText::_('COM_VIPQUOTES_SELECT_USER');?></option>
-				<?php echo JHtml::_('select.options', JHtml::_('user.userlist'), 'value', 'text', $this->state->get('filter.user_id'));?>
-			</select>
-			
             <select name="filter_state" class="inputbox" onchange="this.form.submit()">
                 <option value=""><?php echo JText::_('JOPTION_SELECT_PUBLISHED');?></option>
                 <?php echo JHtml::_('select.options', JHtml::_('jgrid.publishedOptions', array("archived" => false, "trash"=>false)), 'value', 'text', $this->state->get('filter.state'), true);?>

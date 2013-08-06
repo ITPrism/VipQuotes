@@ -6,8 +6,8 @@
 	<authorUrl>http://itprism.com</authorUrl>
 	<copyright>Copyright (C) 2010 Todor Iliev ( ITPrism.com )</copyright>
 	<license>http://www.gnu.org/copyleft/gpl.html</license>
-	<version>2.4</version>
-	<creationDate>10 March, 2013</creationDate>
+	<version>2.5.1</version>
+    <creationDate>31 July, 2013</creationDate>
 	<description>COM_VIPQUOTES_DESCRIPTION</description>
 
 	<install>

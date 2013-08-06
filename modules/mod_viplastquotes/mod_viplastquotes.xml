@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension type="module" version="2.5" client="site" method="upgrade">
+<extension type="module" version="3.1" client="site" method="upgrade">
 	<name>MOD_VIPLASTQUOTES</name>
 	<author>Todor Iliev</author>
 	<copyright>Copyright (C) 2010 Todor Iliev ( ITPrism.com )</copyright>
 	<license>http://www.gnu.org/copyleft/gpl.html</license>
 	<authorEmail>todor@itprism.com</authorEmail>
 	<authorUrl>http://itprism.com</authorUrl>
-	<version>2.4</version>
-	<creationDate>10 March, 2013</creationDate>
+	<version>2.5</version>
+	<creationDate>23 July, 2013</creationDate>
 	<description>MOD_VIPLASTQUOTES_DESCRIPTION</description>
 	
 	<languages folder="language">
@@ -24,13 +24,21 @@
 	</files>
 	
 	<config>
-		<fields name="params">
+		<fields name="params" addfieldpath="/administrator/components/com_vipquotes/models/fields">
 			<fieldset name="basic">
 				<field name="number" type="text" default="10" label="MOD_VIPLASTQUOTES_NUMBER" description="MOD_VIPLASTQUOTES_NUMBER_DESC" />
-				<field name="display_quotes" type="radio" default="1" label="MOD_VIPLASTQUOTES_QUOTATION_MARKS" description="MOD_VIPLASTQUOTES_QUOTATION_MARKS_DESC">
+				<field name="display_quotes" type="radio" default="1" label="MOD_VIPLASTQUOTES_QUOTATION_MARKS" description="MOD_VIPLASTQUOTES_QUOTATION_MARKS_DESC" class="btn-group">
                    <option value="0">JNO</option>
                    <option value="1">JYES</option>
                 </field>
+                
+                <field name="category" type="vqcategories" 
+                    label="JCATEGORY" 
+                    description="MOD_VIPLASTQUOTES_CATEGORY_DESC" 
+                    default="0"
+                    display_root="1"
+                 />
+                    
 			</fieldset>
 			
 			<fieldset name="advanced">
@@ -58,9 +66,7 @@
                     label="COM_MODULES_FIELD_CACHE_TIME_LABEL"
                     description="COM_MODULES_FIELD_CACHE_TIME_DESC" />
                 
-                <field name="cachemode" type="hidden" default="static">
-                    <option value="static"></option>
-                </field>
+                <field name="cachemode" type="hidden" default="static" />
             </fieldset>
             
 		</fields>

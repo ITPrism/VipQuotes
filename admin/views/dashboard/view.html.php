@@ -27,13 +27,23 @@ class VipQuotesViewDashboard extends JView {
     
     public function display($tpl = null){
         
+        jimport("vipquotes.version");
+        $this->version = new VipQuotesVersion();
+        
+        // Load ITPrism library version
+        jimport("itprism.version");
+        if(!class_exists("ITPrismVersion")) {
+            $this->itprismVersion = JText::_("COM_VIPQUOTES_ITPRISM_LIBRARY_DOWNLOAD");
+        } else {
+            $itprismVersion = new ITPrismVersion();
+            $this->itprismVersion = $itprismVersion->getShortVersion();
+        }
+        
         // Add submenu
         VipQuotesHelper::addSubmenu($this->getName());
         
         $this->addToolbar();
         $this->setDocument();
-        
-        $this->version = new VipQuotesVersion();
         
         parent::display($tpl);
     }

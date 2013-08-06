@@ -39,12 +39,11 @@ class VipQuotesViewCategories extends JView {
         $this->items          = $this->get('Items');
         $this->pagination     = $this->get('Pagination');
         
-        $this->params         = $params = $this->state->get("params");
-        $this->displayCounter = $params->get("categories_display_counter");
+        $this->params         = $this->state->get("params");
+        $this->displayNumber  = $this->params->get("categories_display_counter", 0);
 
-        if($this->displayCounter) {
-            $this->numbers = $this->get("Numbers");
-        }
+        // HTML Helpers
+        JHtml::addIncludePath(VIPQUOTES_PATH_COMPONENT_SITE.'/helpers/html');
         
         $this->version        = new VipQuotesVersion();
         

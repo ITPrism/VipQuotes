@@ -32,28 +32,16 @@ class VipQuotesViewQuotes extends JView {
     
     public function display($tpl = null){
         
-        $categories_       = array();
-        
         $this->state       = $this->get('State');
         $this->items       = $this->get('Items');
         $this->pagination  = $this->get('Pagination');
 
-        $categories        = $this->get("Categories");
-        
-        foreach( $categories as $category ) {
-            $categories_[$category->id] = $category->title;
-        }
-        
-        $this->categories  = $categories_;
-        
         // Prepare filters
-        $listOrder  = $this->escape($this->state->get('list.ordering'));
-        $listDirn   = $this->escape($this->state->get('list.direction'));
-        $saveOrder  = (strcmp($listOrder, 'a.ordering') != 0 ) ? false : true;
+        $this->listOrder = $this->escape($this->state->get('list.ordering'));
+        $this->listDirn  = $this->escape($this->state->get('list.direction'));
+        $this->saveOrder = (strcmp($this->listOrder, 'a.ordering') != 0 ) ? false : true;
         
-        $this->listOrder = $listOrder;
-        $this->listDirn  = $listDirn;
-        $this->saveOrder = $saveOrder;
+        JLoader::register('JHtmlString', JPATH_LIBRARIES.'/joomla/html/html/string.php');
         
         // Add submenu
         VipQuotesHelper::addSubmenu($this->getName());
@@ -94,7 +82,7 @@ class VipQuotesViewQuotes extends JView {
 		
         JToolBarHelper::deleteList(JText::_("COM_VIPQUOTES_DELETE_ITEMS_QUESTION"), "quotes.delete");
         JToolBarHelper::divider();
-        JToolBarHelper::custom('quotes.backToDashboard', "vip-dashboard-back", "", JText::_("COM_VIPQUOTES_BACK_DASHBOARD"), false);
+        JToolBarHelper::custom('quotes.backToDashboard', "vip-dashboard-back", "", JText::_("COM_VIPQUOTES_DASHBOARD"), false);
         
     }
     
@@ -104,7 +92,7 @@ class VipQuotesViewQuotes extends JView {
 	 * @return void
 	 */
 	protected function setDocument() {
-		$this->document->setTitle(JText::_('COM_VIPQUOTES_QUOTES') . " | " . JText::_('COM_VIPQUOTES'));
+		$this->document->setTitle(JText::_('COM_VIPQUOTES_QUOTES'));
 	}
     
 }

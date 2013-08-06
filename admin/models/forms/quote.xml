@@ -2,30 +2,39 @@
 <form>
 	<fieldset>
 
-		<field name="catid" type="category"
-            label="JCATEGORY" description="JFIELD_CATEGORY_DESC"
+        <field name="catid" type="category"
+            label="JCATEGORY" 
+            description="JFIELD_CATEGORY_DESC"
             class="inputbox" 
             extension="com_vipquotes"
         />
 
-		<field name="published" type="list" label="JSTATUS"
-            description="JFIELD_PUBLISHED_DESC" class="inputbox"
-            filter="intval" size="1" default="1"
+        <field name="published" type="list" class="inputbox"
+            label="JSTATUS"
+            description="JFIELD_PUBLISHED_DESC" 
+            filter="intval" 
+            size="1" 
+            default="1"
         >
             <option value="1">JPUBLISHED</option>
             <option value="0">JUNPUBLISHED</option>
         </field>
-		
-		<field name="quote" type="editor" class="inputbox" 
-		    buttons="false" show="toggle"
-            label="COM_VIPQUOTES_FIELD_QUOTE" description="COM_VIPQUOTES_FIELD_QUOTE_DESC"
+        
+        <field name="quote" type="editor" class="inputbox" 
+            label="COM_VIPQUOTES_FIELD_QUOTE" 
+            description="COM_VIPQUOTES_FIELD_QUOTE_DESC"
+            buttons="false" 
+            show="toggle"
             filter="safehtml"
             rows="5" 
             required="true" />
             
-		<field name="id" type="text" default="0" label="JGLOBAL_FIELD_ID_LABEL" 
-            readonly="true" class="readonly"
-            description="JGLOBAL_FIELD_ID_DESC" />
+        <field name="id" type="text" class="readonly"
+            label="JGLOBAL_FIELD_ID_LABEL"
+            description="JGLOBAL_FIELD_ID_DESC" 
+            readonly="true" 
+            default="0" 
+         />
 
 	</fieldset>
 </form>

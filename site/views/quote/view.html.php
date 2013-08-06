@@ -70,10 +70,44 @@ class VipQuotesViewQuote extends JView {
             $this->tmplValue = "&tmpl=component";
         }
         
+        // HTML Helpers
+        JHtml::addIncludePath(VIPQUOTES_PATH_COMPONENT_SITE.'/helpers/html');
+        
         // Prepare document
         $this->prepareDocument();
+        $this->prepareEvents();
         
         parent::display($tpl);
+    }
+    
+    protected function prepareEvents() {
+    
+        $imagesFolder = $this->params->get("images_directory", "images/authors");
+    
+        // Prepare data used by triggers
+        $this->item->link         = JRoute::_(VipQuotesHelperRoute::getQuoteRoute($this->item->id, $this->item->catid).$this->tmplValue);
+        $this->item->title        = $this->pageHeading;
+        $this->item->text         = $this->item->quote;
+        $this->item->image_intro  = "";
+    
+        // Events
+        JPluginHelper::importPlugin('content');
+        $dispatcher	       = JDispatcher::getInstance();
+        $this->item->event = new stdClass();
+        $offset            = 0;
+    
+        $dispatcher->trigger('onContentPrepare', array ('com_vipquotes.quote', &$this->item, &$this->params, $offset));
+    
+        $results           = $dispatcher->trigger('onContentBeforeDisplay', array('com_vipquotes.quote', &$this->item, &$this->params, $offset));
+        $this->item->event->onContentBeforeDisplay = trim(implode("\n", $results));
+    
+        $results           = $dispatcher->trigger('onContentAfterDisplay', array('com_vipquotes.quote', &$this->item, &$this->params, $offset));
+        $this->item->event->onContentAfterDisplay  = trim(implode("\n", $results));
+    
+        // Replace the content of parameter 'qoute' with the parameter 'text'
+        $this->item->quote = $this->item->text;
+        unset($this->item->text);
+    
     }
     
     /**
@@ -109,25 +143,32 @@ class VipQuotesViewQuote extends JView {
         }
         
         // Add category name into breadcrumbs 
-        if($this->params->get('categories_breadcrumb')){
+        if($this->params->get('category_breadcrumb', 0)){
             if(!empty($this->category->title)){
                 $pathway      = $app->getPathway();
-                $categoryLink = JRoute::_(VipQuotesHelperRoute::getCategoryRoute($this->category->id));
-                $pathway->addItem($this->category->title, $categoryLink);
+                
+                $menu    = $app->getMenu()->getActive();
+                $mId     = JArrayHelper::getValue($menu->query, "id");
+                
+                if(!empty($this->category->title) AND ($mId != $this->category->id) ){
+                    $categoryLink = JRoute::_(VipQuotesHelperRoute::getCategoryRoute($this->category->id));
+                    $pathway->addItem($this->category->title, $categoryLink);
+                }
+                
                 $pathway->addItem(JText::_("COM_VIPQUOTES_QUOTE"));
             }
         }
         
-        // Head styles
-        $this->document->addStyleSheet('media/'.$this->option.'/css/site/bootstrap.min.css');
+        // Styles
+        JHtml::_("vipquotes.bootstrap");
         $this->document->addStyleSheet('media/'.$this->option.'/css/site/style.css');
     }
 
     private function prepearePageHeading() {
         
 		// Prepare page heading
-		$pageHeading = JText::sprintf("COM_VIPQUOTES_QUOTE_HEADING", $this->category->title);
-	    $this->params->set('page_heading', $pageHeading);
+		$this->pageHeading = JText::sprintf("COM_VIPQUOTES_QUOTE_HEADING_TITLE", JString::strtolower($this->category->title));
+	    $this->params->set('page_heading', $this->pageHeading);
 		
     }
     
@@ -137,7 +178,7 @@ class VipQuotesViewQuote extends JView {
         /** @var $app JSite **/
         
 		// Prepare page title
-        $title = JText::sprintf("COM_VIPQUOTES_QUOTE_HEADING", $this->category->title);
+        $title = JText::sprintf("COM_VIPQUOTES_QUOTE_HEADING_TITLE", $this->category->title);
         
         // Add title before or after Site Name
         if(!$title){

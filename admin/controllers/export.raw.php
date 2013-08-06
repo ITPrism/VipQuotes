@@ -41,6 +41,12 @@ class VipQuotesControllerExport extends JController {
         $type  = $app->input->get->getCmd("type");
         $model = $this->getModel();
         
+        jimport('joomla.filesystem.folder');
+        jimport('joomla.filesystem.file');
+        jimport('joomla.filesystem.path');
+        jimport('joomla.filesystem.archive');
+        jimport('itprism.xml.simple');
+        
         try{
             
             $output      = $model->getData();
@@ -51,11 +57,6 @@ class VipQuotesControllerExport extends JController {
             JLog::add($e->getMessage());
             throw new Exception(JText::_('COM_VIPQUOTES_ERROR_SYSTEM'));
         }
-        
-        jimport('joomla.filesystem.folder');
-        jimport('joomla.filesystem.file');
-        jimport('joomla.filesystem.path');
-        jimport('joomla.filesystem.archive');
         
         $tmpFolder   = JPath::clean( $app->getCfg("tmp_path") );
         

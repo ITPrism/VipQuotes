@@ -37,9 +37,11 @@ class VipQuotesModelQuotes extends JModelList {
             $config['filter_fields'] = array(
                 'id', 'a.id',
                 'quote', 'a.quote',
+                'category', 'b.title',
                 'created', 'a.created',
             	'hits', 'a.hits',
-                'ordering', 'a.ordering'
+                'ordering', 'a.ordering',
+                'published', 'a.published'
             );
         }
 
@@ -118,13 +120,13 @@ class VipQuotesModelQuotes extends JModelList {
                 'a.id, a.quote, a.created, a.hits, ' .
                 'a.published, a.ordering, ' . 
                 'a.catid, a.user_id, '.
-                'c.name AS user_name'
+                'b.title AS category'
             )
         );
         $query->from($db->quoteName('#__vq_quotes') .' AS a');
 
         // Join
-        $query->leftJoin($db->quoteName('#__users') .' AS c ON a.user_id = c.id');
+        $query->leftJoin($db->quoteName('#__categories') .' AS b ON a.catid = b.id');
         
         // Filter by user id
         $userId = $this->getState('filter.user_id');
@@ -152,7 +154,6 @@ class VipQuotesModelQuotes extends JModelList {
             if (stripos($search, 'id:') === 0) {
                 $query->where('a.id = '.(int) substr($search, 3));
             } else {
-                
                 $escaped = $db->escape($search, true);
                 $quoted  = $db->quote("%" . $escaped . "%", false);
                 $query->where('(a.quote LIKE '.$quoted.')');
@@ -175,31 +176,6 @@ class VipQuotesModelQuotes extends JModelList {
         }
         
         return $orderCol.' '.$orderDirn;
-    }
-    
-    public function getCategories($options = array(), $recursive = false) {
-        
-        // Get a storage key.
-		$store = $this->getStoreId("categories");
-
-		// Try to load the data from internal storage.
-		if (isset($this->cache[$store])) {
-			return $this->cache[$store];
-		}
-		
-        $categories   = JCategories::getInstance('vipquotes', $options);
-		$parent       = $categories->get('root');
-
-		if (is_object($parent)) {
-			$categories = $parent->getChildren($recursive);
-		}
-		else {
-			$categories = array();
-		}
-		
-		$this->cache[$store] = $categories;
-			
-        return $categories;
     }
     
 }

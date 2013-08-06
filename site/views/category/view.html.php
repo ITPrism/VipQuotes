@@ -57,9 +57,6 @@ class VipQuotesViewCategory extends JView {
             throw new Exception(JText::_("COM_VIPQUOTES_ERROR_CATEGORY_DOES_NOT_EXIST"), 404);
         }
        
-        // Get search phrase
-        $this->query      = JString::trim( $app->input->get("q", "") );
-        
         // Initialise variables
         $this->state      = $this->get('State');
         $this->items      = $this->get('Items');
@@ -69,12 +66,30 @@ class VipQuotesViewCategory extends JView {
         $this->category   = $category;
         $this->userId     = JFactory::getUser()->get("id");
         
+        // HTML Helpers
+        JHtml::addIncludePath(VIPQUOTES_PATH_COMPONENT_SITE.'/helpers/html');
+        
         $this->categories = array();
         if($this->params->get("category_display_category", 1)) {
-            $this->categories = $this->get("Categories");
+            $this->categories = VipQuotesHelper::getCategories();
+        }
+        
+        if($this->params->get("category_display_subcategories", 0)) {
+            $this->subcategories  = VipQuotesHelper::getSubCategories($categoryId);
+            $this->displayNumber  = $this->params->get("category_display_subcategories_counter", 0);
         }
         
         $this->listView   = $this->params->get("category_list_view", "table");
+        
+        $this->displayCategory     = $this->params->get("category_display_category");
+        $this->displayDate         = $this->params->get("category_display_date");
+        $this->displayHits         = $this->params->get("category_display_quote_hits");
+        
+        if($this->displayCategory OR $this->displayDate OR $this->displayHits) {
+            $this->displayInfo = true;
+        } else {
+            $this->displayInfo = false;
+        }
         
         $this->version    = new VipQuotesVersion();
         
@@ -144,7 +159,7 @@ class VipQuotesViewCategory extends JView {
         }
         
         // Add item name into breadcrumbs 
-        if($this->params->get('categories_breadcrumb', 0)){
+        if($this->params->get('category_breadcrumb', 0)){
             
             $menu    = $app->getMenu()->getActive();
             $mId     = JArrayHelper::getValue($menu->query, "id");
@@ -155,13 +170,14 @@ class VipQuotesViewCategory extends JView {
             }
         }
         
-        // Head styles
-        $this->document->addStyleSheet('media/'.$this->option.'/css/site/bootstrap.min.css');
+        // Styles
         $this->document->addStyleSheet('media/'.$this->option.'/css/site/style.css');
+        JHtml::_('vipquotes.bootstrap');
+        
+        JHTML::_('behavior.framework');
         
         // Add scripts
         if($this->displayFilters) {
-            JHTML::_('behavior.framework');
 		    $this->document->addScript('media/'.$this->option.'/js/site/'.strtolower($this->getName()).'.js');
         }
     }

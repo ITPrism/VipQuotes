@@ -47,17 +47,21 @@ class JFormFieldVqCategories extends JFormFieldList {
         $db     = JFactory::getDbo();
         $query  = $db->getQuery(true);
         
-        $query->select('a.id AS value, a.title AS text')
-                ->from('#__categories AS a')
-                ->where('extension="com_vipquotes"')
-                ->order("a.title");
+        $query
+            ->select('a.id AS value, a.title AS text')
+            ->from('#__categories AS a')
+            ->where('extension="com_vipquotes"')
+            ->order("a.title");
         
         // Get the options.
         $db->setQuery($query);
         
         $options = $db->loadAssocList();
         
-        array_unshift($options, JHTML::_('select.option', '0', '- '.JText::_('COM_VIPQUOTES_SELECT_CATEGORY').' -', 'value', 'text'));
+        $displayRoot = (!empty($this->element["display_root"])) ? true : false;
+        if($displayRoot) {
+            array_unshift($options, JHtml::_('select.option', '0', JText::_('JOPTION_SELECT_CATEGORY'), 'value', 'text'));
+        }
         
         // Merge any additional options in the XML definition.
         $options = array_merge(parent::getOptions(), $options);

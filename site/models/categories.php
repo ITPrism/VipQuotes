@@ -108,8 +108,8 @@ class VipQuotesModelCategories extends JModelList {
         $query->select(
             $this->getState(
                 'list.select',
-                'a.id, a.title, a.alias, a.description, ' .
-                'a.metadesc, a.metakey, a.params '
+                'a.id, a.title, a.params, ' .
+                $query->concatenate(array("a.id", "a.alias"), ":") .' AS slug'
             )
         );
         $query->from($db->quoteName("#__categories") . ' AS a');
@@ -117,38 +117,13 @@ class VipQuotesModelCategories extends JModelList {
         // Filter by state
         $query->where('a.extension = "com_vipquotes"');
         $query->where('a.published = 1');
+        $query->where('a.level = 1');
 
         // Add the list ordering clause.
         $orderString = $this->getOrderString();
         $query->order($db->escape($orderString));
 
         return $query;
-    }
-    
-    public function getNumbers() {
-        
-        if (!count($this->numbers)) {
-            $db     = JFactory::getDbo();
-            $query  = $db->getQuery(true);
-            
-            $query
-                ->select("a.catid, COUNT(*) AS number")
-                ->from( $db->quoteName("#__vq_quotes") . ' AS a' )
-                ->where("a.published = 1")
-                ->group("a.catid");
-            
-            $db->setQuery($query);
-            $results = $db->loadAssocList("catid", "number");
-            
-            if(!$results) {
-                $results = null; 
-            }
-            
-            $this->numbers = $results;
-        }
-        
-        return $this->numbers;
-        
     }
     
     protected function prepareOrderingState($params) {

@@ -14,15 +14,15 @@
 // no direct access
 defined('_JEXEC') or die;
 
-jimport( 'joomla.application.component.controllerform' );
+jimport("itprism.controller.form.backend");
 
 /**
- * VipQuotes currency controller
+ * VipQuotes import controller
  *
- * @package     ITPrism Components
- * @subpackage  VipQuotes
+ * @package     VipQuotes
+ * @subpackage  Components
   */
-class VipQuotesControllerImport extends VipQuotesControllerAdminForm {
+class VipQuotesControllerImport extends ITPrismControllerFormBackend {
     
     /**
      * Proxy for getModel.
@@ -40,12 +40,14 @@ class VipQuotesControllerImport extends VipQuotesControllerAdminForm {
         $app = JFactory::getApplication();
         /** @var $app JAdministrator **/
         
-        $msg     = "";
-        $link    = "";
-        $task    = $this->getTask();
         $data    = $app->input->post->get('jform', array(), 'array');
         $file    = $app->input->files->get('jform', array(), 'array');
         $data    = array_merge($data, $file);
+        
+        $redirectOptions = array(
+            "view" => "import",
+            "task" => $this->getTask()
+        );
         
         $model   = $this->getModel();
         /** @var $model VipQuotesModelImport **/
@@ -62,11 +64,7 @@ class VipQuotesControllerImport extends VipQuotesControllerAdminForm {
         
         // Check for errors.
         if($validData === false){
-            
-            $this->defaultLink .= "&view=import";
-            
-            $this->setMessage($model->getError(), "notice");
-            $this->setRedirect(JRoute::_($this->defaultLink, false));
+            $this->displayNotice($form->getErrors(), $redirectOptions);
             return;
         }
             
@@ -74,15 +72,16 @@ class VipQuotesControllerImport extends VipQuotesControllerAdminForm {
         jimport('joomla.filesystem.file');
         jimport('joomla.filesystem.path');
         jimport('joomla.filesystem.archive');
+        jimport('itprism.file.upload');
         
         try{
             
             $file     = JArrayHelper::getValue($data, "data");
             
-            $upload   = new VipQuotesFileUpload($file);
+            $upload   = new ITPrismFileUpload($file);
             $upload->validate();
             
-            $tmpPath  = JFactory::getApplication()->getCfg("tmp_path");
+            $tmpPath  = $app->getCfg("tmp_path");
             $fileName = JFile::makeSafe($file["name"]);;
             $ext      = JString::strtolower( JFile::getExt($fileName) );
 
@@ -93,7 +92,7 @@ class VipQuotesControllerImport extends VipQuotesControllerAdminForm {
             // Extract file if it is archive
             if(strcmp($ext, "zip") == 0) {
                 
-                $destFolder  = JPath::clean( $app->getCfg("tmp_path") ).DIRECTORY_SEPARATOR."quotes";
+                $destFolder  = JPath::clean($tmpPath.DIRECTORY_SEPARATOR."quotes");
                 
                 if(is_dir($destFolder)) {
                     JFolder::delete($destFolder);
@@ -110,38 +109,30 @@ class VipQuotesControllerImport extends VipQuotesControllerAdminForm {
             
         } catch ( Exception $e ) {
             
-            JLog::add($e->getMessage());
-            
             $code = $e->getCode();
             switch($code) {
                 
-                case VipQuotesErrors::CODE_WARNING:
-                    
-                    $this->setMessage($e->getMessage(), "notice");
-                    $link = $this->defaultLink."&view=import&type=".$task;
-                    $this->setRedirect(JRoute::_($link, false));
+                case ITPrismErrors::CODE_WARNING:
+                    $this->displayWarning($e->getMessage(), $redirectOptions);
                     return;
                     
                 break;
                 
-                case VipQuotesErrors::CODE_HIDDEN_WARNING:
-                    
-                    $this->setMessage(JText::_("COM_VIPQUOTES_ERROR_FILE_CANT_BE_UPLOADED"), "notice");
-                    $this->setRedirect(JRoute::_($this->defaultLink."&view=".$task, false));
+                case ITPrismErrors::CODE_HIDDEN_WARNING:
+                    $this->displayWarning(JText::_("COM_VIPQUOTES_ERROR_FILE_CANT_BE_UPLOADED"), $redirectOptions);
                     return;
                     
                 break;
                 
                 default:
-                    throw new Exception(JText::_('COM_VIPQUOTES_ERROR_SYSTEM'), VipQuotesErrors::CODE_ERROR);
+                    JLog::add($e->getMessage());
+                    throw new Exception(JText::_('COM_VIPQUOTES_ERROR_SYSTEM'), ITPrismErrors::CODE_ERROR);
                 break;
             }
             
         }
         
-        $msg  = JText::_('COM_VIPQUOTES_DATA_IMPORTED');
-        $link = $this->defaultLink."&view=import";
-        $this->setRedirect(JRoute::_($link, false), $msg);
+        $this->displayMessage(JText::_("COM_VIPQUOTES_DATA_IMPORTED"), $redirectOptions);
         
     }
     

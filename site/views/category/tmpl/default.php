@@ -14,10 +14,14 @@
 // no direct access
 defined('_JEXEC') or die;
 ?>
-<div class="itp-vq<?php echo $this->pageclass_sfx;?>">
+<div class="vq-category<?php echo $this->pageclass_sfx;?>">
     <?php if ($this->params->get('show_page_heading', 1)) { ?>
     <h1><?php echo $this->escape($this->params->get('page_heading')); ?></h1>
     <?php } ?>
+    
+    <?php if($this->params->get("category_display_subcategories", 0)) {
+        echo $this->loadTemplate("subcategories");
+    }?>
     
     <?php if($this->displayFilters) {
         echo $this->loadTemplate("filters");

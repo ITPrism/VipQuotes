@@ -13,7 +13,7 @@
 
 // no direct access
 defined('_JEXEC') or die;?>
-<div class="itp-vp<?php echo $this->pageclass_sfx;?>">
+<div class="vq-categories<?php echo $this->pageclass_sfx;?>">
     <?php if ($this->params->get('show_page_heading', 1)) { ?>
     <h1><?php echo $this->escape($this->params->get('page_heading')); ?></h1>
     <?php } ?>
@@ -24,17 +24,13 @@ defined('_JEXEC') or die;?>
     		    $categoryImage = JArrayHelper::getValue($categoryParams, "image");
     		    if($categoryImage) {
     		?>
-    		<a href="<?php echo JRoute::_(VipQuotesHelperRoute::getCategoryRoute($item->id).$this->tmplValue); ?>">
+    		<a href="<?php echo JRoute::_(VipQuotesHelperRoute::getCategoryRoute($item->slug).$this->tmplValue); ?>">
     		<img src="<?php echo $categoryImage;?>" alt="<?php echo $item->title;?>" />
     		</a><br />
     		<?php } ?>
-    		<a href="<?php echo JRoute::_(VipQuotesHelperRoute::getCategoryRoute($item->id).$this->tmplValue); ?>">
+    		<a href="<?php echo JRoute::_(VipQuotesHelperRoute::getCategoryRoute($item->slug).$this->tmplValue); ?>">
     		<?php echo $item->title;?>
-    		<?php if($this->displayCounter) {
-    		    $number = JArrayHelper::getValue($this->numbers, $item->id);
-    		?>
-    		( <?php echo intval($number); ?> )
-    		<?php } ?>
+    		<?php echo JHtml::_("vipquotes.categoryQuotesNumber", $item->id, $this->displayNumber);?>
     		</a>
     	</div>
     <?php }?>

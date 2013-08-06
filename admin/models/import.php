@@ -100,7 +100,7 @@ class VipQuotesModelImport extends JModelForm {
         // Load file
         $handle =   fopen($file, "r");
         if( !is_resource($handle) ) {
-            throw new Exception(JText::sprintf("COM_VIPQUOTES_ERROR_FILE_CANT_BE_LOADED", $file), VipQuotesErrors::CODE_WARNING);
+            throw new Exception(JText::sprintf("COM_VIPQUOTES_ERROR_FILE_CANT_BE_LOADED", $file), ITPrismErrors::CODE_WARNING);
         }
         
         // Help fgetcsv() to read in UTF8
@@ -189,17 +189,17 @@ class VipQuotesModelImport extends JModelForm {
         
         $allowedExt   = array("csv", "xml");
         if( !in_array($ext, $allowedExt) ) {
-            throw new Exception(JText::sprintf("COM_VIPQUOTES_ERROR_INVALID_MIME_TYPE", "XML, CSV"), VipQuotesErrors::CODE_WARNING);
+            throw new Exception(JText::sprintf("COM_VIPQUOTES_ERROR_INVALID_MIME_TYPE", "XML, CSV"), ITPrismErrors::CODE_WARNING);
         }
         
         // Validate CSV
-        if( (strcmp("csv", $fileMimeType) == 0) AND (strcmp("text/plain", $fileMimeType) != 0) ) {
-            throw new Exception(JText::sprintf("COM_VIPQUOTES_ERROR_INVALID_MIME_TYPE", "XML, CSV"), VipQuotesErrors::CODE_WARNING);
+        if( (strcmp("csv", $ext) == 0) AND (strcmp("text/plain", $fileMimeType) != 0) ) {
+            throw new Exception(JText::sprintf("COM_VIPQUOTES_ERROR_INVALID_MIME_TYPE", "XML, CSV"), ITPrismErrors::CODE_WARNING);
         }
         
         // Validate XML
-        if((strcmp("xml", $fileMimeType) == 0) AND (strcmp("application/xml", $fileMimeType) != 0)) {
-            throw new Exception(JText::sprintf("COM_VIPQUOTES_ERROR_INVALID_MIME_TYPE", "XML, CSV"), VipQuotesErrors::CODE_WARNING);
+        if((strcmp("xml", $ext) == 0) AND (strcmp("application/xml", $fileMimeType) != 0)) {
+            throw new Exception(JText::sprintf("COM_VIPQUOTES_ERROR_INVALID_MIME_TYPE", "XML, CSV"), ITPrismErrors::CODE_WARNING);
         }
         
     }

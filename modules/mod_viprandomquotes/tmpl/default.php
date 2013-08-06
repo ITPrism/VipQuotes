@@ -13,6 +13,8 @@
  
 // no direct access
 defined('_JEXEC') or die; ?>
+<div class="vq-modrandom<?php echo $moduleclass_sfx;?>">
 <?php if (!empty($item)) {?>
     <div><?php echo $item->quote;?></div>
 <?php } ?>
+</div>

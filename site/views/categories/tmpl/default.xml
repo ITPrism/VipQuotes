@@ -15,11 +15,7 @@
 	            <option value="2">COM_VIPQUOTES_DATE_REVERSE</option>
 	            <option value="3">COM_VIPQUOTES_NAME</option>
 	        </field>
-	        <field name="categories_display_counter" type="radio" default="0" label="COM_VIPQUOTES_COUNTER" description="COM_VIPQUOTES_COUNTER_DESC">
-	            <option value="0">JNO</option>
-	            <option value="1">JYES</option>
-	        </field>
-	        <field name="categories_breadcrumb" type="radio" default="0" label="COM_VIPQUOTES_BREADCRUMB" description="COM_VIPQUOTES_BREADCRUMB_DESC">
+	        <field name="categories_display_counter" type="radio" default="0" label="COM_VIPQUOTES_DISPLAY_NUMBER" description="COM_VIPQUOTES_DISPLAY_NUMBER_DESC">
 	            <option value="0">JNO</option>
 	            <option value="1">JYES</option>
 	        </field>
@@ -36,11 +32,27 @@
                 <option value="2">COM_VIPQUOTES_DATE_REVERSE</option>
             </field>
             <field name="category_quotes_limit" type="text" default="20" label="COM_VIPQUOTES_LIMIT" description="COM_VIPQUOTES_LIMIT_DESC" />
+            <field name="category_breadcrumb" type="radio" default="0" label="COM_VIPQUOTES_BREADCRUMB" description="COM_VIPQUOTES_BREADCRUMB_DESC" class="btn-group">
+                <option value="0">JNO</option>
+                <option value="1">JYES</option>
+            </field>
+            <field name="category_display_subcategories" type="radio" default="0" label="COM_VIPQUOTES_DISPLAY_SUBCATEGORIES" description="COM_VIPQUOTES_DISPLAY_SUBCATEGORIES_DESC" class="btn-group">
+                <option value="0">JNO</option>
+                <option value="1">JYES</option>
+            </field>
+            <field name="category_display_subcategories_counter" type="radio" default="0" label="COM_VIPQUOTES_DISPLAY_NUMBER" description="COM_VIPQUOTES_DISPLAY_SUBCATEGORY_NUMBER_DESC" class="btn-group">
+                <option value="0">JNO</option>
+                <option value="1">JYES</option>
+            </field>
             <field name="category_display_category" type="radio" default="0" label="COM_VIPQUOTES_DISPLAY_CATEGORY" description="COM_VIPQUOTES_DISPLAY_CATEGORY_DESC">
                 <option value="0">JNO</option>
                 <option value="1">JYES</option>
             </field>
             <field name="category_display_date" type="radio" default="1" label="COM_VIPQUOTES_DISPLAY_DATE" description="COM_VIPQUOTES_DISPLAY_DATE_DESC">
+                <option value="0">JNO</option>
+                <option value="1">JYES</option>
+            </field>
+            <field name="category_display_quote_hits" type="radio" default="0" label="COM_VIPQUOTES_DISPLAY_HITS" description="COM_VIPQUOTES_DISPLAY_HITS_DESC" class="btn-group">
                 <option value="0">JNO</option>
                 <option value="1">JYES</option>
             </field>

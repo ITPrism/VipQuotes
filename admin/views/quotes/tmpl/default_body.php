@@ -20,15 +20,14 @@ defined('_JEXEC') or die;
 	<tr class="row<?php echo $i % 2; ?>">
         <td ><?php echo JHtml::_('grid.id', $i, $item->id); ?></td>
 		<td><a href="<?php echo JRoute::_("index.php?option=com_vipquotes&view=quote&layout=edit&id=".$item->id);?>" >
-		<?php echo JHTML::_('string.truncate', $item->quote, 128, true, false); ?>
+		<?php echo JHtml::_('string.truncate', $item->quote, 128, true, false); ?>
 		</a></td>
 		<td class="center">
 		   <?php 
-		   $category = JArrayHelper::getValue($this->categories, $item->catid); 
-		   if(!empty($category)) {
-              echo $this->escape($category);
-           } else {
+		   if(!$item->category) {
                echo JText::_("COM_VIPQUOTES_UNCATEGORISED");
+           } else {
+               echo $this->escape($item->category);
 		   }?>
         </td>
         <td class="center"><?php echo intval($item->hits); ?></td>

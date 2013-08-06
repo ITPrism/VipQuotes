@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension version="2.5" type="plugin" group="search" method="upgrade">
+<extension version="3.1" type="plugin" group="search" method="upgrade">
 	<name>PLG_SEARCH_VIPQUOTES</name>
 	<author>Todor Iliev</author>
     <copyright>Copyright (C) 2010 Todor Iliev ( ITPrism.com ). All rights reserved.</copyright>
     <license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
     <authorEmail>todor@itprism.com</authorEmail>
     <authorUrl>http://itprism.com</authorUrl>
-    <version>2.4</version>
-    <creationDate>10 March, 2013</creationDate>
+    <version>2.5</version>
+    <creationDate>23 July, 2013</creationDate>
 	<description>PLG_SEARCH_VIPQUOTES_DESCRIPTION</description>
 	<files>
 		<filename plugin="vipquotes">vipquotes.php</filename>
@@ -27,7 +27,15 @@
 					label="JFIELD_PLG_SEARCH_SEARCHLIMIT_LABEL"
 					size="5"
 				/>
-				
+                <field name="search_category" type="radio" class="btn-group"
+                    default="1"
+                    label="PLG_SEARCH_VIPQUOTES_CATEGORY_NAME_LABEL"
+                    description="PLG_SEARCH_VIPQUOTES_CATEGORY_NAME_DESC"
+                >
+                    <option value="0">JOFF</option>
+                    <option value="1">JON</option>
+                </field>
+            
 			</fieldset>
 		</fields>
 	</config>

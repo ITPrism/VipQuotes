@@ -12,7 +12,9 @@
  */
  
 // no direct access
-defined('_JEXEC') or die; ?>
+defined('_JEXEC') or die;
+?>
+<div class="vq-modlast<?php echo $moduleclass_sfx;?>">
 <?php 
     if (!empty($items)) {
         foreach($items as $item) {
@@ -21,3 +23,4 @@ defined('_JEXEC') or die; ?>
         }
     }
 ?>
+</div>

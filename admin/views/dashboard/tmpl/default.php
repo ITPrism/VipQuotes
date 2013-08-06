@@ -21,7 +21,7 @@ defined('_JEXEC') or die;
 
         <div id="itp-cpanel">
             <div class="itp-cpitem">
-                <a rel="{handler: 'iframe', size: {x: 875, y: 550}, onClose: function() {}}" href="<?php echo JRoute::_("index.php?option=com_config&amp;view=component&amp;component=com_vipquotes&amp;path=&amp;tmpl=component");?>" class="modal">
+                <a rel="{handler: 'iframe', size: {x: 875, y: 550}, onClose: function() {}}" href="<?php echo JRoute::_("index.php?option=com_config&view=component&component=com_vipquotes&path=&tmpl=component");?>" class="modal">
                     <img src="../media/com_vipquotes/images/settings_48.png" alt="<?php echo JText::_("COM_VIPQUOTES_SETTINGS");?>" />
                     <span><?php echo JText::_("COM_VIPQUOTES_SETTINGS")?></span> 
                 </a>
@@ -44,7 +44,7 @@ defined('_JEXEC') or die;
 	
 	<div class="span4">
         <a href="http://itprism.com/free-joomla-extensions/others/quotes-collection-manager" target="_blank"><img src="../media/com_vipquotes/images/logo.png" alt="<?php echo JText::_("COM_VIPQUOTES");?>" /></a>
-        <a href="http://itprism.com" title="<?php echo JText::_("ITP_PRODUCT");?>" target="_blank"><img src="../media/com_vipquotes/images/product_of_itprism.png" alt="<?php echo JText::_("ITP_PRODUCT");?>" /></a>
+        <a href="http://itprism.com" title="<?php echo JText::_("COM_VIPQUOTES_ITPRISM_PRODUCT");?>" target="_blank"><img src="../media/com_vipquotes/images/product_of_itprism.png" alt="<?php echo JText::_("COM_VIPQUOTES_ITPRISM_PRODUCT");?>" /></a>
         <p><?php echo JText::_("COM_VIPQUOTES_YOUR_VOTE"); ?></p>
         <p><?php echo JText::_("COM_VIPQUOTES_SPONSORSHIP"); ?></p>
         <p><?php echo JText::_("COM_VIPQUOTES_SUBSCRIPTION"); ?></p>
@@ -58,6 +58,10 @@ defined('_JEXEC') or die;
                 <tr>
                     <td><?php echo JText::_("COM_VIPQUOTES_RELEASE_DATE");?></td>
                     <td><?php echo $this->version->releaseDate?></td>
+                </tr>
+                <tr>
+                    <td><?php echo JText::_("COM_VIPQUOTES_ITPRISM_LIBRARY");?></td>
+                    <td><?php echo $this->itprismVersion;?></td>
                 </tr>
                 <tr>
                     <td><?php echo JText::_("COM_VIPQUOTES_COPYRIGHT");?></td>

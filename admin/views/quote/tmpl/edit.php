@@ -14,7 +14,7 @@
 // no direct access
 defined('_JEXEC') or die;
 ?>
-<form enctype="multipart/form-data"  action="<?php echo JRoute::_('index.php?option=com_vipquotes'); ?>" method="post" name="adminForm" id="quote-form" class="form-validate" >
+<form action="<?php echo JRoute::_('index.php?option=com_vipquotes'); ?>" method="post" name="adminForm" id="quote-form" class="form-validate" >
     <div class="width-40 fltlft">
         <fieldset class="adminform">
             <legend><?php echo JText::_("COM_VIPQUOTES_QUOTE_INFORMATION"); ?></legend>

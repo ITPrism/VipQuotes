@@ -2,28 +2,28 @@
 
 /* Frontend */
 .q_category {
-	float: left;
-	margin: 10px;
-	width: 150px;
+    float: left;
+    margin: 10px;
+    width: 150px;
 }
 
 .textarea_100 {
-	width: 100%;
+    width: 100%;
 }
 
 .itp-vq .vq-row:nth-child(even) {
-	background: #e8e8e8;
+    background: #e8e8e8;
 }
 .itp-vq .vq-row:nth-child(odd) {
-	background: #fff;
+    background: #fff;
 }
 
 .vq-author{
-	font-style: italic;
+    font-style: italic;
 }
 
 .vp_header {
-	background-color: #534539 !important;
+    background-color: #534539 !important;
    color: #FFFFFF;
    text-align: center;
    font-weight: bold;
@@ -31,12 +31,12 @@
 }
 
 .vq_search_form {
-	text-align: center;
-	margin: 10px 0px;
+    text-align: center;
+    margin: 10px 0px;
 }
 
 .vq_search_form .vqsearchbox {
-	width: 50%;
+    width: 50%;
 }
 
 /*** Site ***/
@@ -52,7 +52,7 @@
 }
 
 #eq-form button {
-	margin-top: 20px;
+    margin-top: 20px;
 }
 
 #eq-form  label {
@@ -70,12 +70,12 @@
 }
 
 .itp_edit_icon {
-	float: left;
-	margin-right: 5px;
+    float: left;
+    margin-right: 5px;
 }
 
 .itp-center {
-	text-align: center;
+    text-align: center;
 }
 
 #authorbox{  
@@ -87,83 +87,89 @@
     overflow:hidden;  
 }  
 #authorbox h4{  
-	  font-size:16px;  
-	  color:#191919;  
-	  margin:0;  
-	  padding:10px 10px 5px 10px;  
+      font-size:16px;  
+      color:#191919;  
+      margin:0;  
+      padding:10px 10px 5px 10px;  
  }  
 .authortext{  
-	  /* padding-left:200px;  */
+      /* padding-left:200px;  */
  }  
 #authorbox img{  
-	  margin:0;  
-	  padding:10px;  
-	  float:left;  
+      margin:0;  
+      padding:10px;  
+      float:left;  
  }  
  #authorbox p{  
-	  color:#191919;  
-	  margin:0;  
-	  padding:0px 10px 10px 10px;  
+      color:#191919;  
+      margin:0;  
+      padding:0px 10px 10px 10px;  
  }  
  #authorbox h4 > a{  
-	  text-decoration:none;  
+      text-decoration:none;  
  }  
 #authorbox p{  
-	  color:#191919;  
+      color:#191919;  
  } 
-    
  
- blockquote {
-	display: inline-block; /* this and width auto make the width fit the size of the text */
-	width: 95%;
-	margin: 1em;
-	padding: 1em;
-	background-color: #f9f9f9;
-	font-style: italic;
-	-moz-box-shadow: 0 0 5px #888;
-	-webkit-box-shadow: 0 0 5px#888;
-	box-shadow: 0 0 5px #888;
-	
-	/*
-	border: 1px solid #ccc;
-border-radius: 6px;
-box-shadow: 1px 1px 1px #ccc;
-*/
-}
-blockquote p:before {
-	font-size: 3em;
-	color: #ccc;
-	content: open-quote;
-	vertical-align: -0.25em;
-}
-blockquote p:after {
-	font-size: 3em;
-	color: #ccc;
-	content: close-quote;
-	vertical-align: -0.25em;
+.vq-quote a, .vq-quotes a, 
+.vq-category a, .vq-authors a, 
+.vq-author-page a {
+    text-decoration: none !important;
+    color: black !important;
 }
 
-
-.itp-vq a {
-	text-decoration: none !important;
-	color: black !important;
-}
-
-.itp-vq a:hover {
-	text-decoration: underline !important;
-	color: black !important;
+.vq-quote a:hover, .vq-quotes a:hover, 
+.vq-category a:hover, .vq-authors a:hover, 
+.vq-author-page a:hover {
+    text-decoration: underline !important;
+    color: black !important;
 }
 
 .itpvq-img-center{
-	vertical-align: middle  !important;
-	text-align: center !important;
+    vertical-align: middle  !important;
+    text-align: center !important;
 }
 
-.vq-info-row {
-	background-color: #fafae8;
-	font-size: xx-small;
+.vq-info-row .span12{
+    background-color: #fdfdf5;
+    font-size: xx-small;
+    padding: 5px 0 0 5px;
+    
+    
+}
+
+.vq-info-row .span12{
+    min-height: 15px !important;
+    height: 20px !important;
+}
+
+.vq-info {
+    background-color: #f7f7f7;
+    font-size: x-small;
+    height: 22px;
+    padding-left: 5px;
 }
 
 .vq-row {
-	border-bottom: thin dashed #cccccc;
+    border-bottom: thin dashed #cccccc;
+    margin-top: 10px;
+}
+
+/** Author Page **/
+.vq-author-page .media .media-image {
+    margin-right: 10px;
+}
+
+.vq-author-page .media-body {
+    overflow: hidden;
+}
+
+.vq-hits {
+    margin: 10px 0px;
+    font-size: x-small; 
+}
+
+.vqmod-abc a.btn {
+    margin: 5px 0;
 }

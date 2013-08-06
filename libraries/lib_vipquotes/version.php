@@ -1,7 +1,7 @@
 <?php
 /**
-* @package      ITPrism Components
-* @subpackage   Vip Quotes
+* @package      Vip Quotes
+* @subpackage   Libraries
 * @author       Todor Iliev
 * @copyright    Copyright (C) 2010 Todor Iliev <todor@itprism.com>. All rights reserved.
 * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
@@ -16,9 +16,9 @@ defined('JPATH_BASE') or die;
 /**
  * Version information
  *
- * @package ITPrism Components
- * @subpackage   Vip Quotes
-  */
+ * @package     Vip Quotes
+ * @subpackage  Libraries
+ */
 class VipQuotesVersion {
 	
     /**
@@ -40,7 +40,7 @@ class VipQuotesVersion {
      * 
      * @var integer
      */
-    public $devLevel  = '4';
+    public $devLevel  = '5.1';
     
     /**
      * Release Type
@@ -61,7 +61,7 @@ class VipQuotesVersion {
      * 
      * @var string
      */
-    public $releaseDate= '10-March-2012';
+    public $releaseDate= '31-July-2013';
     
     /**
      * License

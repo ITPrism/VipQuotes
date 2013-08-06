@@ -28,14 +28,19 @@ class VipQuotesController extends JController {
      * @since   1.5
      */
     public function display($cachable = false, $urlparams = false) {
-        // Initialise variables.
-        $cachable   = true; // Huh? Why not just put that in the constructor?
+        
+        $app = JFactory::getApplication();
+        $tmpl = $app->input->get("tmpl");
+         
+        if(empty($tmpl)) {
+            $cachable   = true;
+        }
 
         // Set the default view name and format from the Request.
         // Note we are using catid to avoid collisions with the router and the return page.
         // Frontend is a bit messier than the backend.
-        $viewName  = JFactory::getApplication()->input->getCmd('view', 'categories');
-        JFactory::getApplication()->input->set('view', $viewName);
+        $viewName  = $app->input->getCmd('view', 'categories');
+        $app->input->set('view', $viewName);
 
         $safeurlparams = array(
             'id'                => 'INT',

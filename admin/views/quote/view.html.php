@@ -84,6 +84,7 @@ class VipQuotesViewQuote extends JView {
         
 		// Add scripts
 		JHtml::_('behavior.tooltip');
+		JHtml::_('behavior.keepalive');
         JHtml::_('behavior.formvalidation');
         
 		$this->document->addScript('../media/'.$this->option.'/js/admin/'.strtolower($this->getName()).'.js');
