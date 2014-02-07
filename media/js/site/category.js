@@ -1,10 +1,23 @@
-window.addEvent('domready', function(){ 
+jQuery(document).ready(function() {
 
-	// Filter Ordering
-	var elementFilterOrdering = document.id("filter_ordering");
-	if(elementFilterOrdering) {
-		elementFilterOrdering.addEvent("change", function(event) {
-			document.id("vq-filters-form").submit();
+	var elementFilterAuthor = jQuery("#filter_author");
+	if(elementFilterAuthor) {
+		jQuery("#filter_author").chosen().change(function(event){
+			jQuery("#vq-filters-form").submit();
 		});
 	}
-})
+	
+	var elementFilterUser = jQuery("#filter_user");
+	if(elementFilterUser) {
+		jQuery("#filter_user").chosen().change(function(event){
+			jQuery("#vq-filters-form").submit();
+		});
+	}
+	
+	var elementFilterOrdering = jQuery("#filter_ordering");
+	if(elementFilterOrdering) {
+		jQuery("#filter_ordering").chosen().change(function(event){
+			jQuery("#vq-filters-form").submit();
+		});
+	}
+}); 

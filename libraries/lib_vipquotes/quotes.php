@@ -1,14 +1,10 @@
 <?php
 /**
-* @package      Vip Quotes
+* @package      VipQuotes
 * @subpackage   Libraries
 * @author       Todor Iliev
-* @copyright    Copyright (C) 2010 Todor Iliev <todor@itprism.com>. All rights reserved.
+* @copyright    Copyright (C) 2014 Todor Iliev <todor@itprism.com>. All rights reserved.
 * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
-* Vip Quotes is free software. This vpversion may have been modified pursuant
-* to the GNU General Public License, and as distributed it includes or
-* is derivative of works licensed under the GNU General Public License or
-* other free or open source software licenses.
 */
 
 defined('JPATH_PLATFORM') or die;
@@ -16,72 +12,53 @@ defined('JPATH_PLATFORM') or die;
 /**
  * This class provieds functionality that manage quotes.
  */
-class VipQuotesQuotes extends ArrayObject {
+class VipQuotesQuotes implements Iterator, Countable, ArrayAccess {
     
-    protected $db;
-    
-    protected static $instances = array();
+    protected $items   = array();
     
     /**
-     * Load or set rewards. 
+     * Database driver.
      * 
-     * @param integer   $id      Project ID
-     * @param array     $rewards Rewards
+     * @var JDatabaseMySQLi
      */
-    public function __construct($keys) {
-        
-        $this->db = JFactory::getDbo();
-        
-        $authorId   = JArrayHelper::getValue($keys, "author_id");
-        $categoryId = JArrayHelper::getValue($keys, "catid");
-        
-        if(!empty($authorId)) {
-            $items = $this->loadAuthorQuotes($authorId);
-        } else if(!empty($categoryId)) {
-            $items = $this->loadCategoryQuotes($categoryId);
-        } else {
-            $items = array();
-        }
-        
-        parent::__construct($items);
-    }
-
-    public static function getInstance($keys)  {
+    protected $db;
     
-        $authorId   = JArrayHelper::getValue($keys, "author_id");
-        $categoryId = JArrayHelper::getValue($keys, "catid");
-        
-        if(!empty($authorId)) {
-            $hash = md5("author_id:".$authorId);
-        } else if(!empty($categoryId)) {
-            $hash = md5("catid:".$authorId);
-        } else {
-            $hash = null;
-        }
-
-        if(is_null($hash)) {
-            return null;
-        }
-        
-        if (empty(self::$instances[$hash])){
-            $item = new VipQuotesQuotes($keys);
-            self::$instances[$hash] = $item;
-        }
-        
-        return self::$instances[$hash];
+    protected $position = 0;
+    
+    /**
+     * Initialize the object.
+     * 
+     * @param JDatabase   $db
+     */
+    public function __construct(JDatabase $db) {
+        $this->db   = $db;
     }
-      
+
+    public function load($ids) {
+    
+        $results = array();
+    
+        $query = $this->getQuery();
+        
+        $query->where("a.id IN (" .implode(",", $ids) .")");
+    
+        $this->db->setQuery($query);
+        $results = $this->db->loadObjectList();
+    
+        if(!$results) {
+            $results = array();
+        }
+    
+        $this->items = $results;
+    }
     
     public function loadAuthorQuotes($id) {
         
         $results = array();
         
-        $query = $this->db->getQuery(true);
+        $query = $this->getQuery();
         
-        $query
-            ->select("a.id, a.quote, a.created, a.published, a.ordering, a.hits, a.author_id, a.catid, a.user_id")
-            ->from($this->db->quoteName("#__vq_quotes") . " AS a")
-            ->where("a.author_id = " .(int)$id);
+        $query->where("a.author_id = " .(int)$id);
         
         $this->db->setQuery($query);
         $results = $this->db->loadObjectList();
@@ -89,20 +66,17 @@ class VipQuotesQuotes extends ArrayObject {
         if(!$results) {
             $results = array();
         }
-        
-        return $results;
+    
+        $this->items = $results;
     }
     
     public function loadCategoryQuotes($id) {
     
         $results = array();
     
-        $query = $this->db->getQuery(true);
+        $query = $this->getQuery();
     
-        $query
-        ->select("a.id, a.quote, a.created, a.published, a.ordering, a.hits, a.author_id, a.catid, a.user_id")
-        ->from($this->db->quoteName("#__vq_quotes") . " AS a")
-        ->where("a.catid = " .(int)$id);
+        $query->where("a.catid = " .(int)$id);
     
         $this->db->setQuery($query);
         $results = $this->db->loadObjectList();
@@ -111,6 +85,70 @@ class VipQuotesQuotes extends ArrayObject {
             $results = array();
         }
     
-        return $results;
+        $this->items = $results;
+    }
+    
+    protected function getQuery() {
+        
+        $query = $this->db->getQuery(true);
+        
+        $query->select(
+                "a.id, a.quote, a.created, a.published, a.ordering, a.hits, a.author_id, a.catid, a.user_id, " .
+                "b.name AS author, " .
+                "c.title AS category, " .
+                "d.name AS user");
+        $query->select($query->concatenate(array("b.id", "b.alias"), "-") . " AS authorslug");
+        $query->select($query->concatenate(array("c.id", "c.alias"), "-") . " AS catslug");
+        
+        $query->from($this->db->quoteName("#__vq_quotes", "a"));
+        $query->leftJoin($this->db->quoteName("#__vq_authors", "b") ." ON a.author_id = b.id");
+        $query->leftJoin($this->db->quoteName("#__categories", "c") ." ON a.catid = c.id");
+        $query->leftJoin($this->db->quoteName("#__users", "d") ." ON a.user_id = d.id");
+        
+        return $query;
+    }
+    
+    public function rewind() {
+        $this->position = 0;
+    }
+    
+    public function current() {
+        return (!isset($this->items[$this->position])) ? null : $this->items[$this->position];
+    }
+    
+    public function key() {
+        return $this->position;
+    }
+    
+    public function next() {
+        ++$this->position;
+    }
+    
+    public function valid() {
+        return isset($this->items[$this->position]);
+    }
+    
+    public function count() {
+        return (int)count($this->items);
+    }
+    
+    public function offsetSet($offset, $value) {
+        if (is_null($offset)) {
+            $this->items[] = $value;
+        } else {
+            $this->items[$offset] = $value;
+        }
+    }
+    
+    public function offsetExists($offset) {
+        return isset($this->items[$offset]);
+    }
+    
+    public function offsetUnset($offset) {
+        unset($this->items[$offset]);
+    }
+    
+    public function offsetGet($offset) {
+        return isset($this->items[$offset]) ? $this->items[$offset] : null;
     }
 }

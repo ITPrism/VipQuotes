@@ -1,14 +1,10 @@
 <?php
 /**
- * @package      ITPrism Components
- * @subpackage   VipQuotes
+ * @package      VipQuotes
+ * @subpackage   Component
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2010 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @copyright    Copyright (C) 2014 Todor Iliev <todor@itprism.com>. All rights reserved.
  * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
- * VipQuotes is free software. This version may have been modified pursuant
- * to the GNU General Public License, and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
  */
 
 // no direct access
@@ -17,7 +13,7 @@ defined('_JEXEC') or die;
 jimport('joomla.application.categories');
 jimport('joomla.application.component.view');
 
-class VipQuotesViewCategory extends JView {
+class VipQuotesViewCategory extends JViewLegacy {
     
     protected $state = null;
     protected $items = null;
@@ -46,13 +42,10 @@ class VipQuotesViewCategory extends JView {
         
         // Checking for published category
         if(!empty($categoryId)){
-            
 			$category   = JCategories::getInstance('VipQuotes')->get($categoryId);
-			
             if(!$category->published){
                 throw new Exception(JText::_("COM_VIPQUOTES_ERROR_CATEGORY_DOES_NOT_EXIST"), 404);
             }
-            
         } else {
             throw new Exception(JText::_("COM_VIPQUOTES_ERROR_CATEGORY_DOES_NOT_EXIST"), 404);
         }
@@ -66,9 +59,6 @@ class VipQuotesViewCategory extends JView {
         $this->category   = $category;
         $this->userId     = JFactory::getUser()->get("id");
         
-        // HTML Helpers
-        JHtml::addIncludePath(VIPQUOTES_PATH_COMPONENT_SITE.'/helpers/html');
-        
         $this->categories = array();
         if($this->params->get("category_display_category", 1)) {
             $this->categories = VipQuotesHelper::getCategories();
@@ -81,20 +71,18 @@ class VipQuotesViewCategory extends JView {
         
         $this->listView   = $this->params->get("category_list_view", "table");
         
-        $this->displayCategory     = $this->params->get("category_display_category");
-        $this->displayDate         = $this->params->get("category_display_date");
-        $this->displayHits         = $this->params->get("category_display_quote_hits");
-        
-        if($this->displayCategory OR $this->displayDate OR $this->displayHits) {
-            $this->displayInfo = true;
-        } else {
-            $this->displayInfo = false;
-        }
+        $this->displayAuthor       = $this->params->get("category_display_author");
+        $this->displayPublisher    = $this->params->get("category_display_publisher");
+        $this->displayInfo         = $this->params->get("category_display_info");
         
         $this->version    = new VipQuotesVersion();
         
         $this->prepareFilters();
         $this->prepareDocument();
+        
+        if(!empty($this->displayPublisher)) {
+            $this->prepareIntegration($this->items, $this->params);
+        }
         
         // Prepare TMPL variable
         $tmpl = $app->input->get->get("tmpl", "");
@@ -109,20 +97,45 @@ class VipQuotesViewCategory extends JView {
     protected function prepareFilters() {
         
         // Filters
+        $this->filterAuthor    = $this->params->get("category_display_filter_author", 0);
+        $this->filterUser      = $this->params->get("category_display_filter_user", 0);
         $this->filterOrdering  = $this->params->get("category_display_filter_ordering", 0);
         
-        if($this->filterOrdering) {
+        if($this->filterAuthor OR $this->filterUser OR $this->filterOrdering) {
             $this->displayFilters = true;
         } else {
             $this->displayFilters = false;
         }
+
+        if($this->filterAuthor) {
+            
+            jimport("vipquotes.filter.options");
+            $filters  = VipQuotesFilterOptions::getInstance(JFactory::getDbo());
+            $this->authors  = $filters->getAuthors(array("state" => VipQuotesConstants::PUBLISHED));
+            
+            $option = array(
+                "value" => 0,
+                "text"  => JText::_("COM_VIPQUOTES_SELECT_AUTHOR")
+            );
+            
+            array_unshift($this->authors, $option);
+        }
+        
+        if($this->filterUser) {
+            $this->users    = JHtml::_('user.userlist');
+            $option = array(
+                "value" => 0,
+                "text"  => JText::_("COM_VIPQUOTES_SELECT_USER")
+            );
+            
+            array_unshift($this->users, $option);
+        }
         
         if($this->filterOrdering) {
-            $this->orderingOptions    =  array(
-                array("value"=>'0', "text"=> JText::_("COM_VIPQUOTES_ORDER_OPTION_ORDERING")),
-                array("value"=>'1', "text"=> JText::_("COM_VIPQUOTES_ORDER_OPTION_ADDED_ASC")),
-                array("value"=>'2', "text"=> JText::_("COM_VIPQUOTES_ORDER_OPTION_ADDED_DESC")),
-            );
+            jimport("vipquotes.filter.options");
+            $filters        = VipQuotesFilterOptions::getInstance(JFactory::getDbo());
+            
+            $this->orderingOptions    =  $filters->getQuotesOrdering();
         }
         
     }
@@ -167,16 +180,17 @@ class VipQuotesViewCategory extends JView {
             if(!empty($this->category->title) AND ($mId != $this->category->id) ){
                 $pathway    = $app->getPathway();
                 $pathway->addItem($this->category->title);
-            }
+            } 
         }
         
         // Styles
         $this->document->addStyleSheet('media/'.$this->option.'/css/site/style.css');
-        JHtml::_('vipquotes.bootstrap');
-        
-        JHTML::_('behavior.framework');
         
         // Add scripts
+        JHtml::_('bootstrap.framework');
+        JHtml::_('bootstrap.tooltip');
+        JHtml::_('formbehavior.chosen', 'select.js-vqcom-filter');
+        
         if($this->displayFilters) {
 		    $this->document->addScript('media/'.$this->option.'/js/site/'.strtolower($this->getName()).'.js');
         }
@@ -279,4 +293,44 @@ class VipQuotesViewCategory extends JView {
 		
     }
 
+    /**
+     * Prepare social profiles.
+     *
+     * @param array     $items
+     * @param JRegistry $params
+     *
+     * @todo Move it to a trait when traits become mass.
+     */
+    protected function prepareIntegration($items, $params) {
+    
+        $this->socialProfiles   = null;
+    
+        // Get users IDs
+        $usersIds = array();
+        foreach($items as $item) {
+            $usersIds[] = $item->user_id;
+        }
+    
+        // Get a social platform for integration
+        $socialPlatform        = $params->get("integration_social_platform");
+    
+        // If there is now users, do not continue.
+        if(!$usersIds OR !$socialPlatform) {
+            return;
+        }
+    
+        // Create an object that contains social profiles.
+        if(!empty($socialPlatform)) {
+            jimport("itprism.integrate.profiles");
+            try {
+                $this->socialProfiles   =  ITPrismIntegrateProfiles::factory($socialPlatform, $usersIds);
+            } catch (Exception $e) {
+    
+                $app      = JFactory::getApplication();
+                /** @var $app JSite **/
+    
+                $app->enqueueMessage(JText::_("COM_VIPQUOTES_ERROR_SOCIAL_INTEGRATION_PROBLEM"), "error");
+            }
+        }
+    }
 }

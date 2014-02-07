@@ -1,14 +1,10 @@
 <?php
 /**
- * @package      Vip Quotes
+ * @package      VipQuotes
  * @subpackage   Components
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2010 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @copyright    Copyright (C) 2014 Todor Iliev <todor@itprism.com>. All rights reserved.
  * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
- * Vip Quotes is free software. This version may have been modified pursuant
- * to the GNU General Public License, and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
  */
 
 // no direct access
@@ -22,11 +18,6 @@ defined('_JEXEC') or die;
  * @since		1.6
  */
 abstract class JHtmlVipQuotes {
-    
-    /**
-     * @var   array   array containing information for loaded files
-     */
-    protected static $loaded = array();
     
 	public static function boolean($value) {
 	    
@@ -112,64 +103,50 @@ abstract class JHtmlVipQuotes {
 	    return implode("\n", $html);
 	}
 	
-	public static function information($item, $categoryTitle, $displayCategory, $displayDate, $displayPublisher, $displayHits, $tmpValue) {
+	public static function information($item, $categoryTitle, $tmpValue, $displayPublisher, $socialProfile = "") {
 	
 	    $html = array();
 	     
-	    if($displayCategory AND !empty($categoryTitle)) {
-	        $category = '<a href="'. JRoute::_(VipQuotesHelperRoute::getCategoryRoute($item->catid).$tmpValue).'">'.$categoryTitle.'</a>';
-	        $html[]   = JText::sprintf("COM_VIPQUOTES_IN", $category);
-	    }
+	    // Display category
+        $category = '<a href="'. JRoute::_(VipQuotesHelperRoute::getCategoryRoute($item->catid).$tmpValue).'">'.$categoryTitle.'</a>';
+        $html[]   = JText::sprintf("COM_VIPQUOTES_IN", $category);
 	    
-	    if($displayDate) {
-	        $date   = JHTML::_('date', $item->created, JText::_('DATE_FORMAT_LC3'));
-	        $html[] = JText::sprintf("COM_VIPQUOTES_ON", $date);
-	    }
+	    // Display date
+        $date   = JHTML::_('date', $item->created, JText::_('DATE_FORMAT_LC3'));
+        $html[] = JText::sprintf("COM_VIPQUOTES_ON", $date);
 	    
 	    if($displayPublisher) {
-	        $html[] = JText::sprintf("COM_VIPQUOTES_BY", $item->publisher);
-	    }
-	    
-	    $hits = "";
-	    if($displayHits) {
-	        if(!empty($html)) {
-	            $hits = " | " .JText::sprintf("COM_VIPQUOTES_HITS", $item->hits);
+	        if(!empty($socialProfile)){
+	            $html[] = JText::sprintf("COM_VIPQUOTES_BY", $socialProfile);
 	        } else {
-	            $hits = JText::sprintf("COM_VIPQUOTES_HITS", $item->hits);
+	            $html[] = JText::sprintf("COM_VIPQUOTES_BY", $item->publisher);
 	        }
 	    }
 	    
-	    $output = "";
-	    if(!empty($html)) {
-	        $output = JText::_("COM_VIPQUOTES_PUBLISHED_"). implode(" ", $html);
-	    }
+	    // Prepare hits
+        $hits = " | " .JText::sprintf("COM_VIPQUOTES_HITS", $item->hits);
+	    
+        // Prepare output
+        $output = JText::_("COM_VIPQUOTES_PUBLISHED_"). implode(" ", $html);
 	    
 	    return $output.$hits;
 	}
 	
-	/**
-	 * Include Twitter Bootstrap
-	 */
-	public static function bootstrap() {
+	public static function socialProfileLink($link, $name, $options = array()) {
 	
-	    // Only load once
-	    if (!empty(self::$loaded[__METHOD__])) {
-	        return;
+	    if(!empty($link)) {
+	
+	        $targed = "";
+	        if(!empty($options["target"])) {
+	            $targed = 'target="'.JArrayHelper::getValue($options, "target").'"';
+	        }
+	
+	        $output = '<a href="'.$link.'" '.$targed.'>'.htmlspecialchars($name, ENT_QUOTES, "UTF-8").'</a>';
+	
+	    } else {
+	        $output = htmlspecialchars($name, ENT_QUOTES, "utf-8");
 	    }
 	
-	    // Check for disabled including.
-	    $componentParams = JComponentHelper::getParams("com_vipquotes");
-	    
-	    $document = JFactory::getDocument();
-	
-	    if($componentParams->get("bootstrap_style_include", 1)) {
-	        $document->addStylesheet(JURI::root().'media/com_vipquotes/css/site/bootstrap.min.css');
-	    }
-	    
-	    self::$loaded[__METHOD__] = true;
-	
-	    return;
-	
+	    return $output;
 	}
-	
 }

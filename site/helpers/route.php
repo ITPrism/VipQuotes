@@ -1,14 +1,10 @@
 <?php
 /**
- * @package      ITPrism Components
- * @subpackage   VipQuotes
+ * @package      VipQuotes
+ * @subpackage   Component
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2010 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @copyright    Copyright (C) 2014 Todor Iliev <todor@itprism.com>. All rights reserved.
  * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
- * VipQuotes is free software. This version may have been modified pursuant
- * to the GNU General Public License, and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
  */
 
 // no direct access
@@ -31,6 +27,7 @@ jimport('joomla.application.categories');
  */
 abstract class VipQuotesHelperRoute {
     
+    protected static $authorsAliases;
 	protected static $lookup;
 
 	/**
@@ -50,7 +47,7 @@ abstract class VipQuotesHelperRoute {
 	     * The view "categories" won't contain category ID so it has to contain 0 for ID key.
 	     */
 	    $needles = array(
-	            'quotes' => array(0),
+            'quotes' => array(0),
 	    );
 	
 	    //Create the link
@@ -65,6 +62,7 @@ abstract class VipQuotesHelperRoute {
 	
 	    return $link;
 	}
+	
 	
 	/**
 	 * This method route quote in the view "category".
@@ -112,6 +110,62 @@ abstract class VipQuotesHelperRoute {
 
 		return $link;
 	}
+	
+	/**
+	 * 
+	 * This method route author in the view "category".
+	 * @param unknown_type $id
+	 */
+    public static function getAuthorRoute($id) {
+	    
+        /**
+         * #author 
+         * First we are looking for view "author".
+         * 
+         * # authors view
+         * It is assumed view "authors" will be in the root level of the menu.
+         * The view "authors" won't contain category ID so it has to contain 0 for ID key. 
+         */
+		$needles = array(
+			'author'   => array((int) $id),
+			'authors'  => array(0)
+		);
+
+		//Create the link
+		$link = 'index.php?option=com_vipquotes&view=author&id='. $id;
+
+		// Looking for menu item (Itemid)
+		if ($item = self::_findItem($needles)) {
+			$link .= '&Itemid='.$item;
+		} elseif ($item = self::_findItem()) { // Get the menu item (Itemid) from the active (current) item.
+			$link .= '&Itemid='.$item;
+		}
+
+		return $link;
+	}
+
+	/**
+	 * @param	int		$id		The id of the weblink.
+	 * @param	string	$return	The return page variable.
+	 */
+	public static function getFormRoute($id) {
+	    
+		$needles = array(
+			'form'   => array(0)
+		);
+
+		//Create the link
+		$link = 'index.php?option=com_vipquotes&view=form&id='. (int)$id;
+
+		// Looking for menu item (Itemid)
+		if ($item = self::_findItem($needles)) {
+			$link .= '&Itemid='.$item;
+		} elseif ($item = self::_findItem()) { // Get the menu item (Itemid) from the active (current) item.
+			$link .= '&Itemid='.$item;
+		}
+
+		return $link;
+	}
 
 	/**
 	 * 
@@ -124,7 +178,7 @@ abstract class VipQuotesHelperRoute {
 			$id       = $catid->id;
 			$category = $catid;
 		} else {
-			$id = (int) $catid;
+			$id =  (int)$catid;
 			$category = JCategories::getInstance('VipQuotes')->get($id);
 		}
 
@@ -132,11 +186,12 @@ abstract class VipQuotesHelperRoute {
 			$link = '';
 		} else {
 			$needles = array(
-				'category' => array($id)
+				'category'   => array($id)
 			);
 
 			// Get menu item ( Itemid )
 			if ($item = self::_findItem($needles)) {
+			    
 				$link = 'index.php?Itemid='.$item;
 			
 			} else { // Continue to search and deep inside
@@ -197,7 +252,7 @@ abstract class VipQuotesHelperRoute {
 
 						if (isset($item->query['id'])) {
 							self::$lookup[$view][$item->query['id']] = $item->id;
-						} else { // If it is a root element that have no a request parameter ID ( categories ), we set 0 for an key
+						} else { // If it is a root element that have no a request parameter ID ( categories, authors ), we set 0 for an key
 					        self::$lookup[$view][0] = $item->id;
 						}
 					}
@@ -261,6 +316,33 @@ abstract class VipQuotesHelperRoute {
 		}
 	}
 	
+    /**
+     * 
+     * Load an object that contains a data about author.
+     * We use this method in the router "VipQuotesParseRoute".
+     * 
+     * @param integer $id
+     */
+    public static function getAuthor($id) {
+        
+        $db     = JFactory::getDbo();
+        $query  = $db->getQuery(true);
+        
+        $query
+            ->select("a.alias")
+            ->from($db->quoteName("#__vq_authors") . " AS a")
+            ->where("a.id = " . $db->quote($id));
+
+        $db->setQuery($query, 0, 1);
+        $result = $db->loadObject();
+        
+        if(!$result) {
+            $result = null;
+        }
+        
+        return $result;
+			
+    }
     
     /**
      * 
@@ -273,7 +355,6 @@ abstract class VipQuotesHelperRoute {
         
         $db     = JFactory::getDbo();
         $query  = $db->getQuery(true);
-        
         
         $query
             ->select("a.catid")

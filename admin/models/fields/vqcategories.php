@@ -1,16 +1,13 @@
 <?php
 /**
- * @package      ITPrism Components
- * @subpackage   VipQuotes
+ * @package      VipQuotes
+ * @subpackage   Component
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2010 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @copyright    Copyright (C) 2014 Todor Iliev <todor@itprism.com>. All rights reserved.
  * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
- * VipQuotes is free software. This version may have been modified pursuant
- * to the GNU General Public License, and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
  */
-defined('JPATH_BASE') or die();
+
+defined('JPATH_BASE') or die;
 
 jimport('joomla.html.html');
 jimport('joomla.form.formfield');
@@ -20,8 +17,8 @@ JFormHelper::loadFieldClass('list');
 /**
  * Form Field class for the Joomla Framework.
  *
- * @package      ITPrism Components
- * @subpackage   VipQuotes
+ * @package      VipQuotes
+ * @subpackage   Component
  * @since       1.6
  */
 class JFormFieldVqCategories extends JFormFieldList {
@@ -41,22 +38,15 @@ class JFormFieldVqCategories extends JFormFieldList {
      */
     protected function getOptions(){
         
-        // Initialize variables.
-        $options = array();
+        $extension = "com_vipquotes";
+        $published = (bool)$this->element['published'];
         
-        $db     = JFactory::getDbo();
-        $query  = $db->getQuery(true);
-        
-        $query
-            ->select('a.id AS value, a.title AS text')
-            ->from('#__categories AS a')
-            ->where('extension="com_vipquotes"')
-            ->order("a.title");
-        
-        // Get the options.
-        $db->setQuery($query);
-        
-        $options = $db->loadAssocList();
+        if (!$published) {
+            $options = JHtml::_('category.options', $extension);
+		} else {
+		    $options = JHtml::_('category.options', $extension, array('filter.published' => explode(',', $published)));
+			
+		}
         
         $displayRoot = (!empty($this->element["display_root"])) ? true : false;
         if($displayRoot) {

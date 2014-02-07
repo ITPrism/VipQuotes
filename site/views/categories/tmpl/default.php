@@ -1,14 +1,10 @@
 <?php
 /**
- * @package      ITPrism Components
- * @subpackage   VipQuotes
+ * @package      VipQuotes
+ * @subpackage   Component
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2010 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @copyright    Copyright (C) 2014 Todor Iliev <todor@itprism.com>. All rights reserved.
  * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
- * VipQuotes is free software. This version may have been modified pursuant
- * to the GNU General Public License, and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
  */
 
 // no direct access
@@ -35,7 +31,7 @@ defined('_JEXEC') or die;?>
     	</div>
     <?php }?>
     
-    <div class="clearefix">&nbsp;</div>
+    <div class="clearfix">&nbsp;</div>
     <div class="pagination">
     
         <?php if ($this->params->def('show_pagination_results', 1)) : ?>
@@ -46,6 +42,6 @@ defined('_JEXEC') or die;?>
     
         <?php echo $this->pagination->getPagesLinks(); ?>
     </div>
-    <div class="clearefix">&nbsp;</div>
+    <div class="clearfix">&nbsp;</div>
 </div>
 <?php echo $this->version->backlink; ?>

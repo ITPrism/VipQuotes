@@ -1,16 +1,13 @@
 <?php
 /**
- * @package      ITPrism Components
- * @subpackage   VipQuotes
+ * @package      VipQuotes
+ * @subpackage   Component
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2010 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @copyright    Copyright (C) 2014 Todor Iliev <todor@itprism.com>. All rights reserved.
  * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
- * VipQuotes is free software. This version may have been modified pursuant
- * to the GNU General Public License, and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
  */
 
+// no direct access
 defined('_JEXEC') or die;
 
 jimport('joomla.application.categories');
@@ -38,12 +35,12 @@ function VipQuotesBuildRoute(&$query){
     }else{
         $menuItem = $menu->getItem($query['Itemid']);
     }
-    
-    $mOption = (empty($menuItem->query['option']))    ? null : $menuItem->query['option'];
-    $mView	= (empty($menuItem->query['view']))       ? null : $menuItem->query['view'];
-	$mCatid	= (empty($menuItem->query['catid']))      ? null : $menuItem->query['catid'];
-	$mId	= (empty($menuItem->query['id']))         ? null : $menuItem->query['id'];
 
+    $mOption = (empty($menuItem->query['option'])) ? null : $menuItem->query['option'];
+    $mView	 = (empty($menuItem->query['view']))   ? null : $menuItem->query['view'];
+	$mCatid	 = (empty($menuItem->query['catid']))  ? null : $menuItem->query['catid'];
+	$mId	 = (empty($menuItem->query['id']))     ? null : $menuItem->query['id'];
+	
 	// If is set view and Itemid missing, we have to put the view to the segments
 	if (isset($query['view'])) {
 		$view = $query['view'];
@@ -51,9 +48,13 @@ function VipQuotesBuildRoute(&$query){
 		if (empty($query['Itemid']) OR ($mOption !== "com_vipquotes")) {
 			$segments[] = $query['view'];
 		}
-        unset($query['view']);
+
+		// We need to keep the view for forms since they never have their own menu item
+		if ($view != 'form') {
+			unset($query['view']);
+		}
 	};
-    
+	
     // are we dealing with a category or author that is attached to a menu item?
 	if (isset($view) AND ($mView == $view) AND (isset($query['id'])) AND ($mId == intval($query['id']))) {
 		unset($query['view']);
@@ -68,6 +69,7 @@ function VipQuotesBuildRoute(&$query){
     	switch($view) {
     	    
     	    case "category":
+    	        
     	        if ($mId != intval($query['id']) || $mView != $view) {
     	            $catId = $query['id'];
     	            
@@ -79,9 +81,17 @@ function VipQuotesBuildRoute(&$query){
     	        break;
     	        
     	        
+    	    case "author":
+    	        
+    	        if(isset($query["id"])) {
+                    $segments[] = $query["id"];
+    	            unset($query["id"]);
+    	        }
+    	        break;
+    	        
 	        case "quote":
 	            
-    	        if(!isset($query['catid'])) {
+	            if(!isset($query['catid'])) {
 	                if($menuItem->query["view"] == "category") {
 	                    $catId  = $menuItem->query["id"];
 	                }
@@ -90,15 +100,21 @@ function VipQuotesBuildRoute(&$query){
 	            }
 	            
 	            VipQuotesHelperRoute::prepareCategoriesSegments($catId, $segments, $mId);
-	            
+    	        
     	        $id = $query['id'];
 				$segments[] = $id;
 				
 				unset($query['id']);
 	            unset($query['catid']);
-	            
     	        break;
-	       
+    	        
+	        case "form":
+	            
+	            if($menuItem->query["view"] == $view) {
+	                unset($query['view']);
+	            }
+	            
+	            break;
     	}
         
 	}
@@ -147,7 +163,7 @@ function VipQuotesParseRoute($segments){
 	// we test it first to see if it is a category.  If the id and alias match a category
 	// then we assume it is a category.  If they don't we assume it is an quote
 	if ($count == 1) {
-	    
+
 	    // We check if it is a quote.
 	    // Only quotes ids are true numeric.
 	    // So, it is a quote.
@@ -177,10 +193,20 @@ function VipQuotesParseRoute($segments){
 	        return $vars;
 	         
 	    }
+	    
+	    // Second we check if it is an author
+	    $author = VipQuotesHelperRoute::getAuthor($id);
+	    if ($author && $author->alias == $alias) {
+	    
+	        $vars['view']   = 'author';
+	        $vars['id']     = (int)$id;
+	    
+	        return $vars;
+	    }
 		
 	}
 	
-    // COUNT >= 2
+	// COUNT >= 2
 	
 	if($count >= 2) {
 	     
@@ -222,6 +248,6 @@ function VipQuotesParseRoute($segments){
         }
 	             
 	}
-
+	
     return $vars;
 }

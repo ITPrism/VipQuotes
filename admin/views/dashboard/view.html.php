@@ -1,14 +1,10 @@
 <?php
 /**
- * @package      ITPrism Components
- * @subpackage   VipQuotes
+ * @package      VipQuotes
+ * @subpackage   Component
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2010 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @copyright    Copyright (C) 2014 Todor Iliev <todor@itprism.com>. All rights reserved.
  * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
- * VipQuotes is free software. This version may have been modified pursuant
- * to the GNU General Public License, and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
  */
 
 // no direct access
@@ -16,7 +12,7 @@ defined('_JEXEC') or die;
 
 jimport('joomla.application.component.view');
 
-class VipQuotesViewDashboard extends JView {
+class VipQuotesViewDashboard extends JViewLegacy {
     
     protected $option = "";
     
@@ -39,10 +35,32 @@ class VipQuotesViewDashboard extends JView {
             $this->itprismVersion = $itprismVersion->getShortVersion();
         }
         
+        // Get latest started.
+        jimport("vipquotes.statistics.quotes.latest");
+        $this->latestQuotes = new VipQuotesStatisticsQuotesLatest(JFactory::getDbo());
+        $this->latestQuotes->load(5);
+        
+        // Get popular quotes.
+        jimport("vipquotes.statistics.quotes.popular");
+        $this->popularQuotes = new VipQuotesStatisticsQuotesPopular(JFactory::getDbo());
+        $this->popularQuotes->load(5);
+        
+        // Get popular authors.
+        jimport("vipquotes.statistics.authors.popular");
+        $this->popularAuthors = new VipQuotesStatisticsAuthorsPopular(JFactory::getDbo());
+        $this->popularAuthors->load(5);
+        
+        // Get basic data
+        jimport("vipquotes.statistics.basic");
+        $basic = new VipQuotesStatisticsBasic(JFactory::getDbo());
+        $this->totalQuotes  = $basic->getTotalQuotes();
+        $this->totalAuthors = $basic->getTotalAuthors();
+        
         // Add submenu
         VipQuotesHelper::addSubmenu($this->getName());
         
         $this->addToolbar();
+        $this->addSidebar();
         $this->setDocument();
         
         parent::display($tpl);
@@ -54,32 +72,29 @@ class VipQuotesViewDashboard extends JView {
      * @since   1.6
      */
     protected function addToolbar(){
-        JToolBarHelper::title(JText::_("COM_VIPQUOTES_DASHBOARD"), 'vip-dashboard');
+        JToolbarHelper::title(JText::_("COM_VIPQUOTES_DASHBOARD"));
         
-        JToolBarHelper::preferences('com_vipquotes');
-        JToolBarHelper::divider();
+        JToolbarHelper::preferences('com_vipquotes');
+        JToolbarHelper::divider();
         
         // Help button
         $bar = JToolBar::getInstance('toolbar');
 		$bar->appendButton('Link', 'help', JText::_('JHELP'), JText::_('COM_VIPQUOTES_HELP_URL'));
-		
     }
 
 	/**
+     * Add a menu on the sidebar of page
+     */
+    protected function addSidebar() {
+		$this->sidebar = JHtmlSidebar::render();
+    }
+    
+	/**
 	 * Method to set up the document properties
-	 *
 	 * @return void
 	 */
 	protected function setDocument() {
-	    
 	    $this->document->setTitle(JText::_('COM_VIPQUOTES_DASHBOARD_ADMINISTRATION'));
-	    
-	    // Styles
-	    $this->document->addStyleSheet('../media/'.$this->option.'/css/admin/bootstrap.min.css');
-	    
-	    // Scripts
-	    JHtml::_('behavior.modal', 'a.modal');
-	    
 	}
 	
 }

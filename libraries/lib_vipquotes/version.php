@@ -1,14 +1,10 @@
 <?php
 /**
-* @package      Vip Quotes
+* @package      VipQuotes
 * @subpackage   Libraries
 * @author       Todor Iliev
-* @copyright    Copyright (C) 2010 Todor Iliev <todor@itprism.com>. All rights reserved.
+* @copyright    Copyright (C) 2014 Todor Iliev <todor@itprism.com>. All rights reserved.
 * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
-* Vip Quotes is free software. This vpversion may have been modified pursuant
-* to the GNU General Public License, and as distributed it includes or
-* is derivative of works licensed under the GNU General Public License or
-* other free or open source software licenses.
 */
 
 defined('JPATH_BASE') or die;
@@ -40,7 +36,7 @@ class VipQuotesVersion {
      * 
      * @var integer
      */
-    public $devLevel  = '5.1';
+    public $devLevel  = '6';
     
     /**
      * Release Type
@@ -61,7 +57,7 @@ class VipQuotesVersion {
      * 
      * @var string
      */
-    public $releaseDate= '31-July-2013';
+    public $releaseDate= '07 February, 2014';
     
     /**
      * License
@@ -75,7 +71,7 @@ class VipQuotesVersion {
      * 
      * @var string
      */
-    public $copyright  = '&copy; 2010 ITPrism. All rights reserved.';
+    public $copyright  = '&copy; 2014 ITPrism. All rights reserved.';
     
     /**
      * URL

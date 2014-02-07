@@ -1,9 +1,9 @@
 <?php
 /**
- * @package      ITPrism Components
- * @subpackage   VipQuotes
+ * @package      VipQuotes
+ * @subpackage   Component
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2010 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @copyright    Copyright (C) 2014 Todor Iliev <todor@itprism.com>. All rights reserved.
  * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
  * VipQuotes is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -16,13 +16,39 @@ defined('_JEXEC') or die;
 ?>
 <?php foreach ($this->items as $i => $item) {
 	    $ordering  = ($this->listOrder == 'a.ordering');
+	    
+	    $disableClassName = '';
+	    $disabledLabel	  = '';
+	    if (!$this->saveOrder) {
+	        $disabledLabel    = JText::_('JORDERINGDISABLED');
+	        $disableClassName = 'inactive tip-top';
+	    }
+	    
 	?>
-	<tr class="row<?php echo $i % 2; ?>">
-        <td ><?php echo JHtml::_('grid.id', $i, $item->id); ?></td>
-		<td><a href="<?php echo JRoute::_("index.php?option=com_vipquotes&view=quote&layout=edit&id=".$item->id);?>" >
-		<?php echo JHtml::_('string.truncate', $item->quote, 128, true, false); ?>
-		</a></td>
-		<td class="center">
+	<tr class="row<?php echo $i % 2; ?>" sortable-group-id="<?php echo $item->catid?>">
+        <td class="order nowrap center hidden-phone">
+    		<span class="sortable-handler hasTooltip <?php echo $disableClassName?>" title="<?php echo $disabledLabel?>">
+    			<i class="icon-menu"></i>
+    		</span>
+    		<input type="text" style="display:none" name="order[]" size="5" value="<?php echo $item->ordering;?>" class="width-20 text-area-order " />
+    	</td>
+		<td class="center hidden-phone">
+            <?php echo JHtml::_('grid.id', $i, $item->id); ?>
+        </td>
+        <td class="center">
+            <?php echo JHtml::_('jgrid.published', $item->published, $i, "quotes."); ?>
+        </td>
+		<td>
+    		<a href="<?php echo JRoute::_("index.php?option=com_vipquotes&view=quote&layout=edit&id=".$item->id);?>" >
+    		<?php echo JHtml::_('string.truncate', $item->quote, 128, true, false); ?>
+    		</a>
+		</td>
+		<td class="center nowrap hidden-phone">
+			<a href="<?php echo JRoute::_("index.php?option=com_vipquotes&view=author&layout=edit&id=".$item->author_id);?>" >
+			 <?php echo $this->escape($item->author); ?>
+			</a>
+		</td>
+		<td class="center nowrap hidden-phone">
 		   <?php 
 		   if(!$item->category) {
                echo JText::_("COM_VIPQUOTES_UNCATEGORISED");
@@ -30,30 +56,10 @@ defined('_JEXEC') or die;
                echo $this->escape($item->category);
 		   }?>
         </td>
-        <td class="center"><?php echo intval($item->hits); ?></td>
-		<td class="center nowrap"><?php echo JHtml::_('date', $item->created, JText::_('DATE_FORMAT_LC4')); ?></td>
-        <td class="order">
-        <?php
-            $disabled = $this->saveOrder ?  '' : 'disabled="disabled"';
-            if($this->saveOrder) {
-            if ($this->listDirn == 'asc') {
-                $showOrderUpIcon = (isset($this->items[$i-1]) AND (!empty($this->items[$i-1]->ordering)) AND ( $item->ordering >= $this->items[$i-1]->ordering )) ;
-                $showOrderDownIcon = (isset($this->items[$i+1]) AND ($item->ordering <= $this->items[$i+1]->ordering));
-            ?>
-                <span><?php echo $this->pagination->orderUpIcon($i, $showOrderUpIcon, 'quotes.orderup', 'JLIB_HTML_MOVE_UP', $ordering); ?></span>
-                <span><?php echo $this->pagination->orderDownIcon($i, $this->pagination->total, $showOrderDownIcon, 'quotes.orderdown', 'JLIB_HTML_MOVE_DOWN', $ordering); ?></span>
-            <?php } elseif ($this->listDirn == 'desc') {
-                $showOrderUpIcon = (isset($this->items[$i-1]) AND ($item->ordering <= $this->items[$i-1]->ordering));
-                $showOrderDownIcon = (isset($this->items[$i+1]) AND (!empty($this->items[$i+1]->ordering)) AND ($item->ordering >= $this->items[$i+1]->ordering)); 
-            ?>
-                <span><?php echo $this->pagination->orderUpIcon($i, $showOrderUpIcon, 'quotes.orderdown', 'JLIB_HTML_MOVE_UP', $ordering); ?></span>
-                <span><?php echo $this->pagination->orderDownIcon($i, $this->pagination->total, $showOrderDownIcon, 'quotes.orderup', 'JLIB_HTML_MOVE_DOWN', $ordering); ?></span>
-            <?php } 
-        }?>
-        <input type="text" name="order[]" size="5" value="<?php echo $item->ordering;?>" <?php echo $disabled ?> class="text-area-order" />
-        </td>
-        <td class="center"><?php echo JHtml::_('jgrid.published', $item->published, $i, "quotes."); ?></td>
-        <td class="center"><?php echo (int)$item->id;?></td>
+        <td class="center nowrap hidden-phone"><?php echo $this->escape($item->user_name); ?></td>
+        <td class="center nowrap hidden-phone"><?php echo intval($item->hits); ?></td>
+		<td class="center nowrap hidden-phone"><?php echo JHtml::_('date', $item->created, JText::_('DATE_FORMAT_LC3')); ?></td>
+        <td class="center hidden-phone"><?php echo (int)$item->id;?></td>
 	</tr>
 <?php }?>
 	  

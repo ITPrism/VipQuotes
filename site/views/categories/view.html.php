@@ -1,14 +1,10 @@
 <?php
 /**
- * @package      ITPrism Components
- * @subpackage   VipQuotes
+ * @package      VipQuotes
+ * @subpackage   Component
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2010 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @copyright    Copyright (C) 2014 Todor Iliev <todor@itprism.com>. All rights reserved.
  * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
- * VipQuotes is free software. This version may have been modified pursuant
- * to the GNU General Public License, and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
  */
 
 // no direct access
@@ -16,7 +12,7 @@ defined('_JEXEC') or die;
 
 jimport('joomla.application.component.view');
 
-class VipQuotesViewCategories extends JView {
+class VipQuotesViewCategories extends JViewLegacy {
     
     protected $state      = null;
     protected $items      = null;
@@ -40,12 +36,10 @@ class VipQuotesViewCategories extends JView {
         $this->pagination     = $this->get('Pagination');
         
         $this->params         = $this->state->get("params");
-        $this->displayNumber  = $this->params->get("categories_display_counter", 0);
-
-        // HTML Helpers
-        JHtml::addIncludePath(VIPQUOTES_PATH_COMPONENT_SITE.'/helpers/html');
         
-        $this->version        = new VipQuotesVersion();
+        $this->displayNumber  = $this->params->get("categories_display_counter", 0);
+        
+        $this->version    = new VipQuotesVersion();
         
         $this->prepareDocument();
                 

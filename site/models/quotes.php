@@ -1,14 +1,10 @@
 <?php
 /**
- * @package      ITPrism Components
- * @subpackage   VipQuotes
+ * @package      VipQuotes
+ * @subpackage   Component
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2010 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @copyright    Copyright (C) 2014 Todor Iliev <todor@itprism.com>. All rights reserved.
  * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
- * VipQuotes is free software. This version may have been modified pursuant
- * to the GNU General Public License, and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
  */
 
 // no direct access
@@ -68,12 +64,7 @@ class VipQuotesModelQuotes extends JModelList {
         // Filters
         
         // Author
-        $displayFilterAuthor    = $params->get("quotes_display_filter_author", 0);
-        if($displayFilterAuthor) {
-            $value = $app->getUserStateFromRequest($this->context.".filter.author", "filter_author", 0, "int");
-        } else {
-            $value = $app->input->get("filter_author", 0, "int");
-        }
+        $value = $app->getUserStateFromRequest($this->context.".filter.author", "filter_author", 0, "int");
         $this->setState('filter.author', $value);
         
         // Alphabet
@@ -82,30 +73,15 @@ class VipQuotesModelQuotes extends JModelList {
         $this->setState('filter.alpha', $value);
         
         // Category
-        $displayFilterCategory    = $params->get("quotes_display_filter_category", 0);
-        if($displayFilterCategory) {
-            $value = $app->getUserStateFromRequest($this->context.".filter.category", "filter_category", 0, "int");
-        } else {
-            $value = $app->input->get("filter_category", 0, "int");
-        }
+        $value = $app->getUserStateFromRequest($this->context.".filter.category", "filter_category", 0, "int");
         $this->setState('filter.category', $value);
         
         // User
-        $displayFilterUser = $params->get("quotes_display_filter_user", 0);
-        if($displayFilterUser) {
-            $value = $app->getUserStateFromRequest($this->context.".filter.user", "filter_user", 0, "int");
-        } else {
-            $value = 0;
-        }
+        $value = $app->getUserStateFromRequest($this->context.".filter.user", "filter_user", 0, "int");
         $this->setState('filter.user', $value);
         
         // Ordering
-        $displeyFilterOrdering = $params->get("quotes_display_filter_ordering", 0);
-        if($displeyFilterOrdering) {
-            $filterOrdering = $app->getUserStateFromRequest($this->context.".filter.ordering", "filter_ordering", 0, "int");
-        } else {
-            $filterOrdering = $params->get("quotes_quotes_order_by", 0);
-        }
+        $filterOrdering = $app->getUserStateFromRequest($this->context.".filter.ordering", "filter_ordering", 0, "int");
         $this->setState('filter.ordering', $filterOrdering);
         
         // Get phrase
@@ -171,6 +147,7 @@ class VipQuotesModelQuotes extends JModelList {
         // Use article state if badcats.id is null, otherwise, force 0 for unpublished
         $query->where('a.published = 1');
         
+        
         // Filter by a category
         $categoryId = intval($this->getState('filter.category'));
         if(!empty($categoryId)){
@@ -226,7 +203,7 @@ class VipQuotesModelQuotes extends JModelList {
         
         $escaped = $db->escape($alpha, true);
         $quoted  = $db->quote($alpha."%", false);
-        
+   
         if(!empty($filterAuthorAlpha) AND !empty($filterCategoryAlpha)) {
             $query->where('(b.name LIKE '.$quoted.' OR d.title LIKE '.$quoted.')');
         } else if(!empty($filterAuthorAlpha)) {
@@ -258,6 +235,16 @@ class VipQuotesModelQuotes extends JModelList {
 
             case 3:
                 $orderCol = "b.name";
+                break;
+                
+            case 4:
+                $orderCol = "a.hits";
+                $listOrder = "DESC";
+                break;
+                
+            case 5:
+                $orderCol = "b.hits";
+                $listOrder = "DESC";
                 break;
                 
             default:

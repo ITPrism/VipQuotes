@@ -1,9 +1,9 @@
 <?php
 /**
- * @package      ITPrism Components
- * @subpackage   VipQuotes
+ * @package      VipQuotes
+ * @subpackage   Component
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2010 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @copyright    Copyright (C) 2014 Todor Iliev <todor@itprism.com>. All rights reserved.
  * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
  * VipQuotes is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -15,28 +15,35 @@
 defined('_JEXEC') or die;
 ?>
 <tr>
-    <th width="1%">
-        <input type="checkbox" name="checkall-toggle" value="" onclick="checkAll(this)" />
-    </th>
+    <th width="1%" class="nowrap center hidden-phone">
+		<?php echo JHtml::_('grid.sort', '<i class="icon-menu-2"></i>', 'a.ordering', $this->listDirn, $this->listOrder, null, 'asc', 'JGRID_HEADING_ORDERING'); ?>
+	</th>
+    <th width="1%" class="nowrap center hidden-phone">
+		<?php echo JHtml::_('grid.checkall'); ?>
+	</th>
+	<th width="1%" style="min-width: 55px" class="nowrap center">
+		<?php echo JHtml::_('grid.sort', 'JSTATUS', 'a.published', $this->listDirn, $this->listOrder); ?>
+	</th>
 	<th class="title" >
 	     <?php echo JHtml::_('grid.sort',  'COM_VIPQUOTES_QUOTE', 'a.quote', $this->listDirn, $this->listOrder); ?>
 	</th>
-	<th width="10%">
-	     <?php echo JHtml::_('grid.sort',  'JCATEGORY', 'b.title', $this->listDirn, $this->listOrder); ?>
+	<th width="10%" class="nowrap center hidden-phone">
+		<?php echo JHtml::_('grid.sort',  'COM_VIPQUOTES_AUTHOR', 'b.name', $this->listDirn, $this->listOrder); ?>
+	</th>
+	<th width="10%" class="nowrap center hidden-phone">
+	     <?php echo JHtml::_('grid.sort',  'JCATEGORY', 'd.title', $this->listDirn, $this->listOrder); ?>
     </th>
-    <th width="5%">
+    <th width="10%" class="nowrap center hidden-phone">
+        <?php echo JHtml::_('grid.sort',  'COM_VIPQUOTES_USER', 'c.name', $this->listDirn, $this->listOrder); ?>
+    </th>
+    <th width="5%" class="nowrap center hidden-phone">
         <?php echo JHtml::_('grid.sort',  'COM_VIPQUOTES_HITS', 'a.hits', $this->listDirn, $this->listOrder); ?>
     </th>
-	<th width="10%">
+	<th width="10%" class="nowrap center hidden-phone">
 		<?php echo JHtml::_('grid.sort',  'COM_VIPQUOTES_DATE', 'a.created', $this->listDirn, $this->listOrder); ?>
 	</th>
-	<th width="10%">
-        <?php echo JHtml::_('grid.sort',  'JGRID_HEADING_ORDERING', 'a.ordering', $this->listDirn, $this->listOrder); ?>
-        <?php if ($this->saveOrder) {?>
-        <?php echo JHtml::_('grid.order',  $this->items, 'filesave.png', 'quotes.saveorder'); ?>
-        <?php }?>
+    <th width="3%" class="nowrap center hidden-phone">
+        <?php echo JHtml::_('grid.sort',  'JGRID_HEADING_ID', 'a.id', $this->listDirn, $this->listOrder); ?>
     </th>
-    <th width="3%"><?php echo JText::_('JSTATUS'); ?></th>
-    <th width="3%" class="nowrap"><?php echo JHtml::_('grid.sort',  'JGRID_HEADING_ID', 'a.id', $this->listDirn, $this->listOrder); ?></th>
 </tr>
 	  

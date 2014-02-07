@@ -1,43 +1,46 @@
 <?php
 /**
- * @package      Vip Quotes
- * @subpackage   Components
+ * @package      VipQuotes
+ * @subpackage   Libraries
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2010 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @copyright    Copyright (C) 2014 Todor Iliev <todor@itprism.com>. All rights reserved.
  * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
- * Vip Quotes is free software. This version may have been modified pursuant
- * to the GNU General Public License, and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
  */
 
 // no direct access
 defined('_JEXEC') or die;
 
 if(!defined("VIPQUOTES_PATH_COMPONENT_ADMINISTRATOR")) {
-    define("VIPQUOTES_PATH_COMPONENT_ADMINISTRATOR", JPATH_ADMINISTRATOR . DIRECTORY_SEPARATOR. "components" . DIRECTORY_SEPARATOR ."com_vipquotes");
+    define("VIPQUOTES_PATH_COMPONENT_ADMINISTRATOR", JPATH_ADMINISTRATOR .DIRECTORY_SEPARATOR. "components" .DIRECTORY_SEPARATOR. "com_vipquotes");
 }
 
 if(!defined("VIPQUOTES_PATH_COMPONENT_SITE")) {
-    define("VIPQUOTES_PATH_COMPONENT_SITE", JPATH_SITE . DIRECTORY_SEPARATOR. "components" . DIRECTORY_SEPARATOR ."com_vipquotes");
+    define("VIPQUOTES_PATH_COMPONENT_SITE", JPATH_SITE .DIRECTORY_SEPARATOR. "components" .DIRECTORY_SEPARATOR. "com_vipquotes");
 }
 
 if(!defined("VIPQUOTES_PATH_LIBRARY")) {
-    define("VIPQUOTES_PATH_LIBRARY", JPATH_LIBRARIES . DIRECTORY_SEPARATOR. "vipquotes");
-}
-
-if(!defined("ITPRISM_PATH_LIBRARY")) {
-    define("ITPRISM_PATH_LIBRARY", JPATH_LIBRARIES . DIRECTORY_SEPARATOR. "itprism");
+    define("VIPQUOTES_PATH_LIBRARY", JPATH_LIBRARIES .DIRECTORY_SEPARATOR. "vipquotes");
 }
 
 jimport('joomla.utilities.arrayhelper');
 
+// Constants
+JLoader::register("VipQuotesConstants", VIPQUOTES_PATH_LIBRARY .DIRECTORY_SEPARATOR. "constants.php");
+
 // Register Component libraries
-JLoader::register("ITPrismErrors",    ITPRISM_PATH_LIBRARY. DIRECTORY_SEPARATOR ."errors.php");
-JLoader::register("VipQuotesVersion", VIPQUOTES_PATH_LIBRARY .DIRECTORY_SEPARATOR ."version.php");
+JLoader::register("VipQuotesVersion", VIPQUOTES_PATH_LIBRARY .DIRECTORY_SEPARATOR. "version.php");
 
 // Register helpers
-JLoader::register("VipQuotesHelper", VIPQUOTES_PATH_COMPONENT_ADMINISTRATOR . DIRECTORY_SEPARATOR . "helpers" . DIRECTORY_SEPARATOR . "vipquotes.php");
-JLoader::register("VipQuotesCategories", VIPQUOTES_PATH_COMPONENT_ADMINISTRATOR . DIRECTORY_SEPARATOR . "helpers" . DIRECTORY_SEPARATOR . "category.php");
-JLoader::register("VipQuotesHelperRoute", VIPQUOTES_PATH_COMPONENT_SITE . DIRECTORY_SEPARATOR . "helpers" . DIRECTORY_SEPARATOR . "route.php");
+JLoader::register("VipQuotesHelper", VIPQUOTES_PATH_COMPONENT_ADMINISTRATOR .DIRECTORY_SEPARATOR. "helpers" .DIRECTORY_SEPARATOR. "vipquotes.php");
+JLoader::register("VipQuotesCategories", VIPQUOTES_PATH_COMPONENT_ADMINISTRATOR .DIRECTORY_SEPARATOR. "helpers" .DIRECTORY_SEPARATOR. "category.php");
+JLoader::register("VipQuotesHelperRoute", VIPQUOTES_PATH_COMPONENT_SITE .DIRECTORY_SEPARATOR. "helpers" .DIRECTORY_SEPARATOR. "route.php");
 
+// Register Facebook SDK 
+JLoader::register("Facebook", VIPQUOTES_PATH_LIBRARY .DIRECTORY_SEPARATOR. "facebook" .DIRECTORY_SEPARATOR. "facebook.php");
+
+// Include HTML helpers path
+JHtml::addIncludePath(VIPQUOTES_PATH_COMPONENT_SITE.'/helpers/html');
+
+// Load library language
+$lang = JFactory::getLanguage();
+$lang->load('lib_vipquotes', VIPQUOTES_PATH_LIBRARY);

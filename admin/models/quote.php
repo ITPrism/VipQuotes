@@ -1,9 +1,9 @@
 <?php
 /**
- * @package      ITPrism Components
- * @subpackage   VipQuotes
+ * @package      VipQuotes
+ * @subpackage   Component
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2010 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @copyright    Copyright (C) 2014 Todor Iliev <todor@itprism.com>. All rights reserved.
  * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
  * VipQuotes is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -76,6 +76,7 @@ class VipQuotesModelQuote extends JModelAdmin {
             // Prime some default values.
 			if ($this->getState($this->getName().'.id') == 0) {
 				$data->set('catid', $app->input->getInt('catid', $app->getUserState($this->option.'.quotes.filter.category_id')));
+				$data->set('author_id', $app->input->getInt('author_id', $app->getUserState($this->option.'.quotes.filter.author_id')));
 			}
         }
         
@@ -93,6 +94,7 @@ class VipQuotesModelQuote extends JModelAdmin {
         
         $id        = JArrayHelper::getValue($data, "id");
         $quote     = JArrayHelper::getValue($data, "quote");
+        $authorId  = JArrayHelper::getValue($data, "author_id");
         $catid     = JArrayHelper::getValue($data, "catid");
         $published = JArrayHelper::getValue($data, "published");
         
@@ -100,12 +102,24 @@ class VipQuotesModelQuote extends JModelAdmin {
         $row = $this->getTable();
         $row->load($id);
         
+        // Prepare flags for new item or changes status of the item.
+        $isNew          = true;
+        $isChangedState = false;
+        if(!empty($row->id)) {
+            $isNew = false;
+            
+            if($row->published != $published) {
+                $isChangedState = true;
+            }
+        }
+        
         if(!$row->id) {
             $user = JFactory::getUser();
             $row->set("user_id", $user->id);
         }
         
         $row->set("quote",     $quote);
+        $row->set("author_id", $authorId);
         $row->set("catid",     $catid);
         $row->set("published", $published);
         
@@ -113,6 +127,8 @@ class VipQuotesModelQuote extends JModelAdmin {
 		$this->prepareTable($row);
 		
         $row->store();
+        
+        $this->triggerEventOnAfterSave($row, $isNew, $isChangedState);
         
         return $row->id;
     
@@ -145,6 +161,27 @@ class VipQuotesModelQuote extends JModelAdmin {
         
 	}
 	
+	protected function triggerEventOnAfterSave($row, $isNew, $isChangedState) {
+	
+	    // Get properties
+	    $item = $row->getProperties();
+	    $item = JArrayHelper::toObject($item);
+	
+	    // Generate context
+	    $context = $this->option.'.'.$this->getName();
+	
+	    // Include the content plugins for the change of state event.
+	    $dispatcher = JEventDispatcher::getInstance();
+	    JPluginHelper::importPlugin('content');
+	     
+	    // Trigger the onContentAfterSave event.
+	    $results    = $dispatcher->trigger($this->event_after_save, array($context, &$item, $isNew, $isChangedState));
+	    if (in_array(false, $results, true)) {
+	        throw new RuntimeException(JText::_("COM_VIPQUOTES_ERROR_DURING_PROCESS_STORING_QUOTE"));
+	    }
+	
+	}
+	
     public function hasDuplication($quote, $itemId = null) {
         
         $db     = JFactory::getDbo();
@@ -153,7 +190,7 @@ class VipQuotesModelQuote extends JModelAdmin {
         $query  = $db->getQuery(true);
         $query
             ->select("COUNT(*)")
-            ->from($db->quoteName("#__vq_quotes") . " AS a");
+            ->from($db->quoteName("#__vq_quotes", "a"));
         
         if(!empty($itemId)) {
             $query->where("a.id != " . (int)$itemId );
@@ -166,27 +203,6 @@ class VipQuotesModelQuote extends JModelAdmin {
         
         return (bool)$result; 
             
-    }
-    
-    /**
-     * Delete records
-     *
-     * @param array $cids Rows Ids
-     */
-    public function delete($itemsIds){
-        
-        $db     = JFactory::getDbo();
-        /** @var $db JDatabaseMySQLi **/
-        
-        $query  = $db->getQuery(true);
-        
-        $query
-            ->delete($db->quoteName('#__vq_quotes'))
-            ->where($db->quoteName('id')." IN ( " . implode(",", $itemsIds) . " )");
-        
-        $db->setQuery($query);
-        $db->query();
-    
     }
     
 	/**

@@ -1,14 +1,10 @@
 <?php
 /**
- * @package      ITPrism Components
- * @subpackage   VipQuotes
+ * @package      VipQuotes
+ * @subpackage   Component
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2010 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @copyright    Copyright (C) 2014 Todor Iliev <todor@itprism.com>. All rights reserved.
  * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
- * VipQuotes is free software. This version may have been modified pursuant
- * to the GNU General Public License, and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
  */
 
 // No direct access
@@ -16,7 +12,9 @@ defined('_JEXEC') or die;
 
 jimport('joomla.application.component.controller');
 
-class VipQuotesController extends JController {
+class VipQuotesController extends JControllerLegacy {
+    
+    protected $cacheableViews = array("categories");
     
     /**
      * Method to display a view.
@@ -29,19 +27,19 @@ class VipQuotesController extends JController {
      */
     public function display($cachable = false, $urlparams = false) {
         
-        $app = JFactory::getApplication();
-        $tmpl = $app->input->get("tmpl");
-         
-        if(empty($tmpl)) {
-            $cachable   = true;
-        }
-
+        $cachable   = false;
+        
         // Set the default view name and format from the Request.
         // Note we are using catid to avoid collisions with the router and the return page.
         // Frontend is a bit messier than the backend.
-        $viewName  = $app->input->getCmd('view', 'categories');
-        $app->input->set('view', $viewName);
+        $viewName  = $this->input->getCmd('view', 'categories');
+        $this->input->set('view', $viewName);
 
+        // Cache some views.
+        if(in_array($viewName, $this->cacheableViews)) {
+            $cachable   = true;
+        }
+        
         $safeurlparams = array(
             'id'                => 'INT',
             'limit'             => 'INT',

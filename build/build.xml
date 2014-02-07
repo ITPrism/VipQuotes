@@ -3,7 +3,7 @@
 	<description>Vip Quotes Lite Ant Build File</description>
 
 	<!-- load variables from config file -->
-	<property name="cfg.configFile" location="antconfig.txt" />
+	<property name="cfg.configFile" location="antconfig_j3.txt" />
 	<loadproperties srcfile="${cfg.configFile}" />
 
 	<!-- auto values but should be checked -->
@@ -12,12 +12,9 @@
 	
 	<!-- destination directories -->
 	<property name="cfg.adminDestDir" location="${cfg.pkgDir}/admin" />
-	<property name="cfg.adminLanguageDestDir" location="${cfg.pkgDir}/admin/language" />
 	<property name="cfg.mediaDestDir" location="${cfg.pkgDir}/media" />
 	<property name="cfg.siteDestDir" location="${cfg.pkgDir}/site" />
-	<property name="cfg.siteLanguageFilesDir" location="${cfg.pkgDir}/site/language" />
     <property name="cfg.librariesDestDir" location="${cfg.pkgDir}/libraries" />
-	
 	<property name="cfg.pluginsDestDir" location="${cfg.pkgDir}/plugins" />
 	<property name="cfg.modulesDestDir" location="${cfg.pkgDir}/modules" />
 
@@ -26,10 +23,6 @@
 	<property name="cfg.siteSourceDir" location="${cfg.sourceDir}/components" />
 	<property name="cfg.mediaSourceDir" location="${cfg.sourceDir}/media" />
     <property name="cfg.librariesSourceDir" location="${cfg.sourceDir}/libraries" />
-
-	<!-- language source -->
-	<property name="cfg.adminLanguageSourceDir" location="${cfg.sourceDir}/administrator/language/en-GB" />
-	<property name="cfg.siteLanguageSourceDir" location="${cfg.sourceDir}/language/en-GB" />
 
 	<!-- plugins source -->
     <property name="cfg.pluginsSourceDir" location="${cfg.sourceDir}/plugins" />
@@ -41,28 +34,16 @@
 
 	<target name="init" description="creates nessecary directory to build with">
 		<mkdir dir="${cfg.pkgDir}/admin" />
-		<mkdir dir="${cfg.pkgDir}/admin/language" />
 		<mkdir dir="${cfg.pkgDir}/media" />
 		<mkdir dir="${cfg.pkgDir}/site" />
-		<mkdir dir="${cfg.pkgDir}/site/language" />
 	    <mkdir dir="${cfg.pkgDir}/libraries" />
 		<mkdir dir="${cfg.pkgDir}/packages" />
 		<mkdir dir="${cfg.pkgDir}/modules" />
 		<mkdir dir="${cfg.pkgDir}/plugins" />
 		
 		<!-- plugins -->
-		<mkdir dir="${cfg.pkgDir}/plugins/search/plg_search_vipquotes" />
-		<mkdir dir="${cfg.pkgDir}/plugins/search/plg_search_vipquotes/language" />
-		
-		<!-- modules -->
-        <mkdir dir="${cfg.pkgDir}/modules/mod_viplastquotes" />
-        <mkdir dir="${cfg.pkgDir}/modules/mod_viplastquotes/language" />
-        <mkdir dir="${cfg.pkgDir}/modules/mod_viprandomquotes" />
-        <mkdir dir="${cfg.pkgDir}/modules/mod_viprandomquotes/language" />
-	    <mkdir dir="${cfg.pkgDir}/modules/mod_vipquotesabc" />
-        <mkdir dir="${cfg.pkgDir}/modules/mod_vipquotesabc/language" />
-	    <mkdir dir="${cfg.pkgDir}/modules/mod_vipquotessearch" />
-        <mkdir dir="${cfg.pkgDir}/modules/mod_vipquotessearch/language" />
+		<mkdir dir="${cfg.pkgDir}/plugins/content/plg_content_vipquotesadminmail" />
+		<mkdir dir="${cfg.pkgDir}/plugins/content/plg_content_vipquotesusermail" />
 	    
 	</target>
 
@@ -93,17 +74,6 @@
 		</fileset>
 	</copy>
 
-	<!-- copy admin language files of the component -->
-	<copy file="${cfg.adminLanguageSourceDir}/en-GB.${cfg.comName}.ini" todir="${cfg.adminLanguageDestDir}/en-GB/" />
-	<copy file="${cfg.adminLanguageSourceDir}/en-GB.${cfg.comName}.sys.ini" todir="${cfg.adminLanguageDestDir}/en-GB/" />
-	<copy file="${cfg.adminLanguageSourceDir}/index.html" todir="${cfg.adminLanguageDestDir}/" />
-	<copy file="${cfg.adminLanguageSourceDir}/index.html" todir="${cfg.adminLanguageDestDir}/en-GB/" />
-
-	<!-- copy site language files of the component -->
-	<copy file="${cfg.siteLanguageSourceDir}/en-GB.${cfg.comName}.ini" todir="${cfg.siteLanguageFilesDir}/en-GB/" />
-	<copy file="${cfg.siteLanguageSourceDir}/index.html" todir="${cfg.siteLanguageFilesDir}/" />
-	<copy file="${cfg.siteLanguageSourceDir}/index.html" todir="${cfg.siteLanguageFilesDir}/en-GB/" />
-
 	<!-- copy main files of the component -->
     <copy file="${cfg.adminSourceDir}/${cfg.comName}/install.php" todir="${cfg.pkgDir}" />
     <copy file="${cfg.adminSourceDir}/${cfg.comName}/README.md" todir="${cfg.pkgDir}" />
@@ -119,86 +89,23 @@
     
 	<!-- COPY PLUGINS -->
 	
-	<!-- SEARCH/VIPQUOTES -->
-	
-	<!-- copy plugins files of search/vipquotes -->
-    <copy todir="${cfg.pluginsDestDir}/search/plg_search_vipquotes">
-        <fileset dir="${cfg.pluginsSourceDir}/search/vipquotes">
+    <!-- PLG_CONTENT/VIPQUOTES ADMIN MAIL -->
+        
+    <!-- copy plugins files of content/vipquotesadminmail -->
+    <copy todir="${cfg.pluginsDestDir}/content/plg_content_vipquotesadminmail">
+        <fileset dir="${cfg.pluginsSourceDir}/content/vipquotesadminmail">
             <include name="**/*" />
         </fileset>
     </copy>
-	
-	<!-- copy plugin language files of search/vipquotes -->
-    <copy file="${cfg.adminLanguageSourceDir}/en-GB.plg_search_vipquotes.ini" todir="${cfg.pluginsDestDir}/search/plg_search_vipquotes/language/en-GB" />
-    <copy file="${cfg.adminLanguageSourceDir}/en-GB.plg_search_vipquotes.sys.ini" todir="${cfg.pluginsDestDir}/search/plg_search_vipquotes/language/en-GB" />
-    <copy file="${cfg.adminLanguageSourceDir}/index.html" todir="${cfg.pluginsDestDir}/search/plg_search_vipquotes/language" />
-    <copy file="${cfg.adminLanguageSourceDir}/index.html" todir="${cfg.pluginsDestDir}/search/plg_search_vipquotes/language/en-GB/" />
+    
+	<!-- copy plugins files of content/vipquotesusermail -->
+    <copy todir="${cfg.pluginsDestDir}/content/plg_content_vipquotesusermail">
+        <fileset dir="${cfg.pluginsSourceDir}/content/vipquotesusermail">
+            <include name="**/*" />
+        </fileset>
+    </copy>
     
 	<!-- END COPY PLUGINS -->
-	
-	<!-- COPY MODULES -->
-	    
-    <!-- MOD_VIPLASTQUOTES -->
-        
-    <!-- copy module files of mod_viplastquotes -->
-    <copy todir="${cfg.modulesDestDir}/mod_viplastquotes">
-        <fileset dir="${cfg.modulesSourceDir}/mod_viplastquotes">
-            <include name="**/*" />
-        </fileset>
-    </copy>
-
-    <!-- copy module language files of mod_viplastquotes -->
-    <copy file="${cfg.siteLanguageSourceDir}/en-GB.mod_viplastquotes.ini" todir="${cfg.modulesDestDir}/mod_viplastquotes/language/en-GB" />
-    <copy file="${cfg.siteLanguageSourceDir}/en-GB.mod_viplastquotes.sys.ini" todir="${cfg.modulesDestDir}/mod_viplastquotes/language/en-GB" />
-    <copy file="${cfg.siteLanguageSourceDir}/index.html" todir="${cfg.modulesDestDir}/mod_viplastquotes/language" />
-    <copy file="${cfg.siteLanguageSourceDir}/index.html" todir="${cfg.modulesDestDir}/mod_viplastquotes/language/en-GB/" />
-
-    <!-- MOD_VIPRANDOMQUOTES -->
-            
-    <!-- copy module files of mod_viprandomquotes -->
-    <copy todir="${cfg.modulesDestDir}/mod_viprandomquotes">
-        <fileset dir="${cfg.modulesSourceDir}/mod_viprandomquotes">
-            <include name="**/*" />
-        </fileset>
-    </copy>
-
-    <!-- copy module language files of mod_viprandomquotes -->
-    <copy file="${cfg.siteLanguageSourceDir}/en-GB.mod_viprandomquotes.ini" todir="${cfg.modulesDestDir}/mod_viprandomquotes/language/en-GB" />
-    <copy file="${cfg.siteLanguageSourceDir}/en-GB.mod_viprandomquotes.sys.ini" todir="${cfg.modulesDestDir}/mod_viprandomquotes/language/en-GB" />
-    <copy file="${cfg.siteLanguageSourceDir}/index.html" todir="${cfg.modulesDestDir}/mod_viprandomquotes/language" />
-    <copy file="${cfg.siteLanguageSourceDir}/index.html" todir="${cfg.modulesDestDir}/mod_viprandomquotes/language/en-GB/" />
-    
-    <!-- MOD_VIPQUOTESABC -->
-                
-    <!-- copy module files of mod_vipquotesabc -->
-    <copy todir="${cfg.modulesDestDir}/mod_vipquotesabc">
-        <fileset dir="${cfg.modulesSourceDir}/mod_vipquotesabc">
-            <include name="**/*" />
-        </fileset>
-    </copy>
-
-    <!-- copy module language files of mod_vipquotesabc -->
-    <copy file="${cfg.siteLanguageSourceDir}/en-GB.mod_vipquotesabc.ini" todir="${cfg.modulesDestDir}/mod_vipquotesabc/language/en-GB" />
-    <copy file="${cfg.siteLanguageSourceDir}/en-GB.mod_vipquotesabc.sys.ini" todir="${cfg.modulesDestDir}/mod_vipquotesabc/language/en-GB" />
-    <copy file="${cfg.siteLanguageSourceDir}/index.html" todir="${cfg.modulesDestDir}/mod_vipquotesabc/language" />
-    <copy file="${cfg.siteLanguageSourceDir}/index.html" todir="${cfg.modulesDestDir}/mod_vipquotesabc/language/en-GB/" />
-	
-    <!-- MOD_VIPQUOTESSEARCH -->
-    
-    <!-- copy module files of mod_vipquotessearch -->
-    <copy todir="${cfg.modulesDestDir}/mod_vipquotessearch">
-        <fileset dir="${cfg.modulesSourceDir}/mod_vipquotessearch">
-            <include name="**/*" />
-        </fileset>
-    </copy>
-
-    <!-- copy module language files of mod_vipquotessearch -->
-    <copy file="${cfg.siteLanguageSourceDir}/en-GB.mod_vipquotessearch.ini" todir="${cfg.modulesDestDir}/mod_vipquotessearch/language/en-GB" />
-    <copy file="${cfg.siteLanguageSourceDir}/en-GB.mod_vipquotessearch.sys.ini" todir="${cfg.modulesDestDir}/mod_vipquotessearch/language/en-GB" />
-    <copy file="${cfg.siteLanguageSourceDir}/index.html" todir="${cfg.modulesDestDir}/mod_vipquotessearch/language" />
-    <copy file="${cfg.siteLanguageSourceDir}/index.html" todir="${cfg.modulesDestDir}/mod_vipquotessearch/language/en-GB/" />
-
-	<!-- END COPY MODULES -->
 	
 	<target name="build_component" depends="init" description="packages the finaly component file">
 		
@@ -207,13 +114,8 @@
 			includes="admin/**,media/**,site/**,${cfg.name}.xml" />
 		
 		<!-- build plugins -->
-		<zip destfile="${cfg.pkgDir}/packages/plg_search_vipquotes.zip" basedir="${cfg.pluginsDestDir}/search/plg_search_vipquotes" />
-		
-		<!-- build modules -->
-        <zip destfile="${cfg.pkgDir}/packages/mod_viplastquotes.zip" basedir="${cfg.modulesDestDir}/mod_viplastquotes" />
-        <zip destfile="${cfg.pkgDir}/packages/mod_viprandomquotes.zip" basedir="${cfg.modulesDestDir}/mod_viprandomquotes" />
-        <zip destfile="${cfg.pkgDir}/packages/mod_vipquotesabc.zip" basedir="${cfg.modulesDestDir}/mod_vipquotesabc" />
-        <zip destfile="${cfg.pkgDir}/packages/mod_vipquotessearch.zip" basedir="${cfg.modulesDestDir}/mod_vipquotessearch" />
+		<zip destfile="${cfg.pkgDir}/packages/plg_content_vipquotesadminmail.zip" basedir="${cfg.pluginsDestDir}/content/plg_content_vipquotesadminmail" />
+		<zip destfile="${cfg.pkgDir}/packages/plg_content_vipquotesusermail.zip" basedir="${cfg.pluginsDestDir}/content/plg_content_vipquotesusermail" />
 		
 	    <!-- build library -->
         <zip destfile="${cfg.pkgDir}/packages/lib_${cfg.name}.zip" basedir="${cfg.librariesDestDir}/lib_${cfg.name}" />

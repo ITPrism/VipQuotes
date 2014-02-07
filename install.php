@@ -1,14 +1,10 @@
 <?php
 /**
- * @package      ITPrism Components
- * @subpackage   Vip Quotes
+ * @package      VipQuotes
+ * @subpackage   Component
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2010 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @copyright    Copyright (C) 2014 Todor Iliev <todor@itprism.com>. All rights reserved.
  * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
- * Vip Quotes is free software. This version may have been modified pursuant
- * to the GNU General Public License, and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
  */
 
 // no direct access
@@ -72,10 +68,6 @@ class pkg_vipQuotesInstallerScript {
         $params             = JComponentHelper::getParams("com_vipquotes");
         $this->imagesFolder = JFolder::makeSafe($params->get("images_directory", "images/authors"));
         $this->imagesPath   = JPath::clean( JPATH_SITE.DIRECTORY_SEPARATOR.$this->imagesFolder );
-        $this->bootstrap    = JPath::clean( JPATH_SITE.DIRECTORY_SEPARATOR."media".DIRECTORY_SEPARATOR."com_vipquotes".DIRECTORY_SEPARATOR."css".DIRECTORY_SEPARATOR."bootstrap.min.css" );
-    
-        $style = '<style>'.file_get_contents($this->bootstrap).'</style>';
-        echo $style;
         
         // Create images folder
         if(!is_dir($this->imagesPath)){
@@ -151,6 +143,16 @@ class pkg_vipQuotesInstallerScript {
         }
         VipQuotesInstallHelper::addRow($title, $result, $info);
         
+        // Display information about PHP version.
+        $title  = JText::_("COM_VIPQUOTES_PHP_VERSION");
+        $info   = "";
+        if (version_compare(PHP_VERSION, '5.3.0') < 0) {
+            $result = array("type" => "important", "text" => JText::_("COM_VIPQUOTES_WARNING"));
+        } else {
+            $result = array("type" => "success", "text" => JText::_("JYES"));
+        }
+        VipQuotesInstallHelper::addRow($title, $result, $info);
+        
         // Installed extensions
         VipQuotesInstallHelper::addRowHeading(JText::_("COM_VIPQUOTES_INSTALLED_EXTENSIONS"));
         
@@ -166,29 +168,13 @@ class pkg_vipQuotesInstallerScript {
         }
         VipQuotesInstallHelper::addRow($title, $result, $info);
         
-        // Vip Random Quotes
+        // Content - Vip Quotes - Admin Mail 
         $result = array("type" => "success"  , "text" => JText::_("COM_VIPQUOTES_INSTALLED"));
-        VipQuotesInstallHelper::addRow(JText::_("COM_VIPQUOTES_VIP_RANDOM_QUOTES"), $result, JText::_("COM_VIPQUOTES_MODULE"));
+        VipQuotesInstallHelper::addRow(JText::_("COM_VIPQUOTES_PLUGIN_ADMIN_MAIL"), $result, JText::_("COM_VIPQUOTES_PLUGIN"));
         
-        // Vip Last Quotes
+        // Content - Vip Quotes - User Mail
         $result = array("type" => "success"  , "text" => JText::_("COM_VIPQUOTES_INSTALLED"));
-        VipQuotesInstallHelper::addRow(JText::_("COM_VIPQUOTES_VIP_LAST_QUOTES"), $result, JText::_("COM_VIPQUOTES_MODULE"));
-        
-        // Vip Quotes Search
-        $result = array("type" => "success"  , "text" => JText::_("COM_VIPQUOTES_INSTALLED"));
-        VipQuotesInstallHelper::addRow(JText::_("COM_VIPQUOTES_MODULE_SEARCH"), $result, JText::_("COM_VIPQUOTES_MODULE"));
-        
-        // Vip Quotes ABC
-        $result = array("type" => "success"  , "text" => JText::_("COM_VIPQUOTES_INSTALLED"));
-        VipQuotesInstallHelper::addRow(JText::_("COM_VIPQUOTES_MODULE_ABC"), $result, JText::_("COM_VIPQUOTES_MODULE"));
-        
-        // Search - Vip Quotes 
-        $result = array("type" => "success"  , "text" => JText::_("COM_VIPQUOTES_INSTALLED"));
-        VipQuotesInstallHelper::addRow(JText::_("COM_VIPQUOTES_SEARCH_VIP_QUOTES"), $result, JText::_("COM_VIPQUOTES_PLUGIN"));
-        
-        // Content - Vip Quotes
-        $result = array("type" => "success"  , "text" => JText::_("COM_VIPQUOTES_INSTALLED"));
-        VipQuotesInstallHelper::addRow(JText::_("COM_VIPQUOTES_CONTENT_VIP_QUOTES"), $result, JText::_("COM_VIPQUOTES_PLUGIN"));
+        VipQuotesInstallHelper::addRow(JText::_("COM_VIPQUOTES_PLUGIN_USER_MAIL"), $result, JText::_("COM_VIPQUOTES_PLUGIN"));
         
         // End table
         VipQuotesInstallHelper::endTable();

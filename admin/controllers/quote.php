@@ -1,9 +1,9 @@
 <?php
 /**
- * @package      ITPrism Components
- * @subpackage   VipQuotes
+ * @package      VipQuotes
+ * @subpackage   Component
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2010 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @copyright    Copyright (C) 2014 Todor Iliev <todor@itprism.com>. All rights reserved.
  * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
  * VipQuotes is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -24,7 +24,6 @@ jimport('itprism.controller.form.backend');
  */
 class VipQuotesControllerQuote extends ITPrismControllerFormBackend {
     
-    
 	/**
      * Proxy for getModel.
      * @since   1.6
@@ -41,10 +40,7 @@ class VipQuotesControllerQuote extends ITPrismControllerFormBackend {
         
         JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
         
-        $app = JFactory::getApplication();
-        /** @var $app JAdministrator **/
-        
-        $data    = $app->input->post->get('jform', array(), 'array');
+        $data    = $this->input->post->get('jform', array(), 'array');
         $itemId  = JArrayHelper::getValue($data, "id");
         
         $redirectOptions = array(
@@ -76,6 +72,7 @@ class VipQuotesControllerQuote extends ITPrismControllerFormBackend {
         
         // Check for duplications
         if($params->get("quotes_check_quotes")) {
+            
             $quote = JArrayHelper::getValue($data, "quote");
             
             if($model->hasDuplication($quote, $itemId)) {
@@ -89,7 +86,7 @@ class VipQuotesControllerQuote extends ITPrismControllerFormBackend {
             }
         }
             
-        try{
+        try {
             
             // Verify for enabled magic quotes
             if( get_magic_quotes_gpc() ) {
@@ -102,7 +99,7 @@ class VipQuotesControllerQuote extends ITPrismControllerFormBackend {
             
         } catch(Exception $e){
             JLog::add($e->getMessage());
-            throw new Exception( JText::_('COM_VIPQUOTES_ERROR_SYSTEM'), ITPrismErrors::CODE_ERROR);
+            throw new Exception(JText::_('COM_VIPQUOTES_ERROR_SYSTEM'));
         }
         
         $this->displayMessage(JText::_('COM_VIPQUOTES_QUOTE_SAVED'), $redirectOptions);

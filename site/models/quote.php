@@ -1,14 +1,10 @@
 <?php
 /**
- * @package      ITPrism Components
- * @subpackage   Vip Quotes
+ * @package      VipQuotes
+ * @subpackage   Component
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2010 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @copyright    Copyright (C) 2014 Todor Iliev <todor@itprism.com>. All rights reserved.
  * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
- * Vip Quotes is free software. This version may have been modified pursuant
- * to the GNU General Public License, and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
  */
 
 // no direct access
@@ -82,8 +78,12 @@ class VipQuotesModelQuote extends JModelItem {
             $query  = $db->getQuery(true);
             
             $query
-                ->select("a.id, a.quote, a.hits, a.catid, a.published")
+                ->select(
+                    "a.id, a.quote, a.hits, a.catid, a.author_id, a.published, " .
+                    "b.name AS author_name, b.thumb, " .
+                    $query->concatenate(array("b.id", "b.alias"), ":")  . " AS author_slug" )
                 ->from("#__vq_quotes AS a")
+                ->innerJoin("#__vq_authors AS b ON a.author_id = b.id" )
                 ->where("a.id=".(int)$id);
 
             $db->setQuery($query);

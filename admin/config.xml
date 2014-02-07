@@ -1,20 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
 <config>
-    <fieldset name="general" label="COM_VIPQUOTES_GENERAL">
-        <field name="bootstrap_style_include" type="radio" default="1" label="COM_VIPQUOTES_BOOTSTRAP_STYLE_INCLUDE" description="COM_VIPQUOTES_BOOTSTRAP_STYLE_INCLUDE_DESC" class="btn-group">
+    <fieldset name="images" label="COM_VIPQUOTES_IMAGES_TITLE" description="COM_VIPQUOTES_IMAGES_PARAMS">
+        <field name="images_directory" type="text" default="images/authors" label="COM_VIPQUOTES_IMAGES_DIRECTORY" description="COM_VIPQUOTES_IMAGES_DIRECTORY_DESC" />
+        <field name="images_display_default" type="radio" default="1" label="COM_VIPQUOTES_DEFAULT_DISPLAY_IMAGE" description="COM_VIPQUOTES_DEFAULT_DISPLAY_IMAGE_DESC" class="btn-group">
             <option value="0">JNO</option>
             <option value="1">JYES</option>
         </field>
+        <field
+            name="images_own_picture"
+            type="media"
+            label="COM_VIPQUOTES_DEFAULT_IMAGE"
+            description="COM_VIPQUOTES_DEFAULT_IMAGE_DESC" />
     </fieldset>
+    
     <fieldset name="quote" label="COM_VIPQUOTES_QUOTE" description="COM_VIPQUOTES_QUOTE_PARAMS">
-        <field name="quote_display_hits" type="radio" default="1" label="COM_VIPQUOTES_DISPLAY_HITS" description="COM_VIPQUOTES_DISPLAY_HITS_DESC">
+        <field name="quote_display_author" type="radio" default="1" label="COM_VIPQUOTES_DISPLAY_AUTHOR" description="COM_VIPQUOTES_DISPLAY_AUTHOR_DESC" class="btn-group">
+            <option value="0">JNO</option>
+            <option value="1">JYES</option>
+        </field>
+        <field name="quote_author_linkable" type="radio" default="1" label="COM_VIPQUOTES_DISPLAY_AUTHOR_LINK" description="COM_VIPQUOTES_DISPLAY_AUTHOR_LINK_DESC" class="btn-group">
+            <option value="0">JNO</option>
+            <option value="1">JYES</option>
+        </field>
+        <field name="quote_display_hits" type="radio" default="1" label="COM_VIPQUOTES_DISPLAY_HITS" description="COM_VIPQUOTES_DISPLAY_HITS_DESC" class="btn-group">
             <option value="0">JNO</option>
             <option value="1">JYES</option>
         </field>
     </fieldset>
     
     <fieldset name="security" label="COM_VIPQUOTES_SECURITY" description="COM_VIPQUOTES_SECURITY_DESC">
-        <field name="security_check_quotes" type="radio" default="0" label="COM_VIPQUOTES_VERIFY" description="COM_VIPQUOTES_VERIFY_FORM_DESC">
+        <field
+            name="captcha"
+            type="plugins"
+            folder="captcha"
+            default=""
+            label="COM_VIPQUOTES_CAPTCHA"
+            description="COM_VIPQUOTES_CAPTCHA_DESC"
+            filter="cmd" >
+            <option
+                value="">JOPTION_USE_DEFAULT</option>
+            <option
+                value="0">JOPTION_DO_NOT_USE</option>
+        </field>
+        <field name="security_auto_publishing" type="radio" default="0" label="COM_VIPQUOTES_AUTO_PUBLISH" description="COM_VIPQUOTES_AUTO_PUBLISH_DESC" class="btn-group">
+            <option value="0">JNO</option>
+            <option value="1">JYES</option>
+        </field>
+        <field name="security_check_quotes" type="radio" default="0" label="COM_VIPQUOTES_VERIFY" description="COM_VIPQUOTES_VERIFY_FORM_DESC" class="btn-group">
             <option value="0">JNO</option>
             <option value="1">JYES</option>
         </field>
@@ -32,6 +64,40 @@
             <option value="1">COM_VIPQUOTES_BEFORE</option>
             <option value="2">COM_VIPQUOTES_AFTER</option>
             <option value="3">COM_VIPQUOTES_ONLY_NAME</option>
+        </field>
+        
+        <field name="seo_author_to_title" type="list" default="0"  label="COM_VIPQUOTES_AUTHOR_TO_TITLE" description="COM_VIPQUOTES_AUTHOR_TO_TITLE_DESC" >
+            <option value="0">JNONE</option>
+            <option value="1">COM_VIPQUOTES_BEFORE</option>
+            <option value="2">COM_VIPQUOTES_AFTER</option>
+            <option value="3">COM_VIPQUOTES_ONLY_NAME</option>
+        </field>
+        <field name="seo_author_as_page_heading" type="list" default="0"  label="COM_VIPQUOTES_AUTHOR_AS_PAGEHEADING" description="COM_VIPQUOTES_AUTHOR_AS_PAGEHEADING_DESC" >
+            <option value="0">JNONE</option>
+            <option value="1">COM_VIPQUOTES_BEFORE</option>
+            <option value="2">COM_VIPQUOTES_AFTER</option>
+            <option value="3">COM_VIPQUOTES_ONLY_NAME</option>
+        </field>
+    </fieldset>
+    
+    <fieldset name="integration" label="COM_VIPQUOTES_INTEGRATION" description="COM_VIPQUOTES_INTEGRATION_PARAMS">
+        <field name="integration_social_platform" type="list" default="" label="COM_VIPQUOTES_INTEGRATION_SOCIAL_PLATFORM" description="COM_VIPQUOTES_INTEGRATION_SOCIAL_PLATFORM_DESC">
+            <option value="">COM_VIPQUOTES_NONE</option>
+            <option value="socialcommunity">COM_VIPQUOTES_SOCIAL_COMMUNITY</option>
+            <option value="gravatar">COM_VIPQUOTES_GRAVATAR</option>
+            <option value="jomsocial">COM_VIPQUOTES_JOMSOCIAL</option>
+            <option value="easysocial">COM_VIPQUOTES_EASYSOCIAL</option>
+            <option value="kunena">COM_VIPQUOTES_KUNENA</option>
+        </field>
+        <field name="integration_avatars_size" type="text" default="50" label="COM_VIPQUOTES_AVATARS_SIZE" description="COM_VIPQUOTES_AVATARS_SIZE_DESC" />
+    </fieldset>
+    
+    <fieldset name="facebook" label="COM_VIPQUOTES_FACEBOOK_TITLE" description="COM_VIPQUOTES_FACEBOOK_PARAMS">
+        <field name="fbpp_app_id" type="text" default="" label="COM_VIPQUOTES_APP_ID" description="COM_VIPQUOTES_APP_ID_DESC" />
+        <field name="fbpp_app_secret" type="text" default="" label="COM_VIPQUOTES_APP_SECRET" description="COM_VIPQUOTES_APP_SECRET_DESC" class="span6"/>
+        <field name="fbpp_auto_grow" type="radio" default="0"  label="COM_VIPQUOTES_FACEBOOK_AUTO_GROW" description="COM_VIPQUOTES_FACEBOOK_AUTO_GROW_DESC" class="btn-group">
+            <option value="0">JNO</option>
+            <option value="1">JYES</option>
         </field>
     </fieldset>
     

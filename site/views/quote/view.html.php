@@ -1,14 +1,10 @@
 <?php
 /**
- * @package      ITPrism Components
- * @subpackage   VipQuotes
+ * @package      VipQuotes
+ * @subpackage   Component
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2010 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @copyright    Copyright (C) 2014 Todor Iliev <todor@itprism.com>. All rights reserved.
  * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
- * VipQuotes is free software. This version may have been modified pursuant
- * to the GNU General Public License, and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
  */
 
 // no direct access
@@ -17,7 +13,7 @@ defined('_JEXEC') or die;
 jimport('joomla.application.categories');
 jimport('joomla.application.component.view');
 
-class VipQuotesViewQuote extends JView {
+class VipQuotesViewQuote extends JViewLegacy {
     
     protected $state = null;
     protected $item  = null;
@@ -61,8 +57,6 @@ class VipQuotesViewQuote extends JView {
         $model = $this->getModel();
         $model->hit($this->item->id);
         
-        $this->version        = new VipQuotesVersion();
-        
         // Prepare TMPL variable
         $tmpl = $app->input->get->get("tmpl", "");
         $this->tmplValue = "";
@@ -70,8 +64,7 @@ class VipQuotesViewQuote extends JView {
             $this->tmplValue = "&tmpl=component";
         }
         
-        // HTML Helpers
-        JHtml::addIncludePath(VIPQUOTES_PATH_COMPONENT_SITE.'/helpers/html');
+        $this->version    = new VipQuotesVersion();
         
         // Prepare document
         $this->prepareDocument();
@@ -81,33 +74,30 @@ class VipQuotesViewQuote extends JView {
     }
     
     protected function prepareEvents() {
-    
+        
         $imagesFolder = $this->params->get("images_directory", "images/authors");
-    
-        // Prepare data used by triggers
+        
+        // Prepare data used by plugins.
         $this->item->link         = JRoute::_(VipQuotesHelperRoute::getQuoteRoute($this->item->id, $this->item->catid).$this->tmplValue);
-        $this->item->title        = $this->pageHeading;
-        $this->item->text         = $this->item->quote;
+        $this->item->title        = $this->document->getTitle();
+        
         $this->item->image_intro  = "";
-    
+        if(!empty($this->item->thumb)) {
+            $this->item->image_intro  = JURI::root().$imagesFolder."/".$this->item->thumb;
+        }
+        
         // Events
         JPluginHelper::importPlugin('content');
         $dispatcher	       = JDispatcher::getInstance();
         $this->item->event = new stdClass();
         $offset            = 0;
-    
-        $dispatcher->trigger('onContentPrepare', array ('com_vipquotes.quote', &$this->item, &$this->params, $offset));
-    
+        
         $results           = $dispatcher->trigger('onContentBeforeDisplay', array('com_vipquotes.quote', &$this->item, &$this->params, $offset));
         $this->item->event->onContentBeforeDisplay = trim(implode("\n", $results));
-    
+        
         $results           = $dispatcher->trigger('onContentAfterDisplay', array('com_vipquotes.quote', &$this->item, &$this->params, $offset));
         $this->item->event->onContentAfterDisplay  = trim(implode("\n", $results));
-    
-        // Replace the content of parameter 'qoute' with the parameter 'text'
-        $this->item->quote = $this->item->text;
-        unset($this->item->text);
-    
+        
     }
     
     /**
@@ -145,6 +135,7 @@ class VipQuotesViewQuote extends JView {
         // Add category name into breadcrumbs 
         if($this->params->get('category_breadcrumb', 0)){
             if(!empty($this->category->title)){
+                
                 $pathway      = $app->getPathway();
                 
                 $menu    = $app->getMenu()->getActive();
@@ -160,14 +151,13 @@ class VipQuotesViewQuote extends JView {
         }
         
         // Styles
-        JHtml::_("vipquotes.bootstrap");
         $this->document->addStyleSheet('media/'.$this->option.'/css/site/style.css');
     }
 
     private function prepearePageHeading() {
         
 		// Prepare page heading
-		$this->pageHeading = JText::sprintf("COM_VIPQUOTES_QUOTE_HEADING_TITLE", JString::strtolower($this->category->title));
+		$this->pageHeading = JText::sprintf("COM_VIPQUOTES_QUOTE_HEADING", JString::strtolower($this->category->title), $this->item->author_name);
 	    $this->params->set('page_heading', $this->pageHeading);
 		
     }
@@ -178,7 +168,7 @@ class VipQuotesViewQuote extends JView {
         /** @var $app JSite **/
         
 		// Prepare page title
-        $title = JText::sprintf("COM_VIPQUOTES_QUOTE_HEADING_TITLE", $this->category->title);
+        $title = JText::sprintf("COM_VIPQUOTES_QUOTE_HEADING", $this->category->title, $this->item->author_name);
         
         // Add title before or after Site Name
         if(!$title){

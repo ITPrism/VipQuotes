@@ -1,9 +1,9 @@
 <?php
 /**
- * @package      ITPrism Components
- * @subpackage   VipQuotes
+ * @package      VipQuotes
+ * @subpackage   Component
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2010 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @copyright    Copyright (C) 2014 Todor Iliev <todor@itprism.com>. All rights reserved.
  * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
  * VipQuotes is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -19,10 +19,10 @@ jimport( 'joomla.application.component.controller' );
 /**
  * Vip Quotes export controller
  *
- * @package     ITPrism Components
+ * @package     VipQuotes
  * @subpackage  VipQuotes
   */
-class VipQuotesControllerExport extends JController {
+class VipQuotesControllerExport extends JControllerLegacy {
     
     /**
      * Proxy for getModel.
@@ -38,7 +38,7 @@ class VipQuotesControllerExport extends JController {
         $app = JFactory::getApplication();
         /** @var $app JAdministrator **/
         
-        $type  = $app->input->get->getCmd("type");
+        $type  = $this->input->get->getCmd("type");
         $model = $this->getModel();
         
         jimport('joomla.filesystem.folder');
@@ -47,7 +47,7 @@ class VipQuotesControllerExport extends JController {
         jimport('joomla.filesystem.archive');
         jimport('itprism.xml.simple');
         
-        try{
+        try {
             
             $output      = $model->getData();
             $date        = new JDate();

@@ -1,14 +1,10 @@
 <?php
 /**
- * @package      ITPrism Components
- * @subpackage   VipQuotes
+ * @package      VipQuotes
+ * @subpackage   Component
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2010 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @copyright    Copyright (C) 2014 Todor Iliev <todor@itprism.com>. All rights reserved.
  * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
- * VipQuotes is free software. This version may have been modified pursuant
- * to the GNU General Public License, and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
  */
 
 // no direct access
@@ -18,6 +14,7 @@ defined('_JEXEC') or die;
     <?php if ($this->params->get('show_page_heading', 1)) { ?>
     <h1><?php echo $this->escape($this->params->get('page_heading')); ?></h1>
     <?php } ?>
+    
     <?php if($this->params->get("quote_display_hits", 0)) {?>
 	<div class="vq-hits"><?php echo JText::sprintf("COM_VIPQUOTES_HITS", $this->item->hits);?></div>
     <?php }?>
@@ -25,6 +22,19 @@ defined('_JEXEC') or die;
     <?php echo $this->item->event->onContentBeforeDisplay;?>
 	<blockquote>
 		<?php echo $this->item->quote; ?>
+    	<?php if($this->params->get("quote_display_author", 1)) {?>
+    	
+        	<?php if($this->params->get("quote_author_linkable", 1)) {?>
+        	<small>
+        	   <a href="<?php echo JRoute::_(VipQuotesHelperRoute::getAuthorRoute($this->item->author_slug).$this->tmplValue);?>"><?php echo $this->escape($this->item->author_name); ?></a>
+    	    </small>
+        	<?php } else {?>
+        	<small>
+        	   <?php echo $this->echo($this->item->author_name); ?>
+    	    </small>
+    	    <?php }?>
+    	    
+	    <?php }?>
 	</blockquote>   
 	<?php echo $this->item->event->onContentAfterDisplay;?>
 </div>

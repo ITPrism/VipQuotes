@@ -1,9 +1,9 @@
 <?php
 /**
- * @package      ITPrism Components
- * @subpackage   VipQuotes
+ * @package      VipQuotes
+ * @subpackage   Component
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2010 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @copyright    Copyright (C) 2014 Todor Iliev <todor@itprism.com>. All rights reserved.
  * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
  * VipQuotes is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -59,7 +59,7 @@ class VipQuotesModelImport extends JModelForm {
         
         foreach ($dir as $fileinfo) {
             if (!$fileinfo->isDot()) {
-                $filePath     = $destFolder. DIRECTORY_SEPARATOR . JFile::makeSafe($fileinfo->getFilename());
+                $filePath     = $destFolder .DIRECTORY_SEPARATOR. JFile::makeSafe($fileinfo->getFilename());
             }
         }
             
@@ -100,7 +100,7 @@ class VipQuotesModelImport extends JModelForm {
         // Load file
         $handle =   fopen($file, "r");
         if( !is_resource($handle) ) {
-            throw new Exception(JText::sprintf("COM_VIPQUOTES_ERROR_FILE_CANT_BE_LOADED", $file), ITPrismErrors::CODE_WARNING);
+            throw new RuntimeException(JText::sprintf("COM_VIPQUOTES_ERROR_FILE_CANT_BE_LOADED", $file));
         }
         
         // Help fgetcsv() to read in UTF8
@@ -113,6 +113,8 @@ class VipQuotesModelImport extends JModelForm {
         
         if(!empty($data)) {
             
+            $authors = VipQuotesHelper::getAuthors();
+            
             $items  = array();
             $db     = JFactory::getDbo();
             $userId = JFactory::getUser()->id;
@@ -124,8 +126,25 @@ class VipQuotesModelImport extends JModelForm {
                     continue;
                 }
                 
+                $author   = JString::trim( JArrayHelper::getValue($data[$i], 1) );
+                $authorId = array_search($author, $authors);
+                
+                if(!$authorId){
+                    $authorTable        = $this->getTable("Author", "VipQuotesTable");
+                    $authorTable->name  = $author;
+                    $authorTable->alias = JApplication::stringURLSafe($author);
+                    
+                    $authorTable->store();
+                    $authorId = $authorTable->id;
+                    
+                    // Add the new author to the list with others
+                    $authors[$authorId] = $author;
+                }
+                
                 $table            = $this->getTable("Quote", "VipQuotesTable");
                 $table->quote     = $quote;
+                $table->user_id   = (int)$userId;
+                $table->author_id = (int)$authorId;
                 $table->store();
                 
             }
@@ -180,7 +199,7 @@ class VipQuotesModelImport extends JModelForm {
     public function validateFileType($file) {
         
         // Get file extension
-        $ext      = JString::strtolower( JFile::getExt($file) );
+        $ext          = JString::strtolower( JFile::getExt($file) );
         
         // Get MIME type of the file
         $finfo        = finfo_open(FILEINFO_MIME_TYPE);
@@ -188,18 +207,18 @@ class VipQuotesModelImport extends JModelForm {
         finfo_close($finfo);
         
         $allowedExt   = array("csv", "xml");
-        if( !in_array($ext, $allowedExt) ) {
-            throw new Exception(JText::sprintf("COM_VIPQUOTES_ERROR_INVALID_MIME_TYPE", "XML, CSV"), ITPrismErrors::CODE_WARNING);
+        if(!in_array($ext, $allowedExt)) {
+            throw new RuntimeException(JText::sprintf("COM_VIPQUOTES_ERROR_INVALID_MIME_TYPE", "XML, CSV"));
         }
         
         // Validate CSV
         if( (strcmp("csv", $ext) == 0) AND (strcmp("text/plain", $fileMimeType) != 0) ) {
-            throw new Exception(JText::sprintf("COM_VIPQUOTES_ERROR_INVALID_MIME_TYPE", "XML, CSV"), ITPrismErrors::CODE_WARNING);
+            throw new RuntimeException(JText::sprintf("COM_VIPQUOTES_ERROR_INVALID_MIME_TYPE", "XML, CSV"));
         }
         
         // Validate XML
         if((strcmp("xml", $ext) == 0) AND (strcmp("application/xml", $fileMimeType) != 0)) {
-            throw new Exception(JText::sprintf("COM_VIPQUOTES_ERROR_INVALID_MIME_TYPE", "XML, CSV"), ITPrismErrors::CODE_WARNING);
+            throw new RuntimeException(JText::sprintf("COM_VIPQUOTES_ERROR_INVALID_MIME_TYPE", "XML, CSV"));
         }
         
     }

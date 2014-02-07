@@ -1,9 +1,9 @@
 <?php
 /**
- * @package      ITPrism Components
- * @subpackage   VipQuotes
+ * @package      VipQuotes
+ * @subpackage   Component
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2010 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @copyright    Copyright (C) 2014 Todor Iliev <todor@itprism.com>. All rights reserved.
  * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
  * VipQuotes is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -16,12 +16,6 @@ defined('_JEXEC') or die;
 
 jimport('joomla.application.component.modellist');
 
-/**
- * It is a Projects model
- * 
- * @author Todor Iliev
- * @todo gets the destination dir from parameters
- */
 class VipQuotesModelQuotes extends JModelList {
     
 	 /**
@@ -37,7 +31,9 @@ class VipQuotesModelQuotes extends JModelList {
             $config['filter_fields'] = array(
                 'id', 'a.id',
                 'quote', 'a.quote',
-                'category', 'b.title',
+                'author', 'b.name',
+                'category', 'd.title',
+                'user_name', 'c.name',
                 'created', 'a.created',
             	'hits', 'a.hits',
                 'ordering', 'a.ordering',
@@ -72,6 +68,9 @@ class VipQuotesModelQuotes extends JModelList {
         $value = $this->getUserStateFromRequest($this->context.'.filter.category_id', 'filter_category_id', 0, 'int');
         $this->setState('filter.category_id', $value);
         
+        $value = $this->getUserStateFromRequest($this->context.'.filter.author_id', 'filter_author_id', 0, 'int');
+        $this->setState('filter.author_id', $value);
+        
         $value = $this->getUserStateFromRequest($this->context.'.filter.user_id', 'filter_user_id', 0, 'int');
         $this->setState('filter.user_id', $value);
 
@@ -95,6 +94,9 @@ class VipQuotesModelQuotes extends JModelList {
         // Compile the store id.
         $id.= ':' . $this->getState('filter.search');
         $id.= ':' . $this->getState('filter.state');
+        $id.= ':' . $this->getState('filter.category_id');
+        $id.= ':' . $this->getState('filter.author_id');
+        $id.= ':' . $this->getState('filter.user_id');
 
         return parent::getStoreId($id);
     }
@@ -119,14 +121,18 @@ class VipQuotesModelQuotes extends JModelList {
                 'list.select',
                 'a.id, a.quote, a.created, a.hits, ' .
                 'a.published, a.ordering, ' . 
-                'a.catid, a.user_id, '.
-                'b.title AS category'
+                'a.catid, a.user_id, a.author_id, '.
+                'b.name as author, ' . 
+                'c.name as user_name, ' .
+                'd.title as category '
             )
         );
-        $query->from($db->quoteName('#__vq_quotes') .' AS a');
+        $query->from($db->quoteName('#__vq_quotes', "a"));
 
         // Join
-        $query->leftJoin($db->quoteName('#__categories') .' AS b ON a.catid = b.id');
+        $query->leftJoin($db->quoteName('#__vq_authors', "b") .' ON a.author_id = b.id');
+        $query->leftJoin($db->quoteName('#__users', "c")      .' ON a.user_id = c.id');
+        $query->leftJoin($db->quoteName('#__categories', "d") .' ON a.catid = d.id');
         
         // Filter by user id
         $userId = $this->getState('filter.user_id');
@@ -138,6 +144,12 @@ class VipQuotesModelQuotes extends JModelList {
         $categoryId = $this->getState('filter.category_id');
         if (!empty($categoryId)) {
             $query->where('a.catid = '.(int) $categoryId);
+        }
+        
+        // Filter by author id
+        $authorId = $this->getState('filter.author_id');
+        if (!empty($authorId)) {
+            $query->where('a.author_id = '.(int) $authorId);
         }
         
         // Filter by state
@@ -163,7 +175,7 @@ class VipQuotesModelQuotes extends JModelList {
         // Add the list ordering clause.
         $orderString = $this->getOrderString();
         $query->order($db->escape($orderString));
-
+        
         return $query;
     }
     
@@ -171,6 +183,7 @@ class VipQuotesModelQuotes extends JModelList {
         
         $orderCol   = $this->getState('list.ordering',  'a.id');
         $orderDirn  = $this->getState('list.direction', 'asc');
+        
         if ($orderCol == 'a.ordering') {
             $orderCol = 'a.catid '.$orderDirn.', a.ordering';
         }

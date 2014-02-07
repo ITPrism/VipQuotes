@@ -1,27 +1,8 @@
 @CHARSET "UTF-8";
 
-/* Backend */
-.icon-48-vip-quotes 	    { background-image: url(../../images/quotes_48.png); }
-.icon-48-vip-new-quote 	{ background-image: url(../../images/quote_new_48.png); }
-.icon-48-vip-edit-quote 	{ background-image: url(../../images/quote_edit_48.png); }
-.icon-48-vip-authors 	    { background-image: url(../../images/authors_48.png); }
-.icon-48-vip-new-author 	    { background-image: url(../../images/author_new_48.png); }
-.icon-48-vip-edit-author 	    { background-image: url(../../images/author_edit_48.png); }
-.icon-48-vip-settings 	    { background-image: url(../../images/settings_48.png); }
-.icon-48-vip-dashboard 	{ background-image: url(../../images/dashboard_48.png); }
-
-.icon-32-vip-dashboard-back { background-image: url(../../images/dashboard_back_32.png); }
-.icon-32-vip-download { background-image: url(../../images/download_32.png); }
-.icon-32-vip-download-all { background-image: url(../../images/download_all_32.png); }
-
-.icon-48-vip-facebook-pages 	{ background-image: url(../../images/facebook_48.png); }
-.icon-48-vip-facebook-tabs 	{ background-image: url(../../images/facebook_tabs_48.png); }
-.icon-48-vip-facebook-add-tab 	{ background-image: url(../../images/facebook_add_tab_48.png); }
-.icon-48-vip-facebook-edit-tab 	{ background-image: url(../../images/facebook_edit_tab_48.png); }
-.icon-32-vip-update { background-image: url(../../images/update_32.png); }
-.icon-32-vip-connect { background-image: url(../../images/connect_32.png); }
-.icon-48-vip-import 	{ background-image: url(../../images/import_48.png); }
-
+.icon-globe {
+	background: url(../../images/globe.png) no-repeat left;
+}
 
 #itp-cpanel {
       width: 400px;
@@ -68,7 +49,6 @@
     text-decoration: none;
 }
 
-
 .itp-cpitem img {
   padding: 10px;
 }
@@ -81,3 +61,46 @@
 .img_author {
 	margin-left:20px;
 }
+
+.ml-20px {
+	margin-left: 30px !important;
+}
+
+/** Dashboard **/
+.dashboard-stats .span4, .dashboard-stats .span8{
+    border: thin solid #dcdcdc;
+    margin-bottom: 10px;
+}
+
+.stats-icon-list {
+    background: url(../../images/icon_list.png) no-repeat 1% 50%;
+    margin:0;
+    padding: 5px 0 5px 30px;
+}
+
+.stats-icon-info {
+    background: url(../../images/icon_stats.png) no-repeat 1% 50%;
+    margin:0;
+    padding: 5px 0 5px 30px;
+}
+
+.latest-quotes {
+    background-color: #e7e7e7;
+}
+
+.latest-authors {
+    background-color: #cde9ef;
+}
+
+.popular-quotes {
+    background-color: #dbf4dc;
+}
+
+.popular-authors {
+    background-color: #e6e6fa;
+}
+
+.basic-stats {
+    background-color: #ffe4c4;
+}
+

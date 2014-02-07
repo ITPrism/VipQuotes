@@ -1,9 +1,9 @@
 <?php
 /**
- * @package      ITPrism Components
- * @subpackage   VipQuotes
+ * @package      VipQuotes
+ * @subpackage   Component
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2010 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @copyright    Copyright (C) 2014 Todor Iliev <todor@itprism.com>. All rights reserved.
  * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
  * VipQuotes is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -17,7 +17,7 @@ defined('_JEXEC') or die;
 jimport("itprism.controller.form.backend");
 
 /**
- * VipQuotes import controller
+ * Vip Quotes import controller
  *
  * @package     VipQuotes
  * @subpackage  Components
@@ -40,8 +40,8 @@ class VipQuotesControllerImport extends ITPrismControllerFormBackend {
         $app = JFactory::getApplication();
         /** @var $app JAdministrator **/
         
-        $data    = $app->input->post->get('jform', array(), 'array');
-        $file    = $app->input->files->get('jform', array(), 'array');
+        $data    = $this->input->post->get('jform', array(), 'array');
+        $file    = $this->input->files->get('jform', array(), 'array');
         $data    = array_merge($data, $file);
         
         $redirectOptions = array(
@@ -76,25 +76,51 @@ class VipQuotesControllerImport extends ITPrismControllerFormBackend {
         
         try{
             
-            $file     = JArrayHelper::getValue($data, "data");
+            $dataFile        = JArrayHelper::getValue($data, "data");
             
-            $upload   = new ITPrismFileUpload($file);
-            $upload->validate();
+            // Joomla! media extension parameters
+            $mediaParams     = JComponentHelper::getParams("com_media");
+            
+            jimport("itprism.file");
+            jimport("itprism.file.uploader.local");
+            jimport("itprism.file.validator.size");
+            jimport("itprism.file.validator.image");
+            
+            $file           = new ITPrismFile();
+            
+            // Prepare size validator.
+            $KB             = 1024 * 1024;
+            $fileSize       = (int)$app->input->server->get('CONTENT_LENGTH');
+            $uploadMaxSize  = $mediaParams->get("upload_maxsize") * $KB;
+            
+            $sizeValidator  = new ITPrismFileValidatorSize($fileSize, $uploadMaxSize);
+            
+            $file->addValidator($sizeValidator);
+            
+            // Validate the file
+            $file->validate();
             
             $tmpPath  = $app->getCfg("tmp_path");
             $fileName = JFile::makeSafe($file["name"]);;
             $ext      = JString::strtolower( JFile::getExt($fileName) );
 
-            $filePath = JPath::clean( $tmpPath. DIRECTORY_SEPARATOR . $fileName );
+            $filePath = JPath::clean( $tmpPath .DIRECTORY_SEPARATOR. $fileName );
             
-            $upload->upload($filePath);
+            // Prepare uploader object.
+            $uploader      = new ITPrismFileUploaderLocal($dataFile);
+            $uploader->setDestination($filePath);
+            
+            // Upload temporary file
+            $file->setUploader($uploader);
+            
+            $file->upload();
             
             // Extract file if it is archive
             if(strcmp($ext, "zip") == 0) {
                 
-                $destFolder  = JPath::clean($tmpPath.DIRECTORY_SEPARATOR."quotes");
+                $destFolder  = JPath::clean($tmpPath .DIRECTORY_SEPARATOR. "quotes");
                 
-                if(is_dir($destFolder)) {
+                if(JFolder::exists($destFolder)) {
                     JFolder::delete($destFolder);
                 }
                 
@@ -107,28 +133,13 @@ class VipQuotesControllerImport extends ITPrismControllerFormBackend {
             $resetId  = JArrayHelper::getValue($data, "reset_id", false, "bool");
             $model->importQuotes($filePath, $resetId);
             
+        } catch(RuntimeException $e){
+            $this->displayWarning($e->getMessage(), $redirectOptions);
+            return;
         } catch ( Exception $e ) {
             
-            $code = $e->getCode();
-            switch($code) {
-                
-                case ITPrismErrors::CODE_WARNING:
-                    $this->displayWarning($e->getMessage(), $redirectOptions);
-                    return;
-                    
-                break;
-                
-                case ITPrismErrors::CODE_HIDDEN_WARNING:
-                    $this->displayWarning(JText::_("COM_VIPQUOTES_ERROR_FILE_CANT_BE_UPLOADED"), $redirectOptions);
-                    return;
-                    
-                break;
-                
-                default:
-                    JLog::add($e->getMessage());
-                    throw new Exception(JText::_('COM_VIPQUOTES_ERROR_SYSTEM'), ITPrismErrors::CODE_ERROR);
-                break;
-            }
+            JLog::add($e->getMessage());
+            throw new Exception(JText::_('COM_VIPQUOTES_ERROR_SYSTEM'));
             
         }
         
@@ -139,7 +150,6 @@ class VipQuotesControllerImport extends ITPrismControllerFormBackend {
     public function cancel() {
         $link = $this->defaultLink."&view=quotes";
         $this->setRedirect( JRoute::_($link, false) );
-        
     }
     
 }

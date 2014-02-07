@@ -1,14 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension type="component" version="2.5" method="upgrade">
+<extension type="component" version="3.2" method="upgrade">
 	<name>COM_VIPQUOTES</name>
 	<author>Todor Iliev</author>
 	<authorEmail>todor@itprism.com</authorEmail>
 	<authorUrl>http://itprism.com</authorUrl>
-	<copyright>Copyright (C) 2010 Todor Iliev ( ITPrism.com )</copyright>
+	<copyright>Copyright (C) 2014 Todor Iliev ( ITPrism.com )</copyright>
 	<license>http://www.gnu.org/copyleft/gpl.html</license>
-	<version>2.5.1</version>
-    <creationDate>31 July, 2013</creationDate>
-	<description>COM_VIPQUOTES_DESCRIPTION</description>
+	<version>2.6</version>
+	<creationDate>07 February, 2014</creationDate>
+	<description><![CDATA[
+    <p><a href="http://itprism.com/free-joomla-extensions/others/quotes-collection-manager" target="_blank">Vip Quotes</a> is an extension for Joomla! that provides ability to collect and share quotations.</p>
+    <p><a href="http://itprism.com/" target="_blank">Subscribe for the newsletter</a> to receive <strong>gifts</strong>, <strong>discount codes</strong>, information about <strong>updates</strong> and information about <strong>new ITPrism extensions</strong>.</p>
+    <p>Please, <a href="http://extensions.joomla.org/extensions/living/quotes/6877" target="_blank">vote for the extension</a> on Joomla! Extensions Directory</p>
+    ]]></description>
 
 	<install>
         <sql>
@@ -24,7 +28,7 @@
 	
 	<update> 
 		<schemas>
-				<schemapath type="mysql">sql/updates</schemapath>
+			<schemapath type="mysql">sql/updates</schemapath>
 		</schemas>
 	</update>
 	
@@ -37,43 +41,36 @@
 	
 	<!-- Site Main File Copy Section -->
 	<files folder="site">
+        <folder>controllers</folder>
+        <folder>helpers</folder>
+        <folder>language</folder>
+        <folder>models</folder>
+        <folder>views</folder>
 		<filename>controller.php</filename>
 		<filename>index.html</filename>
 		<filename>router.php</filename>
 		<filename>vipquotes.php</filename>
-		<folder>controllers</folder>
-		<folder>models</folder>
-		<folder>views</folder>
-		<folder>helpers</folder>
 	</files>
 
-	<languages folder="site">
-		<language tag="en-GB">language/en-GB/en-GB.com_vipquotes.ini</language>
-	</languages>
-	
-	
 	<administration>
-		<menu img="../media/com_vipquotes/images/menu_vipquotes.png" link="option=com_vipquotes">com_vipquotes</menu>
+		<menu link="option=com_vipquotes">com_vipquotes</menu>
 	
 		<files folder="admin">		    		
 			<folder>controllers</folder>
 			<folder>helpers</folder>
+			<folder>language</folder>
 			<folder>libraries</folder>
 			<folder>models</folder>
 			<folder>tables</folder>
 			<folder>sql</folder>
-			<folder>views</folder>		
+			<folder>views</folder>
+            
 			<filename>access.xml</filename>
 			<filename>controller.php</filename>
 			<filename>index.html</filename>
 			<filename>config.xml</filename> 
 			<filename>vipquotes.php</filename>
 		</files>
-		
-		<languages folder="admin">
-			<language tag="en-GB">language/en-GB/en-GB.com_vipquotes.ini</language>
-			<language tag="en-GB">language/en-GB/en-GB.com_vipquotes.sys.ini</language>
-		</languages>
-			
-		</administration>
+        
+	</administration>
 </extension>

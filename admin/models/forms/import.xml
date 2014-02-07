@@ -2,7 +2,7 @@
 <form>
 	<fieldset>
 
-		<field name="data" type="file" class="inputbox" 
+		<field name="data" type="file"
 			size="40"  
 			label="COM_VIPQUOTES_FILE" 
 			description="COM_VIPQUOTES_IMPORT_FILE_DESC"
@@ -10,7 +10,6 @@
 
         <field name="reset_id" type="checkbox"
             value="1" 
-            class="inputbox" 
             label="COM_VIPQUOTES_RESET_ID"
             description="COM_VIPQUOTES_RESET_ID_DESC"  
             filter="int" 

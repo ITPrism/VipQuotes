@@ -1,9 +1,9 @@
 <?php
 /**
- * @package      ITPrism Components
- * @subpackage   VipQuotes
+ * @package      VipQuotes
+ * @subpackage   Component
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2010 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @copyright    Copyright (C) 2014 Todor Iliev <todor@itprism.com>. All rights reserved.
  * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
  * VipQuotes is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -16,7 +16,7 @@ defined('_JEXEC') or die;
 
 jimport('joomla.application.component.view');
 
-class VipQuotesViewQuote extends JView {
+class VipQuotesViewQuote extends JViewLegacy {
     
     protected $state;
     protected $item;
@@ -57,18 +57,18 @@ class VipQuotesViewQuote extends JView {
         $isNew = ($this->item->id == 0);
         
         $this->documentTitle = $isNew ? JText::_('COM_VIPQUOTES_QUOTE_NEW')
-		                             : JText::_('COM_VIPQUOTES_QUOTE_EDIT');
+		                              : JText::_('COM_VIPQUOTES_QUOTE_EDIT');
         
-        JToolBarHelper::apply('quote.apply');
-        JToolBarHelper::save2new('quote.save2new');
-        JToolBarHelper::save('quote.save');
+		JToolbarHelper::title($this->documentTitle);
+		                             
+        JToolbarHelper::apply('quote.apply');
+        JToolbarHelper::save2new('quote.save2new');
+        JToolbarHelper::save('quote.save');
     
         if(!$isNew){
-            JToolBarHelper::cancel('quote.cancel', 'JTOOLBAR_CANCEL');
-            JToolBarHelper::title($this->documentTitle, 'vip-edit-quote');
+            JToolbarHelper::cancel('quote.cancel', 'JTOOLBAR_CANCEL');
         }else{
-            JToolBarHelper::cancel('quote.cancel', 'JTOOLBAR_CLOSE');
-            JToolBarHelper::title($this->documentTitle, 'vip-new-quote');
+            JToolbarHelper::cancel('quote.cancel', 'JTOOLBAR_CLOSE');
         }
         
     }
@@ -80,11 +80,14 @@ class VipQuotesViewQuote extends JView {
 	 */
 	protected function setDocument() {
 	    
-		$this->document->setTitle($this->documentTitle . " | ". JText::_("COM_VIPQUOTES"));
+		$this->document->setTitle($this->documentTitle);
         
 		// Add scripts
-		JHtml::_('behavior.tooltip');
-		JHtml::_('behavior.keepalive');
+		JHtml::_('bootstrap.framework');
+		JHtml::_('formbehavior.chosen', 'select');
+		
+        JHtml::_('behavior.tooltip');
+        JHtml::_('behavior.keepalive');
         JHtml::_('behavior.formvalidation');
         
 		$this->document->addScript('../media/'.$this->option.'/js/admin/'.strtolower($this->getName()).'.js');
