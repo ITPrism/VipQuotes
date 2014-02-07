@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+    <layout title="COM_VIPQUOTES_VIEW_AUTHOR">
+        <message>
+            <![CDATA[COM_VIPQUOTES_VIEW_AUTHOR_DESC]]>
+        </message>
+    </layout>
+
+    <!-- Add fields to the request variables for the layout. -->
+    <fields name="request">
+        <fieldset name="request" addfieldpath="/administrator/components/com_vipquotes/models/fields" >
+            <field name="id" type="vqauthor" 
+                label="COM_VIPQUOTES_AUTHOR" 
+                required="1" 
+            />
+        </fieldset>
+    </fields>
+    
+    <!-- Add fields to the parameters object for the layout. -->
+    <fields name="params">
+        <fieldset name="basic">
+	        <field name="author_display_hits" type="radio" default="0" label="COM_VIPQUOTES_DISPLAY_HITS" description="COM_VIPQUOTES_DISPLAY_HITS_DESC" class="btn-group">
+	            <option value="0">JNO</option>
+	            <option value="1">JYES</option>
+	        </field>
+            <field name="author_display_copyright" type="radio" default="0" label="COM_VIPQUOTES_COPYRIGHT" description="COM_VIPQUOTES_COPYRIGHT_DESC" class="btn-group">
+                <option value="0">JNO</option>
+                <option value="1">JYES</option>
+            </field>
+            <field name="author_display_counter" type="radio" default="1" label="COM_VIPQUOTES_DISPLAY_NUMBER" description="COM_VIPQUOTES_DISPLAY_NUMBER_DESC" class="btn-group">
+                <option value="0">JNO</option>
+                <option value="1">JYES</option>
+            </field>
+            <field name="author_display_link_quotes" type="radio" default="0" label="COM_VIPQUOTES_DISPLAY_LINK_QUOTES" description="COM_VIPQUOTES_DISPLAY_LINK_QUOTES_DESC" class="btn-group">
+                <option value="0">JNO</option>
+                <option value="1">JYES</option>
+            </field>
+        </fieldset>
+    </fields>
+</metadata>

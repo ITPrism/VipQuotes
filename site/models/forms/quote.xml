@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+	<fieldset name="quote" addfieldpath="/administrator/components/com_vipquotes/models/fields">
+
+        <field name="author_id" type="vqauthor" class="js-vqform-categories"
+            label="COM_VIPQUOTES_FIELD_AUTHOR"
+            filter="int"
+         />
+            
+        <field name="catid" type="category" class="js-vqform-categories" 
+            label="JCATEGORY"
+            extension="com_vipquotes" 
+            filter="int"
+         />
+        
+        <field name="quote" type="editor" buttons="false" show="toggle"
+            filter="safehtml"
+            rows="5" 
+            label="COM_VIPQUOTES_FIELD_QUOTE" 
+            required="true" 
+        />
+        
+        <field name="captcha" type="captcha"
+            label="COM_VIPQUOTES_CAPTCHA"
+            description="COM_VIPQUOTES_FRONT_CAPTCHA_DESC"
+            validate="captcha"
+        />
+            
+		<field name="id" type="hidden" 
+		default="0" 
+		filter="int"/>
+
+	</fieldset>
+</form>

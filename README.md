@@ -1,4 +1,4 @@
-Vip Quotes Pro for Joomla!
+Vip Quotes for Joomla!
 ==========================
 ( Version 2.6 )
 --------------------------

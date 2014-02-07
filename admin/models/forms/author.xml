@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+	<fieldset>
+
+		<field name="name" type="text"
+			label="COM_VIPQUOTES_NAME"
+			description="COM_VIPQUOTES_FIELD_NAME_DESC"
+			size="60"   
+			filter="trim" 
+			required="true" 
+		/>
+
+		<field name="alias" type="text"
+		    label="JFIELD_ALIAS_LABEL"
+            description="JFIELD_ALIAS_DESC"
+            size="60" 
+        />
+
+		<field name="published" type="radio" class="btn-group"
+		    label="JSTATUS"
+            description="JFIELD_PUBLISHED_DESC" 
+            filter="intval" size="1" default="1"
+        >
+            <option value="1">JPUBLISHED</option>
+            <option value="0">JUNPUBLISHED</option>
+        </field>
+		
+		<field name="bio" type="editor" 
+		    buttons="false" show="toggle"
+            label="COM_VIPQUOTES_FIELD_BIO" 
+            description="COM_VIPQUOTES_FIELD_BIO_DESC" 
+            filter="safehtml"
+            rows="5" 
+        />
+            
+		<field name="id" type="text" default="0" label="JGLOBAL_FIELD_ID_LABEL" 
+            readonly="true" class="readonly"
+            description="JGLOBAL_FIELD_ID_DESC" />
+
+        <field
+            name="image"
+            type="file"
+            label="COM_VIPQUOTES_FIELD_IMAGE"
+            description="COM_VIPQUOTES_FIELD_IMAGE_DESC"
+            size="40"
+            />
+            
+	</fieldset>
+    
+    <fieldset name="image_options">
+        
+        <field name="resize_image" type="checkbox" 
+            label="COM_VIPPORTFOLIO_RESIZE_IMAGE"
+            description="COM_VIPPORTFOLIO_RESIZE_IMAGE_DESC" 
+            filter="intval" 
+            value="1"
+        />
+        
+        <field name="image_width" type="text" 
+            label="COM_VIPQUOTES_IMAGE_WIDTH"
+            description="COM_VIPQUOTES_IMAGE_WIDTH_DESC"
+            default="200"   
+            filter="int" 
+        />
+        
+        <field name="image_height" type="text" 
+            label="COM_VIPQUOTES_IMAGE_HEIGHT"
+            description="COM_VIPQUOTES_IMAGE_HEIGHT_DESC"
+            default="300"   
+            filter="int" 
+        />
+        <field name="thumb_width" type="text" 
+            label="COM_VIPQUOTES_THUMB_WIDTH"
+            description="COM_VIPQUOTES_THUMB_WIDTH_DESC"
+            default="50"   
+            filter="int" 
+        />
+        
+        <field name="thumb_height" type="text" 
+            label="COM_VIPQUOTES_THUMB_HEIGHT"
+            description="COM_VIPQUOTES_THUMB_HEIGHT_DESC"
+            default="50"   
+            filter="int" 
+        />
+        
+        <field name="copyright" type="editor" class="span3"
+            buttons="false" show="toggle"
+            label="COM_VIPQUOTES_COPYRIGHT" 
+            description="COM_VIPQUOTES_COPYRIGHT_DESC" 
+            filter="safehtml"
+            rows="3" 
+        />
+        
+    </fieldset>
+</form>
