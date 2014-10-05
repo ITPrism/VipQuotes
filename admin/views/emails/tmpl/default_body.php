@@ -17,9 +17,10 @@ defined('_JEXEC') or die;
         </td>
         <td class="title">
 			<a href="<?php echo JRoute::_("index.php?option=com_vipquotes&view=email&layout=edit&id=".$item->id); ?>" >
-		        <?php echo $this->escape($item->subject); ?>
+		        <?php echo $this->escape($item->title); ?>
 	        </a>
 	    </td>
+		<td class="hidden-phone"><?php echo $this->escape($item->subject); ?></td>
 		<td class="center hidden-phone"><?php echo $this->escape($item->sender_name); ?></td>
 		<td class="center hidden-phone"><?php echo $this->escape($item->sender_email); ?></td>
         <td class="center hidden-phone"><?php echo $item->id;?></td>

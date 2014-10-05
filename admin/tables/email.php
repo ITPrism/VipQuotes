@@ -9,10 +9,13 @@
 
 defined('_JEXEC') or die;
 
-class VipQuotesTableEmail extends JTable {
-    
-    public function __construct($db) {
+class VipQuotesTableEmail extends JTable
+{
+    /**
+     * @param JDatabaseDriver $db
+     */
+    public function __construct($db)
+    {
         parent::__construct('#__vq_emails', 'id', $db);
     }
-    
 }

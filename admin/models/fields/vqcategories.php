@@ -19,9 +19,10 @@ JFormHelper::loadFieldClass('list');
  *
  * @package      VipQuotes
  * @subpackage   Component
- * @since       1.6
+ * @since        1.6
  */
-class JFormFieldVqCategories extends JFormFieldList {
+class JFormFieldVqCategories extends JFormFieldList
+{
     /**
      * The form field type.
      *
@@ -29,33 +30,32 @@ class JFormFieldVqCategories extends JFormFieldList {
      * @since   1.6
      */
     protected $type = 'vqcategories';
-    
+
     /**
      * Method to get the field options.
      *
      * @return  array   The field option objects.
      * @since   1.6
      */
-    protected function getOptions(){
-        
+    protected function getOptions()
+    {
         $extension = "com_vipquotes";
         $published = (bool)$this->element['published'];
-        
+
         if (!$published) {
             $options = JHtml::_('category.options', $extension);
-		} else {
-		    $options = JHtml::_('category.options', $extension, array('filter.published' => explode(',', $published)));
-			
-		}
-        
+        } else {
+            $options = JHtml::_('category.options', $extension, array('filter.published' => explode(',', $published)));
+        }
+
         $displayRoot = (!empty($this->element["display_root"])) ? true : false;
-        if($displayRoot) {
+        if ($displayRoot) {
             array_unshift($options, JHtml::_('select.option', '0', JText::_('JOPTION_SELECT_CATEGORY'), 'value', 'text'));
         }
-        
+
         // Merge any additional options in the XML definition.
         $options = array_merge(parent::getOptions(), $options);
-        
+
         return $options;
     }
 }

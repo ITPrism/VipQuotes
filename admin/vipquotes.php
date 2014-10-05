@@ -13,10 +13,7 @@ defined('_JEXEC') or die;
 jimport("itprism.init");
 jimport("vipquotes.init");
 
-// Include dependencies
-jimport('joomla.application.component.controller');
-
-// Get an instance of the controller prefixed by HelloWorld
+// Get an instance of the controller prefixed.
 $controller = JControllerLegacy::getInstance("VipQuotes");
 
 // Perform the Request task

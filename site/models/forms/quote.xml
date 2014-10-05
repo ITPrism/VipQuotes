@@ -5,6 +5,7 @@
         <field name="author_id" type="vqauthor" class="js-vqform-categories"
             label="COM_VIPQUOTES_FIELD_AUTHOR"
             filter="int"
+            state="1"
          />
             
         <field name="catid" type="category" class="js-vqform-categories" 

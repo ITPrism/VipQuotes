@@ -10,9 +10,8 @@
 // No direct access.
 defined('_JEXEC') or die;
 
+jimport("itprism.init");
 jimport("vipquotes.init");
-
-jimport('joomla.application.component.controller');
 
 $controller = JControllerLegacy::getInstance('VipQuotes');
 $controller->execute(JFactory::getApplication()->input->getCmd('task'));

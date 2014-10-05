@@ -46,6 +46,9 @@ defined('_JEXEC') or die;
 				<?php echo JText::_('COM_VIPQUOTES_SAVE_AND_NEW') ?>
 			</button>
 		</div>
+		
     </form>
+    
 </div>
+<div class="clearfix"></div>
 <?php echo $this->version->backlink; ?>

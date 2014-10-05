@@ -17,16 +17,17 @@ jimport('itprism.controller.admin');
  *
  * @package     VipQuotes
  * @subpackage  Components
-  */
-class VipQuotesControllerEmails extends ITPrismControllerAdmin {
-    
+ */
+class VipQuotesControllerEmails extends ITPrismControllerAdmin
+{
     /**
      * Proxy for getModel.
      * @since   1.6
      */
-    public function getModel($name = 'Email', $prefix = 'VipQuotesModel', $config = array('ignore_request' => true)) {
+    public function getModel($name = 'Email', $prefix = 'VipQuotesModel', $config = array('ignore_request' => true))
+    {
         $model = parent::getModel($name, $prefix, $config);
+
         return $model;
     }
-    
 }

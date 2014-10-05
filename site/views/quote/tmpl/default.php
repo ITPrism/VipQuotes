@@ -26,11 +26,13 @@ defined('_JEXEC') or die;
     	
         	<?php if($this->params->get("quote_author_linkable", 1)) {?>
         	<small>
-        	   <a href="<?php echo JRoute::_(VipQuotesHelperRoute::getAuthorRoute($this->item->author_slug).$this->tmplValue);?>"><?php echo $this->escape($this->item->author_name); ?></a>
+        	   <a href="<?php echo JRoute::_(VipQuotesHelperRoute::getAuthorRoute($this->item->author_slug).$this->tmplValue);?>">
+                   <?php echo $this->escape($this->item->author_name); ?>
+               </a>
     	    </small>
         	<?php } else {?>
         	<small>
-        	   <?php echo $this->echo($this->item->author_name); ?>
+        	   <?php echo $this->escape($this->item->author_name); ?>
     	    </small>
     	    <?php }?>
     	    
@@ -38,4 +40,5 @@ defined('_JEXEC') or die;
 	</blockquote>   
 	<?php echo $this->item->event->onContentAfterDisplay;?>
 </div>
+<div class="clearfix"></div>
 <?php echo $this->version->backlink; ?>

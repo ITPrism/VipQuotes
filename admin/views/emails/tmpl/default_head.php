@@ -14,9 +14,12 @@ defined('_JEXEC') or die;?>
 		<?php echo JHtml::_('grid.checkall'); ?>
 	</th>
     <th class="title">
+        <?php echo JHtml::_('grid.sort',  'COM_VIPQUOTES_TITLE', 'a.title', $this->listDirn, $this->listOrder); ?>
+    </th>
+    <th width="30%" class="nowrap hidden-phone">
         <?php echo JHtml::_('grid.sort',  'COM_VIPQUOTES_SUBJECT', 'a.subject', $this->listDirn, $this->listOrder); ?>
     </th>
-    <th  width="20%" class="center nowrap hidden-phone">
+    <th width="20%" class="center nowrap hidden-phone">
         <?php echo JHtml::_('grid.sort',  'COM_VIPQUOTES_SENDER_NAME', 'a.sender_name', $this->listDirn, $this->listOrder); ?>
     </th>
     <th width="10%" class="center nowrap hidden-phone">

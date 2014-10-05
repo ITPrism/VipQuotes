@@ -1,71 +1,98 @@
 <?php
 /**
-* @package      VipQuotes
-* @subpackage   Libraries
-* @author       Todor Iliev
-* @copyright    Copyright (C) 2014 Todor Iliev <todor@itprism.com>. All rights reserved.
-* @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
-*/
+ * @package      VipQuotes
+ * @subpackage   Statistics
+ * @author       Todor Iliev
+ * @copyright    Copyright (C) 2014 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ */
 
 defined('JPATH_PLATFORM') or die;
 
 /**
  * This class loads statistics about transactions.
+ *
+ * @package      VipQuotes
+ * @subpackage   Statistics
  */
-class VipQuotesStatisticsBasic {
-    
+class VipQuotesStatisticsBasic
+{
     /**
      * Database driver
      *
-     * @var JDatabaseMySQLi
+     * @var JDatabaseDriver
      */
     protected $db;
-    
+
     /**
      * Initialize the object.
      *
-     * @param JDatabase   Database Driver
+     * <code>
+     * $statistics = new VipQuotesStatisticsBasic(JFactory::getDbo());
+     * </code>
+     *
+     * @param JDatabaseDriver  $db Database Driver
      */
-    public function __construct(JDatabase $db) {
+    public function __construct(JDatabaseDriver $db)
+    {
         $this->db = $db;
     }
-    
-    public function getTotalQuotes() {
-        
+
+    /**
+     * Return the number of all quotes.
+     *
+     * <code>
+     * $statistics = new VipQuotesStatisticsBasic(JFactory::getDbo());
+     *
+     * $totalQuotes = $statistics->getTotalQuotes()
+     * </code>
+     *
+     * @return int
+     */
+    public function getTotalQuotes()
+    {
         $query = $this->db->getQuery(true);
-        
+
         $query
             ->select("COUNT(*)")
             ->from($this->db->quoteName("#__vq_quotes", "a"));
-        
+
         $this->db->setQuery($query);
         $result = $this->db->loadResult();
-        
-        if(!$result) {
+
+        if (!$result) {
             $result = 0;
         }
-        
-        return $result;
-        
+
+        return (int)$result;
     }
-    
-    public function getTotalAuthors() {
-    
+
+    /**
+     * Return the number of all authors.
+     *
+     * <code>
+     * $statistics = new VipQuotesStatisticsBasic(JFactory::getDbo());
+     *
+     * $totalAuthors = $statistics->getTotalAuthors()
+     * </code>
+     *
+     * @return int
+     */
+    public function getTotalAuthors()
+    {
         $query = $this->db->getQuery(true);
-    
+
         $query
             ->select("COUNT(*)")
             ->from($this->db->quoteName("#__vq_authors", "a"));
-    
+
         $this->db->setQuery($query);
         $result = $this->db->loadResult();
-    
-        if(!$result) {
+
+        if (!$result) {
             $result = 0;
         }
-    
-        return $result;
-    
+
+        return (int)$result;
     }
-    
 }

@@ -15,7 +15,10 @@ defined('_JEXEC') or die;
         <form action="<?php echo JRoute::_('index.php?option=com_vipquotes'); ?>" method="post" name="adminForm" id="adminForm" class="form-validate" >
             
             <fieldset>
-            
+                <div class="control-group">
+                    <div class="control-label"><?php echo $this->form->getLabel('title'); ?></div>
+                    <div class="controls"><?php echo $this->form->getInput('title'); ?></div>
+                </div>
                 <div class="control-group">
                     <div class="control-label"><?php echo $this->form->getLabel('subject'); ?></div>
     				<div class="controls"><?php echo $this->form->getInput('subject'); ?></div>

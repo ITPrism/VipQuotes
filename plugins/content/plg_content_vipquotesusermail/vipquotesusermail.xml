@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension version="3.2" type="plugin" group="content" method="upgrade">
+<extension version="3.3" type="plugin" group="content" method="upgrade">
     <name>PLG_CONTENT_VIPQUOTESUSERMAIL</name>
     <author>Todor Iliev</author>
     <copyright>Copyright (C) 2014 Todor Iliev ( ITPrism.com ). All rights reserved.</copyright>
     <license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
     <authorEmail>todor@itprism.com</authorEmail>
     <authorUrl>http://itprism.com</authorUrl>
-    <version>1.0</version>
-    <creationDate>07 January, 2014</creationDate>
+    <version>2.7</version>
+    <creationDate>05 October, 2014</creationDate>
     <description><![CDATA[
     <p>Content - VipQuotes - User Mail is a plugin that sends notification mails to users.</p>
     <p><a href="http://itprism.com/" target="_blank">Subscribe for the newsletter</a> to receive information about updates and new ITPrism extensions.</p>

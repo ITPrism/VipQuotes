@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+    <fieldset name="quote" addfieldpath="/administrator/components/com_vipquotes/models/fields">
+
+        <field name="name" type="text" class="input-xxlarge"
+               label="COM_VIPQUOTES_FIELD_NAME"
+               filter="trim"
+               required="true"
+                />
+
+        <field name="bio" type="editor" buttons="false" show="toggle"
+               label="COM_VIPQUOTES_FIELD_BIOGRAPHY"
+               filter="safehtml"
+               rows="5"
+               />
+
+        <field name="captcha" type="captcha"
+               label="COM_VIPQUOTES_CAPTCHA"
+               description="COM_VIPQUOTES_FRONT_CAPTCHA_DESC"
+               validate="captcha"
+               />
+
+        <field
+                name="image"
+                type="file"
+                label="COM_VIPQUOTES_FIELD_IMAGE"
+                description="COM_VIPQUOTES_FIELD_IMAGE_DESC"
+                size="40"
+                />
+
+    </fieldset>
+</form>

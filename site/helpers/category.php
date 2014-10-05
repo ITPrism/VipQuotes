@@ -8,14 +8,13 @@
  */
 
 defined('_JEXEC') or die;
-jimport('joomla.application.categories');
 
-class VipQuotesCategories extends JCategories {
-    
-	public function __construct($options = array()) {
-		$options['table']     = '#__vq_quotes';
-		$options['extension'] = 'com_vipquotes';
-		parent::__construct($options);
-	}
-	
+class VipQuotesCategories extends JCategories
+{
+    public function __construct($options = array())
+    {
+        $options['table']     = '#__vq_quotes';
+        $options['extension'] = 'com_vipquotes';
+        parent::__construct($options);
+    }
 }

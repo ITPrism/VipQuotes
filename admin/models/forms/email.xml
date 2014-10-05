@@ -2,6 +2,13 @@
 <form>
     <fieldset name="email">
 
+        <field name="title" type="text" class="span12"
+               label="COM_VIPQUOTES_TITLE"
+               description="COM_VIPQUOTES_FIELD_EMAILS_TITLE_DESC"
+               filter="trim"
+               required="true"
+               />
+
         <field name="subject" type="text" class="span12" 
             label="COM_VIPQUOTES_SUBJECT" 
             description="COM_VIPQUOTES_SUBJECT_DESC" 

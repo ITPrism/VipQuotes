@@ -2,6 +2,16 @@
 <config>
     <fieldset name="images" label="COM_VIPQUOTES_IMAGES_TITLE" description="COM_VIPQUOTES_IMAGES_PARAMS">
         <field name="images_directory" type="text" default="images/authors" label="COM_VIPQUOTES_IMAGES_DIRECTORY" description="COM_VIPQUOTES_IMAGES_DIRECTORY_DESC" />
+        <field name="image_width" type="text" default="200" class="input-mini" label="COM_VIPQUOTES_IMAGE_WIDTH"
+               description="COM_VIPQUOTES_IMAGE_WIDTH_DESC"/>
+        <field name="image_height" type="text" default="200" class="input-mini" label="COM_VIPQUOTES_IMAGE_HEIGHT"
+               description="COM_VIPQUOTES_IMAGE_HEIGHT_DESC"/>
+
+        <field name="thumb_width" type="text" default="50" class="input-mini" label="COM_VIPQUOTES_THUMB_WIDTH"
+               description="COM_VIPQUOTES_THUMB_WIDTH_DESC"/>
+        <field name="thumb_height" type="text" default="50" class="input-mini" label="COM_VIPQUOTES_THUMB_HEIGHT"
+               description="COM_VIPQUOTES_THUMB_HEIGHT_DESC"/>
+
         <field name="images_display_default" type="radio" default="1" label="COM_VIPQUOTES_DEFAULT_DISPLAY_IMAGE" description="COM_VIPQUOTES_DEFAULT_DISPLAY_IMAGE_DESC" class="btn-group">
             <option value="0">JNO</option>
             <option value="1">JYES</option>
@@ -47,6 +57,14 @@
             <option value="1">JYES</option>
         </field>
         <field name="security_check_quotes" type="radio" default="0" label="COM_VIPQUOTES_VERIFY" description="COM_VIPQUOTES_VERIFY_FORM_DESC" class="btn-group">
+            <option value="0">JNO</option>
+            <option value="1">JYES</option>
+        </field>
+        <field name="security_author_auto_publishing" type="radio" default="0" label="COM_VIPQUOTES_AUTHOR_AUTO_PUBLISH" description="COM_VIPQUOTES_AUTHOR_AUTO_PUBLISH_DESC" class="btn-group">
+            <option value="0">JNO</option>
+            <option value="1">JYES</option>
+        </field>
+        <field name="security_check_authors" type="radio" default="0" label="COM_VIPQUOTES_VERIFY_AUTHOR" description="COM_VIPQUOTES_VERIFY_AUTHOR_FORM_DESC" class="btn-group">
             <option value="0">JNO</option>
             <option value="1">JYES</option>
         </field>
@@ -100,7 +118,14 @@
             <option value="1">JYES</option>
         </field>
     </fieldset>
-    
+
+    <fieldset name="advanced" label="COM_VIPQUOTES_ADVANCED">
+        <field name="display_author_form_notes" type="radio" default="1" label="COM_VIPQUOTES_DISPLAY_NOTES" description="COM_VIPQUOTES_DISPLAY_AUTHOR_NOTES_DESC" class="btn-group">
+            <option value="0">JNO</option>
+            <option value="1">JYES</option>
+        </field>
+    </fieldset>
+
     <fieldset
         name="permissions"
         label="JCONFIG_PERMISSIONS_LABEL"

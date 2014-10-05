@@ -6,6 +6,7 @@
 			label="COM_VIPQUOTES_FIELD_AUTHOR"
 			description="COM_VIPQUOTES_FIELD_AUTHOR_DESC"  
 			filter="intval"
+			state="1"
 		/>
 
 		<field name="catid" type="vqcategories"
