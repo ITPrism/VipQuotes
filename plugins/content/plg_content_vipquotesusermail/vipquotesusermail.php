@@ -4,14 +4,15 @@
  * @subpackage      Plugins
  * @author          Todor Iliev
  * @copyright       Copyright (C) 2014 Todor Iliev <todor@itprism.com>. All rights reserved.
- * @license         http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ * @license         http://www.gnu.org/licenses/gpl-3.0.en.html GNU/GPL
  */
 
 // no direct access
 defined('_JEXEC') or die;
 
-jimport('vipquotes.init');
-
+jimport('Prism.init');
+jimport('EmailTemplates.init');
+jimport('VipQuotes.init');
 /**
  * This plugin send notification mails to a user.
  *
@@ -59,22 +60,21 @@ class plgContentVipQuotesUserMail extends JPlugin
             return null;
         }
 
-        if (!empty($ids) and $state == VipQuotesConstants::PUBLISHED) {
+        if (!empty($ids) and $state == Prism\Constants::PUBLISHED) {
 
-            jimport("vipquotes.quotes");
-            $items = new VipQuotesQuotes(JFactory::getDbo());
-            $items->load($ids);
+            $options = array(
+                "ids" => $ids
+            );
+
+            $items = new VipQuotes\Quote\Quotes(JFactory::getDbo());
+            $items->load($options);
 
             if (count($items) <= 0) {
                 return true;
             }
 
-            // Load class VipQuotesEmail.
-            jimport("vipquotes.quote");
-            jimport("vipquotes.email");
-
             // Get the e-mail.
-            $email = new VipQuotesEmail();
+            $email = new EmailTemplates\Email();
             $email->setDb(JFactory::getDbo());
             $email->load($emailId);
 
@@ -92,10 +92,8 @@ class plgContentVipQuotesUserMail extends JPlugin
 
             foreach ($items as $item) {
 
-                $quoteData = JArrayHelper::fromObject($item);
-
-                $quote = new VipQuotesQuote(JFactory::getDbo());
-                $quote->bind($quoteData);
+                $quote = new VipQuotes\Quote\Quote(JFactory::getDbo());
+                $quote->bind($item);
 
                 // Send email to the administrator.
                 $return = $this->sendMails($quote, $email);
@@ -136,12 +134,8 @@ class plgContentVipQuotesUserMail extends JPlugin
 
         if (!empty($item->id) and $isChangedState) {
 
-            // Load class VipQuotesEmail.
-            jimport("vipquotes.quote");
-            jimport("vipquotes.email");
-
             // Get the e-mail.
-            $email = new VipQuotesEmail();
+            $email = new EmailTemplates\Email();
             $email->setDb(JFactory::getDbo());
             $email->load($emailId);
 
@@ -158,7 +152,7 @@ class plgContentVipQuotesUserMail extends JPlugin
             }
 
             // Get quote
-            $quote = new VipQuotesQuote(JFactory::getDbo());
+            $quote = new VipQuotes\Quote\Quote(JFactory::getDbo());
             $quote->load($item->id);
 
             // Send email to the administrator.
@@ -177,8 +171,8 @@ class plgContentVipQuotesUserMail extends JPlugin
     }
 
     /**
-     * @param VipQuotesQuote $quote
-     * @param VipQuotesEmail $email
+     * @param VipQuotes\Quote\Quote $quote
+     * @param EmailTemplates\Email $email
      *
      * @return bool
      */
@@ -226,13 +220,13 @@ class plgContentVipQuotesUserMail extends JPlugin
         $mailer = JFactory::getMailer();
         if (strcmp("html", $emailMode) == 0) { // Send as HTML message
 
-            $body   = $email->getBody(VipQuotesEmail::MAIL_MODE_HTML);
-            $result = $mailer->sendMail($email->getSenderEmail(), $email->getSenderName(), $user->email, $subject, $body, VipQuotesEmail::MAIL_MODE_HTML);
+            $body   = $email->getBody(Prism\Constants::MAIL_MODE_HTML);
+            $result = $mailer->sendMail($email->getSenderEmail(), $email->getSenderName(), $user->email, $subject, $body, Prism\Constants::MAIL_MODE_HTML);
 
         } else { // Send as plain text.
 
-            $body   = $email->getBody(VipQuotesEmail::MAIL_MODE_PLAIN);
-            $result = $mailer->sendMail($email->getSenderEmail(), $email->getSenderName(), $user->email, $subject, $body, VipQuotesEmail::MAIL_MODE_PLAIN);
+            $body   = $email->getBody(Prism\Constants::MAIL_MODE_PLAIN);
+            $result = $mailer->sendMail($email->getSenderEmail(), $email->getSenderName(), $user->email, $subject, $body, Prism\Constants::MAIL_MODE_PLAIN);
 
         }
 

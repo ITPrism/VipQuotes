@@ -5,7 +5,6 @@
 		<field name="name" type="text"
 			label="COM_VIPQUOTES_NAME"
 			description="COM_VIPQUOTES_FIELD_NAME_DESC"
-			size="60"   
 			filter="trim" 
 			required="true" 
 		/>
@@ -13,7 +12,6 @@
 		<field name="alias" type="text"
 		    label="JFIELD_ALIAS_LABEL"
             description="JFIELD_ALIAS_DESC"
-            size="60" 
         />
 
 		<field name="published" type="radio" class="btn-group"

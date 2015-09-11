@@ -4,7 +4,7 @@
  * @subpackage   Component
  * @author       Todor Iliev
  * @copyright    Copyright (C) 2014 Todor Iliev <todor@itprism.com>. All rights reserved.
- * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ * @license      GNU General Public License version 3 or later; see LICENSE.txt
  */
 
 // no direct access
@@ -70,19 +70,13 @@ class VipQuotesModelImport extends JModelForm
         $app = JFactory::getApplication();
         /** @var $app JApplicationAdministrator */
 
-        jimport('joomla.filesystem.archive');
-        jimport('itprism.file');
-        jimport('itprism.file.uploader.local');
-        jimport('itprism.file.validator.size');
-        jimport('itprism.file.validator.server');
-
-        $uploadedFile = JArrayHelper::getValue($fileData, 'tmp_name');
-        $uploadedName = JArrayHelper::getValue($fileData, 'name');
-        $errorCode    = JArrayHelper::getValue($fileData, 'error');
+        $uploadedFile = Joomla\Utilities\ArrayHelper::getValue($fileData, 'tmp_name');
+        $uploadedName = Joomla\Utilities\ArrayHelper::getValue($fileData, 'name');
+        $errorCode    = Joomla\Utilities\ArrayHelper::getValue($fileData, 'error');
 
         $destination = JPath::clean($app->get("tmp_path")) . DIRECTORY_SEPARATOR . JFile::makeSafe($uploadedName);
 
-        $file = new ITPrismFile();
+        $file = new Prism\File\File();
 
         // Prepare size validator.
         $KB       = 1024 * 1024;
@@ -94,10 +88,10 @@ class VipQuotesModelImport extends JModelForm
         $uploadMaxSize = $mediaParams->get("upload_maxsize") * $KB;
 
         // Prepare size validator.
-        $sizeValidator = new ITPrismFileValidatorSize($fileSize, $uploadMaxSize);
+        $sizeValidator = new Prism\File\Validator\Size($fileSize, $uploadMaxSize);
 
         // Prepare server validator.
-        $serverValidator = new ITPrismFileValidatorServer($errorCode, array(UPLOAD_ERR_NO_FILE));
+        $serverValidator = new Prism\File\Validator\Server($errorCode, array(UPLOAD_ERR_NO_FILE));
 
         $file->addValidator($sizeValidator);
         $file->addValidator($serverValidator);
@@ -108,7 +102,7 @@ class VipQuotesModelImport extends JModelForm
         }
 
         // Prepare uploader object.
-        $uploader = new ITPrismFileUploaderLocal($uploadedFile);
+        $uploader = new Prism\File\Uploader\Local($uploadedFile);
         $uploader->setDestination($destination);
 
         // Upload the file
@@ -185,8 +179,7 @@ class VipQuotesModelImport extends JModelForm
         if (!empty($data)) {
 
             // Get authors.
-            jimport("vipquotes.authors");
-            $authorsData = new VipQuotesAuthors(JFactory::getDbo());
+            $authorsData = new VipQuotes\Author\Authors(JFactory::getDbo());
             $authorsData->load();
             $authors = $authorsData->getNames();
 
@@ -195,12 +188,12 @@ class VipQuotesModelImport extends JModelForm
 
             for ($i = 0, $max = count($data); $i < $max; $i++) {
 
-                $quote = JString::trim(JArrayHelper::getValue($data[$i], 0));
+                $quote = JString::trim(Joomla\Utilities\ArrayHelper::getValue($data[$i], 0));
                 if (empty($quote)) {
                     continue;
                 }
 
-                $author   = JString::trim(JArrayHelper::getValue($data[$i], 1));
+                $author   = JString::trim(Joomla\Utilities\ArrayHelper::getValue($data[$i], 1));
                 $authorId = array_search($author, $authors);
 
                 if (!$authorId) {
@@ -226,7 +219,7 @@ class VipQuotesModelImport extends JModelForm
                     $authors[$authorId] = $author;
                 }
 
-                $table            = $this->getTable("Quote", "VipQuotesTable");
+                $table = $this->getTable("Quote", "VipQuotesTable");
                 $table->set("quote", $quote);
                 $table->set("user_id", (int)$userId);
                 $table->set("author_id", (int)$authorId);

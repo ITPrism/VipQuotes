@@ -3,8 +3,8 @@
  * @package      VipQuotes
  * @subpackage   Component
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2014 Todor Iliev <todor@itprism.com>. All rights reserved.
- * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ * @copyright    Copyright (C) 2015 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @license      GNU General Public License version 3 or later; see LICENSE.txt
  */
 
 // no direct access
@@ -21,15 +21,14 @@ defined('_JEXEC') or die;?>
     <table class="table table-hover">
     <?php foreach($this->items as $item) {?>
     	<tr>
-    		
     		<?php if($this->params->get("authors_display_image")) {?>
     		<td class="itpvq-img-center">
-    		  <?php echo JHtml::_("vipquotes.authorImage", $item, $this->params, $this->tmplValue);?>
+    		  <?php echo JHtml::_("vipquotes.authorImage", $item, $this->params);?>
     		</td>
     		<?php }?>
     		
     		<td>
-    		<a href="<?php echo JRoute::_(VipQuotesHelperRoute::getAuthorRoute($item->slug).$this->tmplValue); ?>"><?php echo $item->name;?></a>
+    		<a href="<?php echo JRoute::_(VipQuotesHelperRoute::getAuthorRoute($item->slug)); ?>"><?php echo $item->name;?></a>
     		<?php 
     		if($this->params->get("authors_display_counter", 1)) {
     		    echo "(".JArrayHelper::getValue($this->authorsQuotesNumber, $item->id, 0) .")";
@@ -50,18 +49,12 @@ defined('_JEXEC') or die;?>
     	</tr>
     <?php }?>
     </table>
-    
-    <div class="clr">&nbsp;</div>
-    <div class="pagination">
-        <?php if ($this->params->def('show_pagination_results', 1)) : ?>
-            <p class="counter">
-                <?php echo $this->pagination->getPagesCounter(); ?>
-            </p>
-        <?php endif; ?>
-    
-        <?php echo $this->pagination->getPagesLinks(); ?>
-    </div>
-    <div class="clr">&nbsp;</div>
+
+    <?php if (($this->params->def('show_pagination', 1) == 1 || ($this->params->get('show_pagination') == 2)) && ($this->pagination->get('pages.total') > 1)) { ?>
+        <div class="pagination">
+            <?php if ($this->params->def('show_pagination_results', 1)) { ?>
+                <p class="counter pull-right"> <?php echo $this->pagination->getPagesCounter(); ?> </p>
+            <?php } ?>
+            <?php echo $this->pagination->getPagesLinks(); ?> </div>
+    <?php } ?>
 </div>
-<div class="clearfix"></div>
-<?php echo $this->version->backlink; ?>

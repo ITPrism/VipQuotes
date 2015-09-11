@@ -3,8 +3,8 @@
  * @package      VipQuotes
  * @subpackage   Component
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2014 Todor Iliev <todor@itprism.com>. All rights reserved.
- * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ * @copyright    Copyright (C) 2015 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @license      GNU General Public License version 3 or later; see LICENSE.txt
  */
 
 // no direct access
@@ -141,10 +141,10 @@ class VipQuotesModelForm extends JModelAdmin
      */
     public function save($data)
     {
-        $id       = JArrayHelper::getValue($data, "id");
-        $quote    = JArrayHelper::getValue($data, "quote");
-        $authorId = JArrayHelper::getValue($data, "author_id");
-        $catid    = JArrayHelper::getValue($data, "catid");
+        $id       = Joomla\Utilities\ArrayHelper::getValue($data, "id");
+        $quote    = Joomla\Utilities\ArrayHelper::getValue($data, "quote");
+        $authorId = Joomla\Utilities\ArrayHelper::getValue($data, "author_id");
+        $catid    = Joomla\Utilities\ArrayHelper::getValue($data, "catid");
 
         // Load a record from the database
         $table = $this->getTable();
@@ -167,7 +167,7 @@ class VipQuotesModelForm extends JModelAdmin
             $params = $app->getParams($this->option);
             /** @var  $params Joomla\Registry\Registry */
 
-            if ($params instanceof JRegistry) {
+            if ($params instanceof Joomla\Registry\Registry) {
                 if ($params->get("security_auto_publishing", 0)) {
                     $table->set("published", 1);
                 }
@@ -201,7 +201,7 @@ class VipQuotesModelForm extends JModelAdmin
     {
         // Get properties
         $item = $row->getProperties();
-        $item = JArrayHelper::toObject($item);
+        $item = Joomla\Utilities\ArrayHelper::toObject($item);
 
         // Generate context
         $context = $this->option . '.quote';

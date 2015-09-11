@@ -4,7 +4,7 @@
  * @subpackage   Component
  * @author       Todor Iliev
  * @copyright    Copyright (C) 2014 Todor Iliev <todor@itprism.com>. All rights reserved.
- * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ * @license      GNU General Public License version 3 or later; see LICENSE.txt
  */
 
 // no direct access
@@ -20,26 +20,17 @@ defined('_JEXEC') or die;
         	
             <fieldset>
                 <legend><?php echo JText::_("COM_VIPQUOTES_AUTHOR_OPTIONS"); ?></legend>
-                <div class="control-group">
-                    <div class="control-label"><?php echo $this->form->getLabel('name'); ?></div>
-    				<div class="controls"><?php echo $this->form->getInput('name'); ?></div>
-                </div>
-                <div class="control-group">
-                    <div class="control-label"><?php echo $this->form->getLabel('alias'); ?></div>
-    				<div class="controls"><?php echo $this->form->getInput('alias'); ?></div>
-                </div>
-                <div class="control-group">
-                    <div class="control-label"><?php echo $this->form->getLabel('published'); ?></div>
-    				<div class="controls"><?php echo $this->form->getInput('published'); ?></div>
-                </div>
+                <?php echo $this->form->getControlGroup('name'); ?>
+                <?php echo $this->form->getControlGroup('alias'); ?>
+                <?php echo $this->form->getControlGroup('published'); ?>
     
                 <div class="control-group">
                     <div class="control-label"><?php echo $this->form->getLabel('image'); ?></div>
     				<div class="controls">
     			       <div class="fileupload fileupload-new" data-provides="fileupload">
                             <span class="btn btn-file">
-                                <span class="fileupload-new"><?php echo JText::_("COM_VIPQUOTES_SELECT_FILE")?></span>
-                                <span class="fileupload-exists"><?php echo JText::_("COM_VIPQUOTES_CHANGE")?></span>
+                                <span class="fileupload-new"><i class="icon-folder-open"></i> <?php echo JText::_("COM_VIPQUOTES_SELECT_FILE")?></span>
+                                <span class="fileupload-exists"><i class="icon-edit"></i> <?php echo JText::_("COM_VIPQUOTES_CHANGE")?></span>
                                 <?php echo $this->form->getInput('image'); ?>
                             </span>
                             <span class="fileupload-preview"></span>
@@ -47,14 +38,8 @@ defined('_JEXEC') or die;
                         </div>
     				</div>
                 </div>
-                <div class="control-group">
-                    <div class="control-label"><?php echo $this->form->getLabel('id'); ?></div>
-    				<div class="controls"><?php echo $this->form->getInput('id'); ?></div>
-                </div>
-                <div class="control-group">
-                    <div class="control-label"><?php echo $this->form->getLabel('bio'); ?></div>
-    				<div class="controls"><?php echo $this->form->getInput('bio'); ?></div>
-                </div>
+                <?php echo $this->form->getControlGroup('id'); ?>
+                <?php echo $this->form->getControlGroup('bio'); ?>
             </fieldset>
             
         </div>
@@ -73,7 +58,7 @@ defined('_JEXEC') or die;
             </div>
             <br />
             <a href="<?php echo JRoute::_("index.php?option=com_vipquotes&task=author.removeImage&id=" . $this->item->id); ?>" class="btn btn-small btn-danger">
-                <i class="icon-remove"></i>
+                <i class="icon-trash"></i>
                 <?php echo JText::_("COM_VIPQUOTES_REMOVE_IMAGE")?>
             </a>
         </div>

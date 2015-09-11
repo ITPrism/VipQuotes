@@ -4,7 +4,7 @@
  * @subpackage   Component
  * @author       Todor Iliev
  * @copyright    Copyright (C) 2014 Todor Iliev <todor@itprism.com>. All rights reserved.
- * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ * @license      GNU General Public License version 3 or later; see LICENSE.txt
  */
 
 // No direct access
@@ -37,9 +37,6 @@ class VipQuotesViewImport extends JViewLegacy
     {
         $this->state = $this->get('State');
         $this->form  = $this->get('Form');
-
-        // HTML Helpers
-        JHtml::addIncludePath(ITPRISM_PATH_LIBRARY . '/ui/helpers');
 
         // Add submenu
         VipQuotesHelper::addSubmenu("quotes");
@@ -82,7 +79,7 @@ class VipQuotesViewImport extends JViewLegacy
         JHtml::_('behavior.tooltip');
         JHtml::_('behavior.formvalidation');
 
-        JHtml::_('itprism.ui.bootstrap_fileuploadstyle');
+        JHtml::_('prism.ui.bootstrap_fileuploadstyle');
 
         $this->document->addScript('../media/' . $this->option . '/js/admin/' . JString::strtolower($this->getName()) . '.js');
     }

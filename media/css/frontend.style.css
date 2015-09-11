@@ -1,12 +1,6 @@
 @CHARSET "UTF-8";
 
 /* Frontend */
-.q_category {
-	float: left;
-	margin: 10px;
-	width: 150px;
-}
-
 .textarea_100 {
 	width: 100%;
 }
@@ -72,10 +66,6 @@
 .itp_edit_icon {
 	float: left;
 	margin-right: 5px;
-}
-
-.itp-center {
-	text-align: center;
 }
 
 #authorbox{  

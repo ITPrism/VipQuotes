@@ -3,8 +3,8 @@
  * @package      VipQuotes
  * @subpackage   Component
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2014 Todor Iliev <todor@itprism.com>. All rights reserved.
- * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ * @copyright    Copyright (C) 2015 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @license      GNU General Public License version 3 or later; see LICENSE.txt
  */
 
 // no direct access
@@ -29,7 +29,8 @@ class VipQuotesViewCategories extends JViewLegacy
     protected $option = null;
     
     protected $displayNumber;
-    protected $tmplValue;
+    protected $itemsPerLine;
+    protected $columnSize;
 
     protected $pageclass_sfx;
 
@@ -41,30 +42,20 @@ class VipQuotesViewCategories extends JViewLegacy
 
     public function display($tpl = null)
     {
-        $app = JFactory::getApplication();
-        /** @var $app JApplicationSite */
-
         // Initialise variables
         $this->state      = $this->get("State");
         $this->items      = $this->get('Items');
         $this->pagination = $this->get('Pagination');
 
         /** @var  $params Joomla\Registry\Registry */
-        $params = $this->state->get("params");
-        $this->params = $params;
+        $this->params = $this->state->get("params");
 
         $this->displayNumber = $this->params->get("categories_display_counter", 0);
+        $this->itemsPerLine  = ($this->params->get("categories_results_per_line", 4)) ?: 4;
+
+        $this->columnSize = abs(12 / $this->itemsPerLine);
 
         $this->prepareDocument();
-
-        // Prepare TMPL variable
-        $tmpl            = $app->input->get->get("tmpl", "");
-        $this->tmplValue = "";
-        if (strcmp("component", $tmpl) == 0) {
-            $this->tmplValue = "&tmpl=component";
-        }
-
-        $this->version     = new VipQuotesVersion();
 
         parent::display($tpl);
     }

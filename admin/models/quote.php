@@ -4,7 +4,7 @@
  * @subpackage   Component
  * @author       Todor Iliev
  * @copyright    Copyright (C) 2014 Todor Iliev <todor@itprism.com>. All rights reserved.
- * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ * @license      GNU General Public License version 3 or later; see LICENSE.txt
  */
 
 // no direct access
@@ -86,11 +86,11 @@ class VipQuotesModelQuote extends JModelAdmin
      */
     public function save($data)
     {
-        $id        = JArrayHelper::getValue($data, "id");
-        $quote     = JArrayHelper::getValue($data, "quote");
-        $authorId  = JArrayHelper::getValue($data, "author_id");
-        $catid     = JArrayHelper::getValue($data, "catid");
-        $published = JArrayHelper::getValue($data, "published");
+        $id        = Joomla\Utilities\ArrayHelper::getValue($data, "id");
+        $quote     = Joomla\Utilities\ArrayHelper::getValue($data, "quote");
+        $authorId  = Joomla\Utilities\ArrayHelper::getValue($data, "author_id");
+        $catid     = Joomla\Utilities\ArrayHelper::getValue($data, "catid");
+        $published = Joomla\Utilities\ArrayHelper::getValue($data, "published");
 
         // Load a record from the database
         $row = $this->getTable();
@@ -128,11 +128,6 @@ class VipQuotesModelQuote extends JModelAdmin
 
     }
 
-    /**
-     * Prepare and sanitise the table prior to saving.
-     *
-     * @since    1.6
-     */
     protected function prepareTable($table)
     {
         // get maximum order number
@@ -165,7 +160,7 @@ class VipQuotesModelQuote extends JModelAdmin
     {
         // Get properties
         $item = $row->getProperties();
-        $item = JArrayHelper::toObject($item);
+        $item = Joomla\Utilities\ArrayHelper::toObject($item);
 
         // Generate context
         $context = $this->option . '.' . $this->getName();

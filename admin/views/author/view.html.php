@@ -4,7 +4,7 @@
  * @subpackage   Component
  * @author       Todor Iliev
  * @copyright    Copyright (C) 2014 Todor Iliev <todor@itprism.com>. All rights reserved.
- * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ * @license      GNU General Public License version 3 or later; see LICENSE.txt
  */
 
 // no direct access
@@ -35,9 +35,6 @@ class VipQuotesViewAuthor extends JViewLegacy
         $this->option = JFactory::getApplication()->input->get("option");
     }
 
-    /**
-     * Display the view
-     */
     public function display($tpl = null)
     {
         $this->state = $this->get('State');
@@ -93,7 +90,7 @@ class VipQuotesViewAuthor extends JViewLegacy
         JHtml::_('behavior.formvalidation');
 
         JHtml::_('bootstrap.framework');
-        JHtml::_('itprism.ui.bootstrap_fileuploadstyle');
+        JHtml::_('prism.ui.bootstrap2FileInput');
 
         $this->document->addScript('../media/' . $this->option . '/js/admin/' . JString::strtolower($this->getName()) . '.js');
     }

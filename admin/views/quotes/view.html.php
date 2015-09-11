@@ -4,7 +4,7 @@
  * @subpackage   Component
  * @author       Todor Iliev
  * @copyright    Copyright (C) 2014 Todor Iliev <todor@itprism.com>. All rights reserved.
- * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ * @license      GNU General Public License version 3 or later; see LICENSE.txt
  */
 
 // no direct access
@@ -54,9 +54,6 @@ class VipQuotesViewQuotes extends JViewLegacy
 
         JLoader::register('JHtmlString', JPATH_LIBRARIES . '/joomla/html/html/string.php');
 
-        // Add submenu
-        VipQuotesHelper::addSubmenu($this->getName());
-
         // Prepare sorting data
         $this->prepareSorting();
 
@@ -100,6 +97,8 @@ class VipQuotesViewQuotes extends JViewLegacy
      */
     protected function addSidebar()
     {
+        VipQuotesHelper::addSubmenu($this->getName());
+
         JHtmlSidebar::setAction('index.php?option=' . $this->option . '&view=' . $this->getName());
 
         JHtmlSidebar::addFilter(
@@ -115,7 +114,7 @@ class VipQuotesViewQuotes extends JViewLegacy
         );
 
         jimport("vipquotes.filter.options");
-        $filters = new VipQuotesFilterOptions(JFactory::getDbo());
+        $filters = new VipQuotes\Filter\Options(JFactory::getDbo());
         $authors = $filters->getAuthors();
 
         JHtmlSidebar::addFilter(
@@ -179,6 +178,6 @@ class VipQuotesViewQuotes extends JViewLegacy
         JHtml::_('bootstrap.tooltip');
         JHtml::_('behavior.multiselect');
         JHtml::_('formbehavior.chosen', 'select');
-        JHtml::_('itprism.ui.joomla_list');
+        JHtml::_('prism.ui.joomlaList');
     }
 }

@@ -1,6 +1,6 @@
 Vip Quotes for Joomla!
 ==========================
-( Version 2.7 )
+( Version 3.0 )
 --------------------------
 
 Vip Quotes is a platform that provides functionality for creating and managing list with quotations.
@@ -14,3 +14,6 @@ You can find documentation on following pages.
 
 ##Download
 You can [download Vip Quotes package] (http://itprism.com/free-joomla-extensions/others/quotes-collection-manager) from the website of ITPrism.
+
+##License
+Crowdfunding Platform is under [GPLv3 license] (http://www.gnu.org/licenses/gpl-3.0.en.html).

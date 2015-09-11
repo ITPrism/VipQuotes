@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension type="component" version="3.3" method="upgrade">
+<extension type="component" version="3.4" method="upgrade">
 	<name>COM_VIPQUOTES</name>
 	<author>Todor Iliev</author>
 	<authorEmail>todor@itprism.com</authorEmail>
 	<authorUrl>http://itprism.com</authorUrl>
-	<copyright>Copyright (C) 2014 Todor Iliev ( ITPrism.com )</copyright>
-	<license>http://www.gnu.org/copyleft/gpl.html</license>
-	<version>2.7</version>
-	<creationDate>05 October, 2014</creationDate>
+	<copyright>Copyright (C) 2015 Todor Iliev ( ITPrism.com )</copyright>
+	<license>http://www.gnu.org/licenses/gpl-3.0.en.html</license>
+	<version>3.0</version>
+	<creationDate>07 September, 2015</creationDate>
 	<description><![CDATA[
     <p><a href="http://itprism.com/free-joomla-extensions/others/quotes-collection-manager" target="_blank">Vip Quotes</a> is an extension for Joomla! that provides ability to collect and share quotations.</p>
     <p><a href="http://itprism.com/" target="_blank">Subscribe for the newsletter</a> to receive <strong>gifts</strong>, <strong>discount codes</strong>, information about <strong>updates</strong> and information about <strong>new ITPrism extensions</strong>.</p>
@@ -33,8 +33,7 @@
 	</update>
 	
 	<media destination="com_vipquotes" folder="media">
-		<filename>index.html</filename>
-		<folder>css</folder>	
+		<folder>css</folder>
 		<folder>images</folder>
 		<folder>js</folder>		
 	</media>
@@ -47,7 +46,6 @@
         <folder>models</folder>
         <folder>views</folder>
 		<filename>controller.php</filename>
-		<filename>index.html</filename>
 		<filename>router.php</filename>
 		<filename>vipquotes.php</filename>
 	</files>
@@ -59,7 +57,6 @@
 			<folder>controllers</folder>
 			<folder>helpers</folder>
 			<folder>language</folder>
-			<folder>libraries</folder>
 			<folder>models</folder>
 			<folder>tables</folder>
 			<folder>sql</folder>
@@ -67,8 +64,7 @@
             
 			<filename>access.xml</filename>
 			<filename>controller.php</filename>
-			<filename>index.html</filename>
-			<filename>config.xml</filename> 
+			<filename>config.xml</filename>
 			<filename>vipquotes.php</filename>
 		</files>
         

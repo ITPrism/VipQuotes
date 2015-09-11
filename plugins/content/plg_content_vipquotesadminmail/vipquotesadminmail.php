@@ -4,13 +4,15 @@
  * @subpackage      Plugins
  * @author          Todor Iliev
  * @copyright       Copyright (C) 2014 Todor Iliev <todor@itprism.com>. All rights reserved.
- * @license         http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ * @license         http://www.gnu.org/licenses/gpl-3.0.en.html GNU/GPL
  */
 
 // no direct access
 defined('_JEXEC') or die;
 
-jimport('vipquotes.init');
+jimport('Prism.init');
+jimport('EmailTemplates.init');
+jimport('VipQuotes.init');
 
 /**
  * This plugin send notification mails to the administrator.
@@ -61,9 +63,6 @@ class plgContentVipQuotesAdminMail extends JPlugin
 
         if (!empty($item->id) and $isNew) {
 
-            // Load class VipQuotesEmail.
-            jimport("vipquotes.email");
-
             // Send email to the administrator.
             $return = $this->sendMails($item, $emailId);
 
@@ -95,8 +94,7 @@ class plgContentVipQuotesAdminMail extends JPlugin
 
             $emailMode = $this->params->get("email_mode", 0);
 
-            jimport("vipquotes.quote");
-            $quote = new VipQuotesQuote(JFactory::getDbo());
+            $quote = new VipQuotes\Quote\Quote(JFactory::getDbo());
             $quote->load($item->id);
 
             $subject = JText::sprintf("PLG_CONTENT_VIPQUOTESADMINMAIL_DEFAULT_SUBJECT", $quote->getAuthor(), $quote->getCategory());
@@ -114,7 +112,7 @@ class plgContentVipQuotesAdminMail extends JPlugin
             );
 
             // Get the e-mail.
-            $email = new VipQuotesEmail();
+            $email = new EmailTemplates\Email();
             $email->setDb(JFactory::getDbo());
             $email->load($emailId);
 
@@ -145,16 +143,15 @@ class plgContentVipQuotesAdminMail extends JPlugin
             $mailer = JFactory::getMailer();
             if (strcmp("html", $emailMode) == 0) { // Send as HTML message
 
-                $body   = $email->getBody(VipQuotesEmail::MAIL_MODE_HTML);
-                $result = $mailer->sendMail($email->getSenderEmail(), $email->getSenderName(), $recipientMail, $subject, $body, VipQuotesEmail::MAIL_MODE_HTML);
+                $body   = $email->getBody(Prism\Constants::MAIL_MODE_HTML);
+                $result = $mailer->sendMail($email->getSenderEmail(), $email->getSenderName(), $recipientMail, $subject, $body, Prism\Constants::MAIL_MODE_HTML);
 
             } else { // Send as plain text.
 
-                $body   = $email->getBody(VipQuotesEmail::MAIL_MODE_PLAIN);
-                $result = $mailer->sendMail($email->getSenderEmail(), $email->getSenderName(), $recipientMail, $subject, $body, VipQuotesEmail::MAIL_MODE_PLAIN);
+                $body   = $email->getBody(Prism\Constants::MAIL_MODE_PLAIN);
+                $result = $mailer->sendMail($email->getSenderEmail(), $email->getSenderName(), $recipientMail, $subject, $body, Prism\Constants::MAIL_MODE_PLAIN);
 
             }
-
         }
 
         return ($result !== true) ? false : true;

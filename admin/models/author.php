@@ -4,7 +4,7 @@
  * @subpackage   Component
  * @author       Todor Iliev
  * @copyright    Copyright (C) 2014 Todor Iliev <todor@itprism.com>. All rights reserved.
- * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ * @license      GNU General Public License version 3 or later; see LICENSE.txt
  */
 
 // no direct access
@@ -91,12 +91,12 @@ class VipQuotesModelAuthor extends JModelAdmin
      */
     public function save($data)
     {
-        $id        = JArrayHelper::getValue($data, "id");
-        $name      = JArrayHelper::getValue($data, "name");
-        $bio       = JString::trim(JArrayHelper::getValue($data, "bio"));
-        $copyright = JString::trim(JArrayHelper::getValue($data, "copyright"));
-        $alias     = JArrayHelper::getValue($data, "alias");
-        $published = JArrayHelper::getValue($data, "published");
+        $id        = Joomla\Utilities\ArrayHelper::getValue($data, "id");
+        $name      = Joomla\Utilities\ArrayHelper::getValue($data, "name");
+        $bio       = Joomla\Utilities\ArrayHelper::getValue($data, "bio");
+        $copyright = Joomla\Utilities\ArrayHelper::getValue($data, "copyright");
+        $alias     = Joomla\Utilities\ArrayHelper::getValue($data, "alias");
+        $published = Joomla\Utilities\ArrayHelper::getValue($data, "published");
 
         // Load a record from the database
         $row = $this->getTable();
@@ -190,21 +190,15 @@ class VipQuotesModelAuthor extends JModelAdmin
         $app = JFactory::getApplication();
         /** @var $app JApplicationSite */
 
-        $uploadedFile = JArrayHelper::getValue($image, 'tmp_name');
-        $uploadedName = JArrayHelper::getValue($image, 'name');
-        $errorCode    = JArrayHelper::getValue($image, 'error');
+        $uploadedFile = Joomla\Utilities\ArrayHelper::getValue($image, 'tmp_name');
+        $uploadedName = Joomla\Utilities\ArrayHelper::getValue($image, 'name');
+        $errorCode    = Joomla\Utilities\ArrayHelper::getValue($image, 'error');
 
         // Joomla! media extension parameters
         $mediaParams = JComponentHelper::getParams("com_media");
         /** @var  $mediaParams Joomla\Registry\Registry */
 
-        jimport("itprism.file");
-        jimport("itprism.file.uploader.local");
-        jimport("itprism.file.validator.size");
-        jimport("itprism.file.validator.image");
-        jimport("itprism.file.validator.server");
-
-        $file = new ITPrismFile();
+        $file = new Prism\File\File();
 
         // Prepare size validator.
         $KB            = 1024 * 1024;
@@ -212,13 +206,13 @@ class VipQuotesModelAuthor extends JModelAdmin
         $uploadMaxSize = $mediaParams->get("upload_maxsize") * $KB;
 
         // Prepare file size validator
-        $sizeValidator = new ITPrismFileValidatorSize($fileSize, $uploadMaxSize);
+        $sizeValidator = new Prism\File\Validator\Size($fileSize, $uploadMaxSize);
 
         // Prepare server validator.
-        $serverValidator = new ITPrismFileValidatorServer($errorCode, array(UPLOAD_ERR_NO_FILE));
+        $serverValidator = new Prism\File\Validator\Server($errorCode, array(UPLOAD_ERR_NO_FILE));
 
         // Prepare image validator.
-        $imageValidator = new ITPrismFileValidatorImage($uploadedFile, $uploadedName);
+        $imageValidator = new Prism\File\Validator\Image($uploadedFile, $uploadedName);
 
         // Get allowed mime types from media manager options
         $mimeTypes = explode(",", $mediaParams->get("upload_mime"));
@@ -241,15 +235,13 @@ class VipQuotesModelAuthor extends JModelAdmin
         // Generate temporary file name
         $ext = JString::strtolower(JFile::makeSafe(JFile::getExt($image['name'])));
 
-        jimport("itprism.string");
-        $generatedName = new ITPrismString();
-        $generatedName->generateRandomString(6);
+        $generatedName = Prism\String\StringHelper::generateRandomString(6);
 
         $imageName   = "image_" . $generatedName . "." . $ext;
         $destination = $this->imagesFolder . DIRECTORY_SEPARATOR . $imageName;
 
         // Prepare uploader object.
-        $uploader = new ITPrismFileUploaderLocal($uploadedFile);
+        $uploader = new Prism\File\Uploader\Local($uploadedFile);
         $uploader->setDestination($destination);
 
         // Upload temporary file
@@ -288,13 +280,13 @@ class VipQuotesModelAuthor extends JModelAdmin
         /** @var $app JApplicationAdministrator */
 
         // Get values from the user state
-        $width = JArrayHelper::getValue($options, "image_width", 200, "uint");
+        $width = Joomla\Utilities\ArrayHelper::getValue($options, "image_width", 200, "uint");
         if ($width < 50) {
             $width = 200;
         }
         $app->setUserState($this->option . '.author.image_width', $width);
 
-        $height = JArrayHelper::getValue($options, "image_height", 300, "uint");
+        $height = Joomla\Utilities\ArrayHelper::getValue($options, "image_height", 300, "uint");
         if ($height < 50) {
             $height = 300;
         }
@@ -354,13 +346,13 @@ class VipQuotesModelAuthor extends JModelAdmin
         /** @var $app JApplicationAdministrator */
 
         // Get values from the user state
-        $thumbWidth = JArrayHelper::getValue($options, "thumb_width", 50, "uint");
+        $thumbWidth = Joomla\Utilities\ArrayHelper::getValue($options, "thumb_width", 50, "uint");
         if ($thumbWidth < 50) {
             $thumbWidth = 50;
         }
         $app->setUserState($this->option . '.author.thumb_width', $thumbWidth);
 
-        $thumbHeight = JArrayHelper::getValue($options, "thumb_height", 50, "uint");
+        $thumbHeight = Joomla\Utilities\ArrayHelper::getValue($options, "thumb_height", 50, "uint");
         if ($thumbHeight < 50) {
             $thumbHeight = 50;
         }

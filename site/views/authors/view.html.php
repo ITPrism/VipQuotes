@@ -3,8 +3,8 @@
  * @package      VipQuotes
  * @subpackage   Component
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2014 Todor Iliev <todor@itprism.com>. All rights reserved.
- * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ * @copyright    Copyright (C) 2015 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @license      GNU General Public License version 3 or later; see LICENSE.txt
  */
 
 // no direct access
@@ -31,7 +31,6 @@ class VipQuotesViewAuthors extends JViewLegacy
     protected $authors;
     protected $authorsQuotesNumber;
     protected $quotesLink;
-    protected $tmplValue;
     protected $displayFilters;
     protected $filterOrdering;
     protected $orderingOptions;
@@ -46,10 +45,6 @@ class VipQuotesViewAuthors extends JViewLegacy
 
     public function display($tpl = null)
     {
-        $app = JFactory::getApplication();
-        /** @var $app JApplicationSite */
-
-        // Initialise variables
         $this->state      = $this->get("State");
         $this->items      = $this->get('Items');
         $this->pagination = $this->get('Pagination');
@@ -60,26 +55,23 @@ class VipQuotesViewAuthors extends JViewLegacy
 
         // Get number of quotes for authors.
         if ($this->params->get("authors_display_counter", 1)) {
-            jimport("vipquotes.authors");
-            $this->authors = new VipQuotesAuthors(JFactory::getDbo());
-            $this->authors->setItems($this->items);
+            $this->authors = new VipQuotes\Author\Authors(JFactory::getDbo());
 
+            $items_ = array();
+
+            foreach ($this->items as $item) {
+                $items_[] = Joomla\Utilities\ArrayHelper::fromObject($item);
+            }
+            $this->authors->setItems($items_);
             $this->authorsQuotesNumber = $this->authors->getQuotesNumber();
+
+            unset($items_);
         }
 
         $this->quotesLink = VipQuotesHelperRoute::getQuotesRoute();
 
         $this->prepareFilters();
         $this->prepareDocument();
-
-        // Prepare TMPL variable
-        $tmpl            = $app->input->get->get("tmpl", "");
-        $this->tmplValue = "";
-        if (strcmp("component", $tmpl) == 0) {
-            $this->tmplValue = "&tmpl=component";
-        }
-
-        $this->version     = new VipQuotesVersion();
 
         parent::display($tpl);
     }
@@ -91,14 +83,10 @@ class VipQuotesViewAuthors extends JViewLegacy
         // Ordering
         $this->filterOrdering = $this->params->get("authors_display_filter_ordering", 0);
         if ($this->filterOrdering) {
-
             $this->displayFilters = true;
 
-            jimport("vipquotes.filter.options");
-            $filters = VipQuotesFilterOptions::getInstance(JFactory::getDbo());
-
+            $filters = VipQuotes\Filter\Options::getInstance(JFactory::getDbo());
             $this->orderingOptions = $filters->getAuthorsOrdering();
-
         }
     }
 

@@ -3,8 +3,8 @@
  * @package      VipQuotes
  * @subpackage   Component
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2014 Todor Iliev <todor@itprism.com>. All rights reserved.
- * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ * @copyright    Copyright (C) 2015 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @license      GNU General Public License version 3 or later; see LICENSE.txt
  */
 
 // no direct access
@@ -26,7 +26,7 @@ defined('_JEXEC') or die;
     	
         	<?php if($this->params->get("quote_author_linkable", 1)) {?>
         	<small>
-        	   <a href="<?php echo JRoute::_(VipQuotesHelperRoute::getAuthorRoute($this->item->author_slug).$this->tmplValue);?>">
+        	   <a href="<?php echo JRoute::_(VipQuotesHelperRoute::getAuthorRoute($this->item->author_slug));?>">
                    <?php echo $this->escape($this->item->author_name); ?>
                </a>
     	    </small>
@@ -40,5 +40,3 @@ defined('_JEXEC') or die;
 	</blockquote>   
 	<?php echo $this->item->event->onContentAfterDisplay;?>
 </div>
-<div class="clearfix"></div>
-<?php echo $this->version->backlink; ?>

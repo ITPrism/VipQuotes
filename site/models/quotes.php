@@ -3,8 +3,8 @@
  * @package      VipQuotes
  * @subpackage   Component
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2014 Todor Iliev <todor@itprism.com>. All rights reserved.
- * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ * @copyright    Copyright (C) 2015 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @license      GNU General Public License version 3 or later; see LICENSE.txt
  */
 
 // no direct access
@@ -93,7 +93,6 @@ class VipQuotesModelQuotes extends JModelList
 
         // Ordering state
         $this->prepareOrderingState($filterOrdering);
-
     }
 
     /**
@@ -111,8 +110,11 @@ class VipQuotesModelQuotes extends JModelList
     protected function getStoreId($id = '')
     {
         // Compile the store id.
-        $id .= ':' . $this->getState('filter.saerch');
-        $id .= ':' . $this->getState('filter.catid');
+        $id .= ':' . $this->getState('filter.phrase');
+        $id .= ':' . $this->getState('filter.category');
+        $id .= ':' . $this->getState('filter.author');
+        $id .= ':' . $this->getState('filter.alpha');
+        $id .= ':' . $this->getState('filter.user');
 
         return parent::getStoreId($id);
     }
@@ -204,7 +206,7 @@ class VipQuotesModelQuotes extends JModelList
 
         // Model parameters
         $module       = JModuleHelper::getModule("mod_vipquotesabc");
-        $moduleParams = new JRegistry;
+        $moduleParams = new Joomla\Registry\Registry;
         /** @var  $moduleParams Joomla\Registry\Registry */
 
         $moduleParams->loadString($module->params, 'JSON');

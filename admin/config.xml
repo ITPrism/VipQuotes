@@ -105,18 +105,10 @@
             <option value="gravatar">COM_VIPQUOTES_GRAVATAR</option>
             <option value="jomsocial">COM_VIPQUOTES_JOMSOCIAL</option>
             <option value="easysocial">COM_VIPQUOTES_EASYSOCIAL</option>
+            <option value="easyprofile">COM_VIPQUOTES_EASYPROFILE</option>
             <option value="kunena">COM_VIPQUOTES_KUNENA</option>
         </field>
         <field name="integration_avatars_size" type="text" default="50" label="COM_VIPQUOTES_AVATARS_SIZE" description="COM_VIPQUOTES_AVATARS_SIZE_DESC" />
-    </fieldset>
-    
-    <fieldset name="facebook" label="COM_VIPQUOTES_FACEBOOK_TITLE" description="COM_VIPQUOTES_FACEBOOK_PARAMS">
-        <field name="fbpp_app_id" type="text" default="" label="COM_VIPQUOTES_APP_ID" description="COM_VIPQUOTES_APP_ID_DESC" />
-        <field name="fbpp_app_secret" type="text" default="" label="COM_VIPQUOTES_APP_SECRET" description="COM_VIPQUOTES_APP_SECRET_DESC" class="span6"/>
-        <field name="fbpp_auto_grow" type="radio" default="0"  label="COM_VIPQUOTES_FACEBOOK_AUTO_GROW" description="COM_VIPQUOTES_FACEBOOK_AUTO_GROW_DESC" class="btn-group">
-            <option value="0">JNO</option>
-            <option value="1">JYES</option>
-        </field>
     </fieldset>
 
     <fieldset name="advanced" label="COM_VIPQUOTES_ADVANCED">

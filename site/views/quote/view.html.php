@@ -3,8 +3,8 @@
  * @package      VipQuotes
  * @subpackage   Component
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2014 Todor Iliev <todor@itprism.com>. All rights reserved.
- * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ * @copyright    Copyright (C) 2015 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @license      GNU General Public License version 3 or later; see LICENSE.txt
  */
 
 // no direct access
@@ -40,7 +40,6 @@ class VipQuotesViewQuote extends JViewLegacy
     protected $option = null;
 
     protected $userId;
-    protected $tmplValue;
     protected $pageHeading;
 
     protected $pageclass_sfx;
@@ -78,18 +77,9 @@ class VipQuotesViewQuote extends JViewLegacy
         $model = $this->getModel();
         $model->hit($this->item->id);
 
-        // Prepare TMPL variable
-        $tmpl            = $app->input->get->get("tmpl", "");
-        $this->tmplValue = "";
-        if (strcmp("component", $tmpl) == 0) {
-            $this->tmplValue = "&tmpl=component";
-        }
-
         // Prepare document
         $this->prepareDocument();
         $this->prepareEvents();
-
-        $this->version     = new VipQuotesVersion();
 
         parent::display($tpl);
     }
@@ -99,7 +89,7 @@ class VipQuotesViewQuote extends JViewLegacy
         $imagesFolder = $this->params->get("images_directory", "images/authors");
 
         // Prepare data used by plugins.
-        $this->item->link  = JRoute::_(VipQuotesHelperRoute::getQuoteRoute($this->item->id, $this->item->catid) . $this->tmplValue);
+        $this->item->link  = JRoute::_(VipQuotesHelperRoute::getQuoteRoute($this->item->id, $this->item->catid));
         $this->item->title = $this->document->getTitle();
 
         $this->item->image_intro = "";

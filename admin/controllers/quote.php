@@ -4,13 +4,11 @@
  * @subpackage   Component
  * @author       Todor Iliev
  * @copyright    Copyright (C) 2014 Todor Iliev <todor@itprism.com>. All rights reserved.
- * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ * @license      GNU General Public License version 3 or later; see LICENSE.txt
  */
 
 // No direct access
 defined('_JEXEC') or die;
-
-jimport('itprism.controller.form.backend');
 
 /**
  * Quote controller class.
@@ -18,28 +16,21 @@ jimport('itprism.controller.form.backend');
  * @package        ITPrism Components
  * @subpackage     VipQuotes
  */
-class VipQuotesControllerQuote extends ITPrismControllerFormBackend
+class VipQuotesControllerQuote extends Prism\Controller\Form\Backend
 {
-    /**
-     * Proxy for getModel.
-     * @since   1.6
-     */
     public function getModel($name = 'Quote', $prefix = 'VipQuotesModel', $config = array('ignore_request' => true))
     {
         $model = parent::getModel($name, $prefix, $config);
 
         return $model;
     }
-
-    /**
-     * Save an item
-     */
+    
     public function save($key = null, $urlVar = null)
     {
         JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
 
         $data   = $this->input->post->get('jform', array(), 'array');
-        $itemId = JArrayHelper::getValue($data, "id");
+        $itemId = Joomla\Utilities\ArrayHelper::getValue($data, "id");
 
         $redirectOptions = array(
             "task" => $this->getTask(),
@@ -73,7 +64,7 @@ class VipQuotesControllerQuote extends ITPrismControllerFormBackend
         // Check for duplications
         if ($params->get("quotes_check_quotes")) {
 
-            $quote = JArrayHelper::getValue($data, "quote");
+            $quote = Joomla\Utilities\ArrayHelper::getValue($data, "quote");
 
             if ($model->hasDuplication($quote, $itemId)) {
 

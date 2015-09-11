@@ -4,7 +4,7 @@
  * @subpackage   Component
  * @author       Todor Iliev
  * @copyright    Copyright (C) 2014 Todor Iliev <todor@itprism.com>. All rights reserved.
- * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ * @license      GNU General Public License version 3 or later; see LICENSE.txt
  */
 
 defined('JPATH_BASE') or die;
@@ -44,8 +44,7 @@ class JFormFieldVqAuthor extends JFormFieldList
         );
 
         // Get authors.
-        jimport("vipquotes.filter.options");
-        $filters = VipQuotesFilterOptions::getInstance(JFactory::getDbo());
+        $filters = VipQuotes\Filter\Options::getInstance(JFactory::getDbo());
         $options = $filters->getAuthors($options);
 
         $displayRoot = (!empty($this->element["display_root"])) ? true : false;

@@ -3,8 +3,8 @@
  * @package      VipQuotes
  * @subpackage   Component
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2014 Todor Iliev <todor@itprism.com>. All rights reserved.
- * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ * @copyright    Copyright (C) 2015 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @license      GNU General Public License version 3 or later; see LICENSE.txt
  */
 
 // no direct access
@@ -77,7 +77,7 @@ class VipQuotesModelAuthor extends JModelItem
 
                 // Convert the JTable to a clean JObject.
                 $properties            = $table->getProperties(true);
-                $this->item[$storedId] = JArrayHelper::toObject($properties);
+                $this->item[$storedId] = Joomla\Utilities\ArrayHelper::toObject($properties);
             }
         }
 

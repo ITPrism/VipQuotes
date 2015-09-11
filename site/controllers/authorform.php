@@ -3,14 +3,12 @@
  * @package      VipQuotes
  * @subpackage   Component
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2014 Todor Iliev <todor@itprism.com>. All rights reserved.
- * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ * @copyright    Copyright (C) 2015 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @license      GNU General Public License version 3 or later; see LICENSE.txt
  */
 
 // No direct access
 defined('_JEXEC') or die;
-
-jimport('itprism.controller.form.frontend');
 
 /**
  * Author Form controller class.
@@ -18,11 +16,8 @@ jimport('itprism.controller.form.frontend');
  * @package        ITPrism Components
  * @subpackage     VipQuotes
  */
-class VipQuotesControllerAuthorForm extends ITPrismControllerFormFrontend
+class VipQuotesControllerAuthorForm extends Prism\Controller\Form\Frontend
 {
-    /**
-     * Save an item.
-     */
     public function save($key = null, $urlVar = null)
     {
         JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
@@ -32,7 +27,6 @@ class VipQuotesControllerAuthorForm extends ITPrismControllerFormFrontend
         if (!$userId) {
             $this->setMessage(JText::_('COM_VIPQUOTES_ERROR_NOT_LOG_IN'), "notice");
             $this->setRedirect(JRoute::_("index.php?option=com_users&view=login", false));
-
             return;
         }
 

@@ -2,7 +2,7 @@
 <form>
     <fieldset name="quote" addfieldpath="/administrator/components/com_vipquotes/models/fields">
 
-        <field name="name" type="text" class="input-xxlarge"
+        <field name="name" type="text" class="form-control"
                label="COM_VIPQUOTES_FIELD_NAME"
                filter="trim"
                required="true"

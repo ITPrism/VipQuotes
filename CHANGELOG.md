@@ -1,6 +1,14 @@
 Vip Quotes Release Notes
 ==========================
 
+###v3.0
+* It was changed to [Prism Library] (http://itprism.com/free-joomla-extensions/others/software-development-kit) (removed ITPrism Library).
+* Improved the library.
+* Added information about the license.
+* Remove facebook pages.
+* Removed the email templates. Now it uses the extension [Email Templates] (http://itprism.com/free-joomla-extensions/others/email-templates-manager).
+* Integrated with Easy Profile.
+
 ###v2.7
 * Added functionality for adding authors from front-end.
 * Improved code quality.

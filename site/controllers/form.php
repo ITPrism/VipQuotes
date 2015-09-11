@@ -3,14 +3,12 @@
  * @package      VipQuotes
  * @subpackage   Component
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2014 Todor Iliev <todor@itprism.com>. All rights reserved.
- * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ * @copyright    Copyright (C) 2015 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @license      GNU General Public License version 3 or later; see LICENSE.txt
  */
 
 // No direct access
 defined('_JEXEC') or die;
-
-jimport('itprism.controller.form.frontend');
 
 /**
  * Quote controller class.
@@ -18,11 +16,8 @@ jimport('itprism.controller.form.frontend');
  * @package        ITPrism Components
  * @subpackage     VipQuotes
  */
-class VipQuotesControllerForm extends ITPrismControllerFormFrontend
+class VipQuotesControllerForm extends Prism\Controller\Form\Frontend
 {
-    /**
-     * Save an item.
-     */
     public function save($key = null, $urlVar = null)
     {
         JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
@@ -32,7 +27,6 @@ class VipQuotesControllerForm extends ITPrismControllerFormFrontend
         if (!$userId) {
             $this->setMessage(JText::_('COM_VIPQUOTES_ERROR_NOT_LOG_IN'), "notice");
             $this->setRedirect(JRoute::_("index.php?option=com_users&view=login", false));
-
             return;
         }
 
@@ -51,7 +45,7 @@ class VipQuotesControllerForm extends ITPrismControllerFormFrontend
         /** @var $model VipQuotesModelForm */
 
         $form = $model->getForm($data, false);
-        /** @var $form JForm * */
+        /** @var $form JForm */
 
         if (!$form) {
             throw new Exception(JText::_("COM_VIPQUOTES_ERROR_FORM_CANNOT_BE_LOADED"), 500);
@@ -114,6 +108,5 @@ class VipQuotesControllerForm extends ITPrismControllerFormFrontend
         }
 
         $this->displayMessage(JText::_('COM_VIPQUOTES_QUOTE_SAVED'), $redirectOptions);
-
     }
 }

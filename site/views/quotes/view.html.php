@@ -3,8 +3,8 @@
  * @package      VipQuotes
  * @subpackage   Component
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2014 Todor Iliev <todor@itprism.com>. All rights reserved.
- * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ * @copyright    Copyright (C) 2015 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @license      GNU General Public License version 3 or later; see LICENSE.txt
  */
 
 // no direct access
@@ -39,7 +39,6 @@ class VipQuotesViewQuotes extends JViewLegacy
     protected $displayPublisher;
     protected $displayInfo;
     protected $socialProfiles;
-    protected $tmplValue;
     protected $displayFilters;
     protected $filterAuthor;
     protected $filterCategory;
@@ -48,7 +47,6 @@ class VipQuotesViewQuotes extends JViewLegacy
     protected $authors;
     protected $users;
     protected $numberOfFilters;
-    protected $spanClass;
     protected $categoryOptions;
     protected $orderingOptions;
 
@@ -91,17 +89,17 @@ class VipQuotesViewQuotes extends JViewLegacy
         $this->prepareDocument();
 
         if (!empty($this->displayPublisher)) {
-            $this->prepareIntegration($this->items, $this->params);
-        }
+            $socialProfilesBuilder = new Prism\Integration\Profiles\Builder(
+                array(
+                    "social_platform" => $this->params->get("integration_social_platform"),
+                    "users_ids" => VipQuotesHelper::fetchUserIds($this->items)
+                )
+            );
 
-        // Prepare TMPL variable
-        $tmpl            = $app->input->get->get("tmpl", "");
-        $this->tmplValue = "";
-        if (strcmp("component", $tmpl) == 0) {
-            $this->tmplValue = "&tmpl=component";
-        }
+            $socialProfilesBuilder->build();
 
-        $this->version     = new VipQuotesVersion();
+            $this->socialProfiles = $socialProfilesBuilder->getProfiles();
+        }
 
         parent::display($tpl);
     }
@@ -123,10 +121,9 @@ class VipQuotesViewQuotes extends JViewLegacy
         $this->numberOfFilters = 0;
 
         if ($this->filterAuthor) {
-            jimport("vipquotes.filter.options");
-            $filters = VipQuotesFilterOptions::getInstance(JFactory::getDbo());
+            $filters = VipQuotes\Filter\Options::getInstance(JFactory::getDbo());
 
-            $this->authors = $filters->getAuthors(array("state" => VipQuotesConstants::PUBLISHED));
+            $this->authors = $filters->getAuthors(array("state" => Prism\Constants::PUBLISHED));
 
             $option = array(
                 "value" => 0,
@@ -165,18 +162,12 @@ class VipQuotesViewQuotes extends JViewLegacy
         }
 
         if ($this->filterOrdering) {
-            jimport("vipquotes.filter.options");
-            $filters = VipQuotesFilterOptions::getInstance(JFactory::getDbo());
+            $filters = VipQuotes\Filter\Options::getInstance(JFactory::getDbo());
 
             $this->orderingOptions = $filters->getQuotesOrdering();
 
             // Increase the number of filters
             $this->numberOfFilters++;
-        }
-
-        $this->spanClass = "span4";
-        if ($this->numberOfFilters == 4) {
-            $this->spanClass = "span3";
         }
     }
 
@@ -251,46 +242,5 @@ class VipQuotesViewQuotes extends JViewLegacy
         }
 
         $this->document->setTitle($title);
-    }
-
-    /**
-     * Prepare social profiles.
-     *
-     * @param array     $items
-     * @param Joomla\Registry\Registry $params
-     *
-     * @todo Move it to a trait when traits become mass.
-     */
-    protected function prepareIntegration($items, $params)
-    {
-        $this->socialProfiles = null;
-
-        // Get users IDs
-        $usersIds = array();
-        foreach ($items as $item) {
-            $usersIds[] = $item->user_id;
-        }
-
-        // Get a social platform for integration
-        $socialPlatform = $params->get("integration_social_platform");
-
-        // If there is now users, do not continue.
-        if (!$usersIds or !$socialPlatform) {
-            return;
-        }
-
-        // Create an object that contains social profiles.
-        if (!empty($socialPlatform)) {
-            jimport("itprism.integrate.profiles");
-            try {
-                $this->socialProfiles = ITPrismIntegrateProfiles::factory($socialPlatform, $usersIds);
-            } catch (Exception $e) {
-
-                $app = JFactory::getApplication();
-                /** @var $app JApplicationSite */
-
-                $app->enqueueMessage(JText::_("COM_VIPQUOTES_ERROR_SOCIAL_INTEGRATION_PROBLEM"), "error");
-            }
-        }
     }
 }

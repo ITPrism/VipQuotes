@@ -4,7 +4,7 @@
  * @subpackage   Component
  * @author       Todor Iliev
  * @copyright    Copyright (C) 2014 Todor Iliev <todor@itprism.com>. All rights reserved.
- * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ * @license      GNU General Public License version 3 or later; see LICENSE.txt
  */
 
 // no direct access
@@ -24,7 +24,8 @@ class VipQuotesViewDashboard extends JViewLegacy
     protected $popularAuthors;
     protected $totalAuthors;
     protected $totalQuotes;
-    protected $itprismVersion;
+    protected $prismVersion;
+    protected $prismVersionLowerMessage;
     protected $version;
 
     protected $sidebar;
@@ -37,41 +38,36 @@ class VipQuotesViewDashboard extends JViewLegacy
 
     public function display($tpl = null)
     {
-        jimport("vipquotes.version");
-        $this->version = new VipQuotesVersion();
+        $this->version = new VipQuotes\Version();
 
-        // Load ITPrism library version
-        jimport("itprism.version");
-        if (!class_exists("ITPrismVersion")) {
-            $this->itprismVersion = JText::_("COM_VIPQUOTES_ITPRISM_LIBRARY_DOWNLOAD");
+        // Load Prism library version
+        if (!class_exists("Prism\\Version")) {
+            $this->prismVersion = JText::_("COM_VIPQUOTES_ITPRISM_LIBRARY_DOWNLOAD");
         } else {
-            $itprismVersion       = new ITPrismVersion();
-            $this->itprismVersion = $itprismVersion->getShortVersion();
+            $prismVersion       = new Prism\Version();
+            $this->prismVersion = $prismVersion->getShortVersion();
+
+            if (version_compare($this->prismVersion, $this->version->requiredPrismVersion, "<")) {
+                $this->prismVersionLowerMessage = JText::_("COM_VIPQUOTES_PRISM_LIBRARY_LOWER_VERSION");
+            }
         }
 
         // Get latest started.
-        jimport("vipquotes.statistics.quotes.latest");
-        $this->latestQuotes = new VipQuotesStatisticsQuotesLatest(JFactory::getDbo());
+        $this->latestQuotes = new VipQuotes\Statistics\Quotes\Latest(JFactory::getDbo());
         $this->latestQuotes->load(5);
 
         // Get popular quotes.
-        jimport("vipquotes.statistics.quotes.popular");
-        $this->popularQuotes = new VipQuotesStatisticsQuotesPopular(JFactory::getDbo());
+        $this->popularQuotes = new VipQuotes\Statistics\Quotes\Popular(JFactory::getDbo());
         $this->popularQuotes->load(5);
 
         // Get popular authors.
-        jimport("vipquotes.statistics.authors.popular");
-        $this->popularAuthors = new VipQuotesStatisticsAuthorsPopular(JFactory::getDbo());
+        $this->popularAuthors = new VipQuotes\Statistics\Authors\Popular(JFactory::getDbo());
         $this->popularAuthors->load(5);
 
         // Get basic data
-        jimport("vipquotes.statistics.basic");
-        $basic              = new VipQuotesStatisticsBasic(JFactory::getDbo());
+        $basic              = new VipQuotes\Statistics\Basic(JFactory::getDbo());
         $this->totalQuotes  = $basic->getTotalQuotes();
         $this->totalAuthors = $basic->getTotalAuthors();
-
-        // Add submenu
-        VipQuotesHelper::addSubmenu($this->getName());
 
         $this->addToolbar();
         $this->addSidebar();
@@ -102,6 +98,7 @@ class VipQuotesViewDashboard extends JViewLegacy
      */
     protected function addSidebar()
     {
+        VipQuotesHelper::addSubmenu($this->getName());
         $this->sidebar = JHtmlSidebar::render();
     }
 

@@ -3,8 +3,8 @@
  * @package      VipQuotes
  * @subpackage   Component
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2014 Todor Iliev <todor@itprism.com>. All rights reserved.
- * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ * @copyright    Copyright (C) 2015 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @license      GNU General Public License version 3 or later; see LICENSE.txt
  */
 
 // no direct access
@@ -17,29 +17,27 @@ defined('_JEXEC') or die;
     
     <form action="<?php echo JRoute::_('index.php?option=com_vipquotes'); ?>" method="post" name="adminForm" id="adminForm" class="form-validate" enctype="multipart/form-data">
 
-        <?php echo $this->form->getControlGroup('name'); ?>
-        <?php echo $this->form->getControlGroup('bio'); ?>
-
-        <div class="control-group">
-            <div class="control-label"><?php echo $this->form->getLabel('image'); ?></div>
-            <div class="controls">
-                <div class="fileupload fileupload-new" data-provides="fileupload">
-        <span class="btn btn-file">
-            <span class="fileupload-new"><?php echo JText::_("COM_VIPQUOTES_SELECT_FILE"); ?></span>
-            <span class="fileupload-exists"><?php echo JText::_("COM_VIPQUOTES_CHANGE"); ?></span>
-            <?php echo $this->form->getInput('image'); ?>
-        </span>
-                    <span class="fileupload-preview"></span>
-                    <a href="#" class="close fileupload-exists" data-dismiss="fileupload" style="float: none">×</a>
-                </div>
-            </div>
+        <div class="form-group">
+            <?php echo $this->form->getLabel('name'); ?>
+            <?php echo $this->form->getInput('name'); ?>
         </div>
 
-        <div class="clearfix"></div>
-        <?php echo $this->form->getControlGroup('captcha'); ?>
+        <div class="form-group">
+            <?php echo $this->form->getLabel('image'); ?>
+            <?php echo $this->form->getInput('image'); ?>
+        </div>
+
+        <div class="form-group">
+            <?php echo $this->form->getLabel('bio'); ?>
+            <?php echo $this->form->getInput('bio'); ?>
+        </div>
+
+        <div class="form-group">
+            <?php echo $this->form->getLabel('captcha'); ?>
+            <?php echo $this->form->getInput('captcha'); ?>
+        </div>
 
         <?php echo $this->form->getInput('id'); ?>
-        
         <input type="hidden" name="task" value="" />
         <?php echo JHtml::_('form.token'); ?>
 
@@ -52,7 +50,7 @@ defined('_JEXEC') or die;
 
         <div class="formelm-buttons">
 			<button type="button" class="btn btn-primary" id="js-vq-authorform-save2new">
-				<span class="icon-plus"></span>
+				<span class="glyphicon glyphicon-plus"></span>
 				<?php echo JText::_('COM_VIPQUOTES_SAVE_AND_NEW') ?>
 			</button>
 		</div>
@@ -60,5 +58,3 @@ defined('_JEXEC') or die;
     </form>
     
 </div>
-<div class="clearfix"></div>
-<?php echo $this->version->backlink; ?>

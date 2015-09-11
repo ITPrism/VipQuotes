@@ -3,8 +3,8 @@
  * @package      VipQuotes
  * @subpackage   Component
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2014 Todor Iliev <todor@itprism.com>. All rights reserved.
- * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ * @copyright    Copyright (C) 2015 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @license      GNU General Public License version 3 or later; see LICENSE.txt
  */
 
 // no direct access
@@ -51,8 +51,6 @@ class VipQuotesViewAuthorForm extends JViewLegacy
         $this->params = $params;
 
         $this->prepareDocument();
-
-        $this->version     = new VipQuotesVersion();
 
         parent::display($tpl);
     }
@@ -110,7 +108,7 @@ class VipQuotesViewAuthorForm extends JViewLegacy
         // Add scripts
         JHtml::_('behavior.keepalive');
         JHtml::_('behavior.formvalidation');
-        JHtml::_('itprism.ui.bootstrap_fileuploadstyle');
+        JHtml::_('prism.ui.bootstrap3Fileinput');
 
         JHtml::_('bootstrap.tooltip');
 
@@ -119,5 +117,7 @@ class VipQuotesViewAuthorForm extends JViewLegacy
         // Language
         JText::script('JGLOBAL_VALIDATION_FORM_FAILED');
         JText::script('COM_VIPQUOTES_ADD_AUTHOR_QUESTION');
+        JText::script('COM_VIPQUOTES_PICK_IMAGE');
+        JText::script('COM_VIPQUOTES_REMOVE');
     }
 }

@@ -4,13 +4,11 @@
  * @subpackage   Component
  * @author       Todor Iliev
  * @copyright    Copyright (C) 2014 Todor Iliev <todor@itprism.com>. All rights reserved.
- * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ * @license      GNU General Public License version 3 or later; see LICENSE.txt
  */
 
 // No direct access
 defined('_JEXEC') or die;
-
-jimport('joomla.application.component.controlleradmin');
 
 /**
  * Vip Quotes quotes controller
@@ -41,8 +39,8 @@ class VipQuotesControllerQuotes extends JControllerAdmin
         $order = $this->input->post->get('order', array(), 'array');
 
         // Sanitize the input
-        JArrayHelper::toInteger($pks);
-        JArrayHelper::toInteger($order);
+        $pks = Joomla\Utilities\ArrayHelper::toInteger($pks);
+        $order = Joomla\Utilities\ArrayHelper::toInteger($order);
 
         // Get the model
         $model = $this->getModel();

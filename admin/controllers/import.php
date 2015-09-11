@@ -4,13 +4,11 @@
  * @subpackage   Component
  * @author       Todor Iliev
  * @copyright    Copyright (C) 2014 Todor Iliev <todor@itprism.com>. All rights reserved.
- * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ * @license      GNU General Public License version 3 or later; see LICENSE.txt
  */
 
 // no direct access
 defined('_JEXEC') or die;
-
-jimport("itprism.controller.form.backend");
 
 /**
  * Vip Quotes import controller
@@ -18,12 +16,8 @@ jimport("itprism.controller.form.backend");
  * @package     VipQuotes
  * @subpackage  Components
  */
-class VipQuotesControllerImport extends ITPrismControllerFormBackend
+class VipQuotesControllerImport extends Prism\Controller\Form\Backend
 {
-    /**
-     * Proxy for getModel.
-     * @since   1.6
-     */
     public function getModel($name = 'Import', $prefix = 'VipQuotesModel', $config = array('ignore_request' => true))
     {
         $model = parent::getModel($name, $prefix, $config);
@@ -35,9 +29,6 @@ class VipQuotesControllerImport extends ITPrismControllerFormBackend
     {
         JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
 
-        $app = JFactory::getApplication();
-        /** @var $app JApplicationAdministrator */
-
         $data = $this->input->post->get('jform', array(), 'array');
         $file = $this->input->files->get('jform', array(), 'array');
         $data = array_merge($data, $file);
@@ -48,10 +39,10 @@ class VipQuotesControllerImport extends ITPrismControllerFormBackend
         );
 
         $model = $this->getModel();
-        /** @var $model VipQuotesModelImport * */
+        /** @var $model VipQuotesModelImport */
 
         $form = $model->getForm($data, false);
-        /** @var $form JForm * */
+        /** @var $form JForm */
 
         if (!$form) {
             throw new Exception(JText::_("COM_VIPQUOTES_ERROR_FORM_CANNOT_BE_LOADED"), 500);
@@ -63,11 +54,10 @@ class VipQuotesControllerImport extends ITPrismControllerFormBackend
         // Check for errors.
         if ($validData === false) {
             $this->displayNotice($form->getErrors(), $redirectOptions);
-
             return;
         }
 
-        $fileData = JArrayHelper::getValue($data, "data");
+        $fileData = Joomla\Utilities\ArrayHelper::getValue($data, "data");
 
         jimport('joomla.filesystem.folder');
         jimport('joomla.filesystem.file');
@@ -80,7 +70,7 @@ class VipQuotesControllerImport extends ITPrismControllerFormBackend
 
             $model->validateFileType($filePath);
 
-            $resetId = JArrayHelper::getValue($data, "reset_id", false, "bool");
+            $resetId = Joomla\Utilities\ArrayHelper::getValue($data, "reset_id", false, "bool");
             $model->importQuotes($filePath, $resetId);
 
         } catch (RuntimeException $e) {
@@ -96,7 +86,7 @@ class VipQuotesControllerImport extends ITPrismControllerFormBackend
         $this->displayMessage(JText::_("COM_VIPQUOTES_DATA_IMPORTED"), $redirectOptions);
     }
 
-    public function cancel($key = NULL)
+    public function cancel($key = null)
     {
         $link = $this->defaultLink . "&view=quotes";
         $this->setRedirect(JRoute::_($link, false));

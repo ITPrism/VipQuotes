@@ -4,7 +4,7 @@
  * @subpackage   Component
  * @author       Todor Iliev
  * @copyright    Copyright (C) 2014 Todor Iliev <todor@itprism.com>. All rights reserved.
- * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ * @license      GNU General Public License version 3 or later; see LICENSE.txt
  */
 
 // no direct access
@@ -35,9 +35,6 @@ class VipQuotesViewQuote extends JViewLegacy
         $this->option = JFactory::getApplication()->input->get("option");
     }
 
-    /**
-     * Display the view
-     */
     public function display($tpl = null)
     {
         $this->state = $this->get('State');
@@ -61,8 +58,7 @@ class VipQuotesViewQuote extends JViewLegacy
         JFactory::getApplication()->input->set('hidemainmenu', true);
         $isNew = ($this->item->id == 0);
 
-        $this->documentTitle = $isNew ? JText::_('COM_VIPQUOTES_QUOTE_NEW')
-            : JText::_('COM_VIPQUOTES_QUOTE_EDIT');
+        $this->documentTitle = $isNew ? JText::_('COM_VIPQUOTES_QUOTE_NEW') : JText::_('COM_VIPQUOTES_QUOTE_EDIT');
 
         JToolbarHelper::title($this->documentTitle);
 

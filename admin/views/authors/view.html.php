@@ -4,7 +4,7 @@
  * @subpackage   Component
  * @author       Todor Iliev
  * @copyright    Copyright (C) 2014 Todor Iliev <todor@itprism.com>. All rights reserved.
- * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ * @license      GNU General Public License version 3 or later; see LICENSE.txt
  */
 
 // no direct access
@@ -58,17 +58,18 @@ class VipQuotesViewAuthors extends JViewLegacy
         $this->params = $this->state->get("params");
 
         // Get number of quotes for authors.
-        jimport("vipquotes.authors");
-        $this->authors = new VipQuotesAuthors(JFactory::getDbo());
-        $this->authors->setItems($this->items);
+        $this->authors = new VipQuotes\Author\Authors(JFactory::getDbo());
+
+        $items = array();
+        foreach ($this->items as $item) {
+            $items[] = Joomla\Utilities\ArrayHelper::fromObject($item);
+        }
+        $this->authors->setItems($items);
 
         $this->authorsQuotesNumber = $this->authors->getQuotesNumber();
 
         // Prepare sorting data
         $this->prepareSorting();
-
-        // Add submenu
-        VipQuotesHelper::addSubmenu($this->getName());
 
         $this->addToolbar();
         $this->addSidebar();
@@ -106,6 +107,8 @@ class VipQuotesViewAuthors extends JViewLegacy
      */
     protected function addSidebar()
     {
+        VipQuotesHelper::addSubmenu($this->getName());
+
         JHtmlSidebar::setAction('index.php?option=' . $this->option . '&view=' . $this->getName());
 
         JHtmlSidebar::addFilter(
@@ -149,6 +152,7 @@ class VipQuotesViewAuthors extends JViewLegacy
         JHtml::_('bootstrap.tooltip');
         JHtml::_('behavior.multiselect');
         JHtml::_('formbehavior.chosen', 'select');
-        JHtml::_('itprism.ui.joomla_list');
+
+        JHtml::_('prism.ui.joomlaList');
     }
 }

@@ -11,7 +11,7 @@
         <fieldset name="request" addfieldpath="/administrator/components/com_vipquotes/models/fields" >
             <field name="id" type="vqauthor" 
                 label="COM_VIPQUOTES_AUTHOR" 
-                required="1"
+                required="1" 
             />
         </fieldset>
     </fields>

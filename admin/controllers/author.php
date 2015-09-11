@@ -4,20 +4,14 @@
  * @subpackage   Component
  * @author       Todor Iliev
  * @copyright    Copyright (C) 2014 Todor Iliev <todor@itprism.com>. All rights reserved.
- * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ * @license      GNU General Public License version 3 or later; see LICENSE.txt
  */
 
 // No direct access
 defined('_JEXEC') or die;
 
-jimport('itprism.controller.form.backend');
-
-class VipQuotesControllerAuthor extends ITPrismControllerFormBackend
+class VipQuotesControllerAuthor extends Prism\Controller\Form\Backend
 {
-    /**
-     * Proxy for getModel.
-     * @since   1.6
-     */
     public function getModel($name = 'Author', $prefix = 'VipQuotesModel', $config = array('ignore_request' => true))
     {
         $model = parent::getModel($name, $prefix, $config);
@@ -31,15 +25,12 @@ class VipQuotesControllerAuthor extends ITPrismControllerFormBackend
         return $model;
     }
 
-    /**
-     * Save an item
-     */
     public function save($key = null, $urlVar = null)
     {
         JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
 
         $data   = $this->input->post->get('jform', array(), 'array');
-        $itemId = JArrayHelper::getValue($data, "id");
+        $itemId = Joomla\Utilities\ArrayHelper::getValue($data, "id");
 
         // Redirect options
         $redirectOptions = array(
@@ -51,7 +42,7 @@ class VipQuotesControllerAuthor extends ITPrismControllerFormBackend
         /** @var $model VipQuotesModelAuthor */
 
         $form = $model->getForm($data, false);
-        /** @var $form JForm * */
+        /** @var $form JForm */
 
         if (!$form) {
             throw new Exception(JText::_("COM_VIPQUOTES_ERROR_FORM_CANNOT_BE_LOADED"), 500);
@@ -71,17 +62,17 @@ class VipQuotesControllerAuthor extends ITPrismControllerFormBackend
 
             // Get image
             $file = $this->input->files->get('jform', array(), 'array');
-            $file = JArrayHelper::getValue($file, "image");
+            $file = Joomla\Utilities\ArrayHelper::getValue($file, "image");
 
             // Upload image
             if (!empty($file['name'])) {
 
                 $options = array(
-                    "resize_image" => JArrayHelper::getValue($validData, "resize_image", 0),
-                    "image_width"  => JArrayHelper::getValue($validData, "image_width", 200),
-                    "image_height" => JArrayHelper::getValue($validData, "image_height", 300),
-                    "thumb_width"  => JArrayHelper::getValue($validData, "thumb_width", 50),
-                    "thumb_height" => JArrayHelper::getValue($validData, "thumb_height", 50),
+                    "resize_image" => Joomla\Utilities\ArrayHelper::getValue($validData, "resize_image", 0),
+                    "image_width"  => Joomla\Utilities\ArrayHelper::getValue($validData, "image_width", 200),
+                    "image_height" => Joomla\Utilities\ArrayHelper::getValue($validData, "image_height", 300),
+                    "thumb_width"  => Joomla\Utilities\ArrayHelper::getValue($validData, "thumb_width", 50),
+                    "thumb_height" => Joomla\Utilities\ArrayHelper::getValue($validData, "thumb_height", 50),
                 );
 
                 $imageNames = $model->uploadImage($file, $options);

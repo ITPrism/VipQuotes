@@ -4,7 +4,7 @@
  * @subpackage   Component
  * @author       Todor Iliev
  * @copyright    Copyright (C) 2014 Todor Iliev <todor@itprism.com>. All rights reserved.
- * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ * @license      GNU General Public License version 3 or later; see LICENSE.txt
  */
 
 // no direct access
@@ -56,110 +56,10 @@ class VipQuotesHelper
         );
 
         JHtmlSidebar::addEntry(
-            JText::_('COM_VIPQUOTES_EMAILS'),
-            'index.php?option=' . self::$extension . '&amp;view=emails',
-            $vName == 'emails'
-        );
-
-        JHtmlSidebar::addEntry(
-            JText::_('COM_VIPQUOTES_FACEBOOK_PAGES'),
-            'index.php?option=' . self::$extension . '&view=pages',
-            $vName == 'pages'
-        );
-
-        JHtmlSidebar::addEntry(
             JText::_('COM_VIPQUOTES_PLUGINS'),
             'index.php?option=com_plugins&view=plugins&filter_search=' . rawurlencode("vip quotes"),
             $vName == 'plugins'
         );
-    }
-
-    public static function getFacebookPageName($pageId)
-    {
-        $db = JFactory::getDBO();
-        /** @var $db JDatabaseDriver */
-
-        $query = $db->getQuery(true);
-        $query->select("title")
-            ->from("#__vq_pages")
-            ->where("page_id =" . $db->quote($pageId));
-
-        $db->setQuery($query, 0, 1);
-        $name = $db->loadResult();
-
-        return $name;
-    }
-
-    /**
-     * Make a request to facebook and get pages
-     *
-     * @param Facebook $facebook
-     *
-     * @return array
-     */
-    public static function getFacebookPages($facebook)
-    {
-        $accounts = $facebook->api("/me/accounts");
-        $accounts = JArrayHelper::getValue($accounts, "data");
-
-        $pages = array();
-
-        if (!empty($accounts)) {
-
-            // Get only pages and exclude applications
-            foreach ($accounts as $account) {
-                if (strcmp("Application", $account["category"])) {
-                    $pages[] = $account;
-                }
-            }
-        }
-
-        return $pages;
-    }
-
-    public static function getFacebookPageAccessToken($facebook, $pageId)
-    {
-        $accessToken = "";
-        $pages       = self::getFacebookPages($facebook);
-
-        foreach ($pages as $page) {
-            if ($pageId == $page["id"]) {
-                $accessToken = $page["access_token"];
-                break;
-            }
-        }
-
-        return $accessToken;
-    }
-
-    /**
-     * @param JDocument $document
-     * @param Joomla\Registry\Registry $params
-     */
-    public static function facebookAutoGrow($document, $params)
-    {
-        $js = 'window.fbAsyncInit = function() {
-    	  FB.init({ 
-  	        appId: "' . $params->get("fbpp_app_id", "") . '",
-  	        cookie : true, 
-  	        status : true, 
-  	        xfbml  : true,
-  	        oauth  : true
-  	     });
-
-    	  FB.Canvas.setAutoGrow();
-    	  
-      };
-
-      // Load the SDK Asynchronously
-      (function(d){
-         var js, id = "facebook-jssdk"; if (d.getElementById(id)) {return;}
-         js = d.createElement("script"); js.id = id; js.async = true;
-         js.src = "//connect.facebook.net/en_US/all.js";
-         d.getElementsByTagName("head")[0].appendChild(js);
-       }(document));';
-
-        $document->addScriptDeclaration($js);
     }
 
     public static function getCategories($index = "id")
@@ -300,5 +200,24 @@ class VipQuotesHelper
         }
 
         return $itemSpan;
+    }
+
+    public static function fetchUserIds($items)
+    {
+        $result = array();
+
+        if (!empty($items)) {
+            foreach ($items as $key => $item) {
+                if (is_object($item) and isset($item->user_id)) {
+                    $result[] = $item->user_id;
+                } elseif (is_array($item) and isset($item["user_id"])) {
+                    $result[] = $item["user_id"];
+                } else {
+                    continue;
+                }
+            }
+        }
+
+        return $result;
     }
 }

@@ -20,6 +20,25 @@
 	            <option value="1">JYES</option>
 	        </field>
 	        <field name="categories_limit" type="text" default="20" label="COM_VIPQUOTES_LIMIT" description="COM_VIPQUOTES_CATEGORIES_LIMIT_DESC" />
+            <field name="categories_results_per_line" type="text" default="4" label="COM_VIPQUOTES_RESULTS_PER_ROW" description="COM_VIPQUOTES_RESULTS_PER_ROW_DESC" />
+            <field name="show_pagination" type="list"
+                   description="JGLOBAL_PAGINATION_DESC"
+                   label="JGLOBAL_PAGINATION_LABEL"
+                    >
+                <option value="">JGLOBAL_USE_GLOBAL</option>
+                <option value="0">JHIDE</option>
+                <option value="1">JSHOW</option>
+                <option value="2">JGLOBAL_AUTO</option>
+            </field>
+
+            <field name="show_pagination_results" type="list"
+                   label="JGLOBAL_PAGINATION_RESULTS_LABEL"
+                   description="JGLOBAL_PAGINATION_RESULTS_DESC">
+
+                <option value="">JGLOBAL_USE_GLOBAL</option>
+                <option value="0">JHIDE</option>
+                <option value="1">JSHOW</option>
+            </field>
         </fieldset>
         <fieldset name="category" label="COM_VIPQUOTES_VIEW_CATEGORY_OPTIONS">
             <field name="category_list_view" type="list" default="list" label="COM_VIPQUOTES_CATEGORY_LAYOUT" description="COM_VIPQUOTES_CATEGORY_LAYOUT_DESC">

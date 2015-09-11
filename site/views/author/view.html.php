@@ -3,8 +3,8 @@
  * @package      VipQuotes
  * @subpackage   Component
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2014 Todor Iliev <todor@itprism.com>. All rights reserved.
- * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ * @copyright    Copyright (C) 2015 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @license      GNU General Public License version 3 or later; see LICENSE.txt
  */
 
 // no direct access
@@ -45,7 +45,6 @@ class VipQuotesViewAuthor extends JViewLegacy
     protected $displayQuotesLink;
     protected $quotesNumber;
     protected $imagesFolder;
-    protected $tmplValue;
 
     public function __construct($config)
     {
@@ -55,9 +54,6 @@ class VipQuotesViewAuthor extends JViewLegacy
 
     public function display($tpl = null)
     {
-        $app = JFactory::getApplication();
-        /** @var $app JApplicationSite */
-
         // Get search phrase
         $this->item = $this->get('Item');
 
@@ -78,21 +74,15 @@ class VipQuotesViewAuthor extends JViewLegacy
 
         // Get quotes number.
         if ($this->displayNumber) {
-            jimport("vipquotes.author");
-            $author = new VipQuotesAuthor(JFactory::getDbo());
-            $data   = JArrayHelper::fromObject($this->item);
-            $author->bind($data);
+            $author  = new VipQuotes\Author\Author(JFactory::getDbo());
+            $data_   = JArrayHelper::fromObject($this->item);
+            $author->bind($data_);
             $this->quotesNumber = (int)$author->getNumberOfQuotes();
+
+            unset($data_);
         }
 
         $this->imagesFolder = $this->params->get("images_directory", "images/authors");
-
-        // Prepare TMPL variable
-        $tmpl            = $app->input->get->get("tmpl", "");
-        $this->tmplValue = "";
-        if (strcmp("component", $tmpl) == 0) {
-            $this->tmplValue = "&tmpl=component";
-        }
 
         // Hit
         $model = $this->getModel();
@@ -102,15 +92,13 @@ class VipQuotesViewAuthor extends JViewLegacy
         $this->prepareDocument();
         $this->prepareEvents();
 
-        $this->version     = new VipQuotesVersion();
-
         parent::display($tpl);
     }
 
     protected function prepareEvents()
     {
         // Prepare data used by triggers
-        $this->item->link        = JRoute::_(VipQuotesHelperRoute::getAuthorRoute($this->item->id) . $this->tmplValue);
+        $this->item->link        = JRoute::_(VipQuotesHelperRoute::getAuthorRoute($this->item->id));
         $this->item->title       = $this->document->getTitle();
         $this->item->image_intro = JUri::root() . $this->imagesFolder . "/" . $this->item->thumb;
         $this->item->text        = $this->item->bio;
@@ -132,7 +120,6 @@ class VipQuotesViewAuthor extends JViewLegacy
         // Replace the content of parameter 'quote' with the parameter 'text'
         $this->item->bio = $this->item->text;
         unset($this->item->text);
-
     }
 
     /**

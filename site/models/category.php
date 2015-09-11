@@ -3,8 +3,8 @@
  * @package      VipQuotes
  * @subpackage   Component
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2014 Todor Iliev <todor@itprism.com>. All rights reserved.
- * @license      http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ * @copyright    Copyright (C) 2015 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @license      GNU General Public License version 3 or later; see LICENSE.txt
  */
 
 // no direct access
@@ -55,7 +55,7 @@ class VipQuotesModelCategory extends JModelList
         $this->setState('params', $params);
 
         // Set limit
-        $value = $params->get("category_quotes_limit", $app->getCfg('list_limit', 20));
+        $value = $params->get("category_quotes_limit", $app->get('list_limit', 20));
         $this->setState('list.limit', $value);
 
         // Set limitstart
