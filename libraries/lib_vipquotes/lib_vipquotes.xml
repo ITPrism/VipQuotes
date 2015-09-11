@@ -14,7 +14,6 @@
 	<description>VipQuotes Library</description>
 	<files>
 	    <folder>Author</folder>
-	    <folder>Category</folder>
 	    <folder>Filter</folder>
 	    <folder>language</folder>
 	    <folder>Quote</folder>

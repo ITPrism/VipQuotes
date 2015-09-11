@@ -28,9 +28,6 @@ JLoader::registerNamespace('VipQuotes', JPATH_LIBRARIES);
 JLoader::register("VipQuotesHelper", VIPQUOTES_PATH_COMPONENT_ADMINISTRATOR . "/helpers/vipquotes.php");
 JLoader::register("VipQuotesHelperRoute", VIPQUOTES_PATH_COMPONENT_SITE . "/helpers/route.php");
 
-// Register class aliases.
-JLoader::registerAlias('VipQuotesCategories', '\\VipQuotes\\Categories');
-
 // Register Observers
 JLoader::register("VipQuotesObserverAuthor", VIPQUOTES_PATH_COMPONENT_ADMINISTRATOR ."/tables/observers/author.php");
 JObserverMapper::addObserverClassToClass('VipQuotesObserverAuthor', 'VipQuotesTableAuthor', array('typeAlias' => 'com_vipquotes.author'));
